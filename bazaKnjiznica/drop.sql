@@ -1,0 +1,11 @@
+DROP TABLE `knjiznica`.`gradivo_storitev`;
+DROP TABLE `knjiznica`.`gradivo_avtor`;
+DROP TABLE `knjiznica`.`storitev`;
+DROP TABLE `knjiznica`.`gradivo`;
+DROP TABLE `knjiznica`.`avtor`;
+DROP TABLE `knjiznica`.`podrocje`;
+DROP TABLE `knjiznica`.`vrstagradiva`;
+DROP TABLE `knjiznica`.`zalozba`;
+DROP TABLE `knjiznica`.`prijava`;
+DROP TABLE `knjiznica`.`zapisnacl`;
+DROP TABLE `knjiznica`.`oseba`;
