@@ -121,6 +121,33 @@ LOCK TABLES `gradivo_storitev` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `naslov`
+--
+
+DROP TABLE IF EXISTS `naslov`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `naslov` (
+  `ID_naslova` int(11) NOT NULL AUTO_INCREMENT,
+  `ulica` varchar(60) DEFAULT NULL,
+  `hisnaSt` int(11) DEFAULT NULL,
+  `mesto` varchar(30) DEFAULT NULL,
+  `postnaSt` int(11) DEFAULT NULL,
+  `drzava` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`ID_naslova`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `naslov`
+--
+
+LOCK TABLES `naslov` WRITE;
+/*!40000 ALTER TABLE `naslov` DISABLE KEYS */;
+/*!40000 ALTER TABLE `naslov` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `oseba`
 --
 
@@ -134,7 +161,7 @@ CREATE TABLE `oseba` (
   `tipOsebe` varchar(15) DEFAULT NULL,
   `email` varchar(45) DEFAULT NULL,
   `telefon` varchar(15) DEFAULT NULL,
-  `naslov` varchar(100) DEFAULT NULL,
+  `tk_id_naslova` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_osebe`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -304,4 +331,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-13 21:10:39
+-- Dump completed on 2015-04-15 13:58:13

@@ -4,6 +4,16 @@ CREATE TABLE `knjiznica`.`avtor` (
   `priimek` VARCHAR(60) NULL,
   PRIMARY KEY (`ID_avtorja`));
 
+CREATE TABLE `knjiznica`.`naslov` (
+  `ID_naslova` INT NOT NULL AUTO_INCREMENT,
+  `ulica` VARCHAR(60) NULL,
+  `hisnaSt` INT NULL,
+  `mesto` VARCHAR (30) NULL,
+  `postnaSt` INT NULL,
+  `drzava` VARCHAR(20) NULL,
+  PRIMARY KEY (`ID_naslova`));
+
+
 CREATE TABLE `knjiznica`.`oseba` (
   `ID_osebe` INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(60) NULL,
@@ -11,7 +21,7 @@ CREATE TABLE `knjiznica`.`oseba` (
   `tipOsebe` VARCHAR (15) NULL,
   `email` VARCHAR(45) NULL,
   `telefon` VARCHAR(15) NULL,
-  `naslov` VARCHAR (100) NULL,
+  `tk_id_naslova` INT NULL,
   PRIMARY KEY (`ID_osebe`));
 
 CREATE TABLE `knjiznica`.`prijava` (

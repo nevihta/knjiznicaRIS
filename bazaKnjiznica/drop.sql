@@ -8,4 +8,5 @@ DROP TABLE `knjiznica`.`vrstagradiva`;
 DROP TABLE `knjiznica`.`zalozba`;
 DROP TABLE `knjiznica`.`prijava`;
 DROP TABLE `knjiznica`.`zapisnacl`;
+DROP TABLE `knjiznica`.`naslov`;
 DROP TABLE `knjiznica`.`oseba`;
