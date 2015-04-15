@@ -43,16 +43,17 @@ public class OsebaServlet extends HttpServlet {
 		
 		if(metoda.equals("prijava")){
 			Prijava uporabnik = new Prijava();
+			System.out.println(request.getParameter("ime")+" "+request.getParameter("geslo"));
 			uporabnik.setUpIme(request.getParameter("ime"));
 			uporabnik.setGeslo(request.getParameter("geslo"));
 			
 			if(ud.prijava(uporabnik)){
 				seja.setAttribute("Prijava",true);
-				stran="/GlavnaVsebina/Test.jsp";
+				stran="/glavnaVsebina/Test.jsp";
 			}
 			else{
 				seja.setAttribute("Prijava",false);
-				stran="/GlavnaVsebina/Login.jsp";
+				stran="/glavnaVsebina/Login.jsp";
 			}
 		}
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
