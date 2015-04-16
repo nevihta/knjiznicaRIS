@@ -122,7 +122,7 @@ public class NaslovDAO {
 	
 
 	
-	public int urediNaslov(Naslov n)
+	public Naslov urediNaslov(Naslov n)
 	{
 		int idNaslova=-1;
 
@@ -168,7 +168,7 @@ public class NaslovDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
-		return idNaslova;
+		return n;
 	}
 
 	public void izbrisiNaslov()

@@ -293,6 +293,34 @@ public class OsebaDAO {
 		
 		return osebe;
 	}
+	
+	//monika - preveri =))
+	public ArrayList<Oseba> pridobiKnjiznicarje()
+	{
+		ArrayList<Oseba> osebe = new ArrayList<Oseba>();
+		try{
+			povezava =  Povezava.getConnection();
+
+			st = povezava.prepareStatement("select * from oseba where tipOsebe=?");
+			st.setString(1, "knjižnièar");
+			rs = st.executeQuery();
+			
+			Oseba o;
+			while (rs.next())
+			{
+				o=new Oseba(rs.getInt("ID_osebe"), rs.getString("ime"), rs.getString("priimek"), TipOsebe.knjižnièar, rs.getString("email"), rs.getString("telefon"), rs.getInt("tk_id_naslova"));
+				osebe.add(o);
+			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		
+		return osebe;
+	}
 
 	public int preveriPrijavo(Prijava p) {
 		int idKnjiznicarja=-1;
@@ -320,7 +348,9 @@ public class OsebaDAO {
 		
 	}
 	
-	public void spremeniUporabniskoImeInGeslo(Prijava p){
+	//dodelaj za preverjanje ce staro vneseno geslo drzi, potem update z novim
+	public boolean spremeniUporabniskoImeInGeslo(Prijava p, String novoGeslo){
+		boolean uspesnaPrijava = false;
 		
 		povezava = Povezava.getConnection();
 		try {
@@ -337,6 +367,8 @@ public class OsebaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		
+		return uspesnaPrijava;
 	}
 	
 	public void dodajPrijavo(Prijava p)
@@ -357,5 +389,10 @@ public class OsebaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+	}
+
+	public Prijava pridobiPrijavo(int idOsebe) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -114,7 +114,7 @@ public class AvtorDAO {
 		return avtor;
 	}
 	
-	public void izbrisi(int id){
+	public boolean izbrisi(int id){
 		boolean izbris=false;
 		try{
 			povezava = Povezava.getConnection();
@@ -143,6 +143,8 @@ public class AvtorDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		
+		return izbris;
 	}
 
 	
