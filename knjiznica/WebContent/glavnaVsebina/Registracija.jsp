@@ -30,31 +30,52 @@
 				<b>Knjižnica</b>
 			</h1>
 			<div class="tm-right-inner-container">
-				<h1 class="templatemo-header">Prijava</h1>
+				<h1 class="templatemo-header">Registracija</h1>
 				</br>
 				<form
-					action="${pageContext.request.contextPath}/OsebaServlet?metoda=prijava"
+					action="${pageContext.request.contextPath}/OsebaServlet?metoda=registracija"
 					method="post">
 					<table>
 						<tr class="spaceUnder">
 							<td><h4>Ime:</h4></td>
-							<td><input type="text" name="ime" class="textbox"/></td>
+							<td><input type="text" name="ime" class="textbox" /></td>
 						</tr>
+						<tr>
+							<td><h4>Priimek:</h4></td>
+							<td><input type="text" name="priimek" class="textbox" /></td>
+						</tr>
+						<tr class="spaceUnder">
+							<td><h4>Tip uporabnika:</h4></td>
+						</tr>
+						<tr class="spaceUnder"><td><input type="radio" name="tipOsebe" class="radio" /></td>
+							<td>Član
+							</td>
+						</tr>
+						<tr class="spaceUnder"><td><input type="radio" name="tipOsebe" class="radio" /></td>
+							<td>Knjiižničar</td>
 
+						</tr>
+						<tr class="spaceUnder">
+							<td><h4>Email:</h4></td>
+							<td><input type="text" name="email" class="textbox" /></td>
+						</tr>
+						<tr class="spaceUnder">
+							<td><h4>Telefon:</h4></td>
+							<td><input type="text" name="telefon" class="textbox" /></td>
+						</tr>
 						<tr class="spaceUnder">
 							<td><h4>Geslo:</h4></td>
-							<td><input type="password" name="geslo" class="textbox"/></td>
+							<td><input type="password" name="geslo" class="textbox" /></td>
 						</tr>
 						<tr class="spaceUnder">
-							<td><input type="submit" value="Potrdi" name="submit" class="button"/></td>
+							<td><input type="submit" value="Potrdi" name="submit"
+								class="button" /></td>
 
 						</tr>
 					</table>
 
 				</form>
-				<c:if test="${sessionScope.Prijava==false}">
-					<c:out value="Vnesli ste napacno ime ali geslo" />
-				</c:if>
+
 
 
 			</div>

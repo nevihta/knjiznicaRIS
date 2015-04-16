@@ -1,8 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+
 <head>
 <!-- http://www.templatemo.com/preview/templatemo_419_black_white -->
 <title>Knjižnica</title>
@@ -26,40 +25,26 @@
 
 		<div
 			class="col-lg-6 col-md-6 col-sm-6 col-xs-12 white-bg right-container">
-			<h1 class="logo-right hidden-xs margin-bottom-60">
-				<b>Knjižnica</b>
-			</h1>
+			<h1 class="logo-right hidden-xs margin-bottom-60">Knjižnica</h1>
 			<div class="tm-right-inner-container">
-				<h1 class="templatemo-header">Prijava</h1>
-				</br>
-				<form
-					action="${pageContext.request.contextPath}/OsebaServlet?metoda=prijava"
-					method="post">
-					<table>
-						<tr class="spaceUnder">
-							<td><h4>Ime:</h4></td>
-							<td><input type="text" name="ime" class="textbox"/></td>
-						</tr>
+				<h1 class="templatemo-header">Naslov</h1>
 
-						<tr class="spaceUnder">
-							<td><h4>Geslo:</h4></td>
-							<td><input type="password" name="geslo" class="textbox"/></td>
-						</tr>
-						<tr class="spaceUnder">
-							<td><input type="submit" value="Potrdi" name="submit" class="button"/></td>
-
-						</tr>
-					</table>
-
-				</form>
-				<c:if test="${sessionScope.Prijava==false}">
-					<c:out value="Vnesli ste napacno ime ali geslo" />
-				</c:if>
+				<article>
+				<h2>Podnaslov</h2>
+				<p>
+					 Cras bibendum porta purus
+					feugiat scelerisque. Vestibulum varius nibh ut diam commodo, sed
+					volutpat libero pretium. Nullam malesuada lacinia rhoncus. Nunc ut
+					porta elit. Cras a ex enim. Etiam blandit sem vel lacinia interdum.
+					Curabitur ut erat sed dui pulvinar tincidunt. Mauris vulputate
+					dolor nibh, vel sodales urna eleifend id.
+				</p>
+				</article>
 
 
 			</div>
 		</div>
+		<!-- right section -->
 	</div>
-
 </body>
 </html>
