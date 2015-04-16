@@ -30,7 +30,7 @@ public class OsebaDAO {
 		return od;
 	}
 	
-	public int dodajOsebo(Oseba o)
+	public Oseba dodajOsebo(Oseba o)
 	{
 		try{
 			povezava =  Povezava.getConnection();
@@ -72,12 +72,15 @@ public class OsebaDAO {
 			try{povezava.close();} catch(SQLException e){}
 		}
 		
-		//ali bi bilo bolje vraèati celo osebo, pa jo prenesti v view, da prihranimo povpraševanje za prikaz (èe se po vnosu osebe knjižnièara preusmeri na njeno stran)? 
-		return o.getId();
+		return o;
 	}
 	
-	public void urediOsebo(Oseba o)
+	public Oseba urediOsebo(Oseba o)
 	{
+		
+		//èe se tip spremeni s knjižnièara v èlana, se mora izbrisat njegova prijava!
+		//- razen èe bomo dali loèeno za spreminjanje tipa pa v urejanju onemogoèili
+
 		try{
 			povezava = Povezava.getConnection();
 			st = povezava.prepareStatement("update oseba set ime=?, priimek=?, tipOsebe=?, email=?, telefon=?, tk_id_naslova=? where ID_osebe=?");
@@ -98,12 +101,12 @@ public class OsebaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		
+		return o;
 	}
 	
-	public void izbrisiOsebo(int id)
+	public boolean izbrisiOsebo(int id)
 	{
-		//rabimo vrnitev boolean za povratno informacijo?
-		//èe da, se returna vrednost spremenljivke izbris
 		
 		boolean izbris=false;
 		try{
@@ -157,6 +160,7 @@ public class OsebaDAO {
 				st.setInt(1, id);
 	            st.executeUpdate();
 	            st.close();
+	            //izbris naslova 
 				//zbrisi osebo
 				st = povezava.prepareStatement("delete from oseba where ID_osebe=?");
 	            st.setInt(1, id);
@@ -173,6 +177,7 @@ public class OsebaDAO {
 			try{povezava.close();} catch(SQLException e){}
 		}
 
+		return izbris;
 	}
 	
 	public void spremeniTipOsebe(Oseba o)
@@ -183,6 +188,8 @@ public class OsebaDAO {
 		
 		else
 			o.setTipOsebe(TipOsebe.èlan);
+		//èe se tip spremeni s knjižnièara v èlana, se mora izbrisat njegova prijava!
+		//èe se pa spremeni s èlana v knjižnièarja se pa more dodati opcija za vnos up pa gesla!
 		
 		povezava = Povezava.getConnection();
 		try {
@@ -321,7 +328,27 @@ public class OsebaDAO {
 			st.setString(1, p.getUpIme());
 			st.setString(2, p.getGeslo());
 	        st.setInt(3, p.getTk_id_osebe());
-	        st.executeQuery();
+	        st.executeUpdate();
+		}
+	     catch(SQLException e){
+				e.printStackTrace();
+		}
+		finally{
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+	}
+	
+	public void dodajPrijavo(Prijava p)
+	{
+
+		povezava = Povezava.getConnection();
+		try {
+			st = povezava.prepareStatement("insert into prijava (upIme, geslo, tk_id_osebe) values (?, ?, ?)");
+			st.setString(1, p.getUpIme());
+			st.setString(2, p.getGeslo());
+	        st.setInt(3, p.getTk_id_osebe());
+	        st.executeUpdate();
 		}
 	     catch(SQLException e){
 				e.printStackTrace();

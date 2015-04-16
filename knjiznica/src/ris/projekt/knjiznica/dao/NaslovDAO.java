@@ -57,7 +57,7 @@ public class NaslovDAO {
 		return naslov;
 	}
 	
-	public int dodajNaslov(Naslov n)
+	public Naslov dodajNaslov(Naslov n)
 	{
 		int idNaslova=-1;
 		
@@ -107,7 +107,7 @@ public class NaslovDAO {
 			    rs = st.executeQuery();
 			    if (rs.next())
 			    {
-			    	idNaslova=rs.getInt("ID_naslova");
+			    	n.setId(rs.getInt("ID_naslova"));
 			    }
 			}
 		}
@@ -117,7 +117,7 @@ public class NaslovDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
-		return idNaslova;
+		return n;
 	}
 	
 
