@@ -9,17 +9,20 @@ public class Storitev {
 	private Date datumVrnitve;
 	private boolean zePodaljsano;
 	private int tk_id_clana;
-	
+	private int tk_id_knjiznicarja;
+
 	public Storitev(){
 		
 	}
 	
-	public Storitev(int id, Date datumIzposoje, Date datumVrnitve, boolean zePodaljsano, int tk_id_clana){
+	public Storitev(int id, Date datumIzposoje, Date datumVrnitve, boolean zePodaljsano, int tk_id_clana, int tk_id_knjiznicarja){
 		this.id=id;
 		this.datumIzposoje=datumIzposoje;
 		this.datumVrnitve=datumVrnitve;
 		this.zePodaljsano=zePodaljsano;
 		this.tk_id_clana=tk_id_clana;
+		this.tk_id_knjiznicarja=tk_id_knjiznicarja;
+
 	}
 
 	public int getId() {
@@ -60,6 +63,14 @@ public class Storitev {
 
 	public void setTk_id_clana(int tk_id_clana) {
 		this.tk_id_clana = tk_id_clana;
+	}
+
+	public int getTk_id_knjiznicarja() {
+		return tk_id_knjiznicarja;
+	}
+
+	public void setTk_id_knjiznicarja(int tk_id_knjiznicarja) {
+		this.tk_id_knjiznicarja = tk_id_knjiznicarja;
 	}
 	
 	

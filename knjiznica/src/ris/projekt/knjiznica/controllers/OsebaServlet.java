@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import ris.projekt.knjiznica.beans.Prijava;
-import ris.projekt.knjiznica.dao.PrijavaDAO;
+import ris.projekt.knjiznica.dao.OsebaDAO;
 
 
 @WebServlet("/OsebaServlet")
@@ -38,7 +38,7 @@ public class OsebaServlet extends HttpServlet {
 		}
 		
 		String stran="";
-		PrijavaDAO ud = PrijavaDAO.dobiInstanco();
+		OsebaDAO od=OsebaDAO.dobiInstanco();
 		HttpSession seja = request.getSession();
 		
 		if(metoda.equals("prijava")){
@@ -47,7 +47,8 @@ public class OsebaServlet extends HttpServlet {
 			uporabnik.setUpIme(request.getParameter("ime"));
 			uporabnik.setGeslo(request.getParameter("geslo"));
 			
-			if(ud.prijava(uporabnik)){
+			if(od.preveriPrijavo(uporabnik)!=-1)
+			{
 				seja.setAttribute("Prijava",true);
 				stran="/glavnaVsebina/Test.jsp";
 			}

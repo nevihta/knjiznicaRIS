@@ -1,3 +1,5 @@
+
+
 CREATE TABLE `knjiznica`.`avtor` (
   `ID_avtorja` INT NOT NULL AUTO_INCREMENT,
   `ime` VARCHAR(60) NULL,
@@ -7,7 +9,7 @@ CREATE TABLE `knjiznica`.`avtor` (
 CREATE TABLE `knjiznica`.`naslov` (
   `ID_naslova` INT NOT NULL AUTO_INCREMENT,
   `ulica` VARCHAR(60) NULL,
-  `hisnaSt` INT NULL,
+  `hisnaSt` VARCHAR (15) NULL,
   `mesto` VARCHAR (30) NULL,
   `postnaSt` INT NULL,
   `drzava` VARCHAR(20) NULL,
@@ -74,6 +76,7 @@ CREATE TABLE `knjiznica`.`storitev` (
   `datumVracila` DATE NULL,
   `zePodaljsano` BOOLEAN NULL,
   `tk_id_clana` INT NULL,
+  `tk_id_knjiznicarja` INT NULL,
   PRIMARY KEY (`ID_storitve`));
 
 CREATE TABLE `knjiznica`.`gradivo_storitev` (

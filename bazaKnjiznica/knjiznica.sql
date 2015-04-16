@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `naslov`;
 CREATE TABLE `naslov` (
   `ID_naslova` int(11) NOT NULL AUTO_INCREMENT,
   `ulica` varchar(60) DEFAULT NULL,
-  `hisnaSt` int(11) DEFAULT NULL,
+  `hisnaSt` varchar(15) DEFAULT NULL,
   `mesto` varchar(30) DEFAULT NULL,
   `postnaSt` int(11) DEFAULT NULL,
   `drzava` varchar(20) DEFAULT NULL,
@@ -236,6 +236,7 @@ CREATE TABLE `storitev` (
   `datumVracila` date DEFAULT NULL,
   `zePodaljsano` tinyint(1) DEFAULT NULL,
   `tk_id_clana` int(11) DEFAULT NULL,
+  `tk_id_knjiznicarja` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID_storitve`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -331,4 +332,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-04-15 13:58:13
+-- Dump completed on 2015-04-16 18:51:05
