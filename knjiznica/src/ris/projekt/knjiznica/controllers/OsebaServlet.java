@@ -41,7 +41,11 @@ public class OsebaServlet extends HttpServlet {
 		String stran="";
 		HttpSession seja = request.getSession();
 		
-		if(metoda.equals("pridobiOsebo")){
+		if(metoda.equals("dodajOs")){
+			request.setAttribute("metoda","dodajOsebo" );
+			stran="/glavnaVsebina/DodajOsebo.jsp"; //placeholder
+		}
+		else if(metoda.equals("pridobiOsebo")){
 			String urejanjeOs=null;
 			try{
 				uporabnik = osebaDAO.pridobiOsebo(idOsebe);
@@ -54,7 +58,7 @@ public class OsebaServlet extends HttpServlet {
 				
 			}catch(NullPointerException e){e.getMessage();}
 			if(urejanjeOs!=null){
-				request.setAttribute("metoda", "spremeniOsebo");
+				request.setAttribute("metoda", "urediOsebo");
 				stran="/glavnaVsebina/DodajOsebo.jsp"; //placeholder
 			}
 			else{
@@ -132,7 +136,7 @@ public class OsebaServlet extends HttpServlet {
 				stran="/glavnaVsebina/Login.jsp"; 
 			}
 		}
-		else if(metoda.equals("dodaj")){
+		else if(metoda.equals("dodajOsebo")){
 			//preverjanje, ce so vsi podatki vneseni? v jsp, + tukaj?
 			//najprej naslov - za tk v osebo
 			
@@ -164,7 +168,7 @@ public class OsebaServlet extends HttpServlet {
 			request.setAttribute("uporabnik", uporabnik);
 			stran="/glavnaVsebina/Domov.jsp"; //placeholder
 		}
-		else if(metoda.equals("uredi")){
+		else if(metoda.equals("urediOsebo")){
 			//naslov
 			naslov = new Naslov();
 			naslov.setUlica(request.getParameter("ulica"));
@@ -202,7 +206,7 @@ public class OsebaServlet extends HttpServlet {
 			
 			stran = "/glavnaVsebina/Oseba.jsp"; //placeholder
 		}
-		else if(metoda.equals("izbrisi")){
+		else if(metoda.equals("izbrisiOsebo")){
 			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
 			if(osebaDAO.izbrisiOsebo(idOsebe))
 				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
