@@ -102,15 +102,17 @@ public class CrnaListaDAO {
 	public boolean preveriCeJeClanNaCl(int id){
 		boolean preveri=false;
 		try{
-		povezava =  Povezava.getConnection();
-
-		st=povezava.prepareStatement("select count(*) as st from zapisNaCl where tk_id_osebe=? and datumIzbrisa=null"); 
-		st.setInt(1, id);
-		rs=st.executeQuery();
-		if(rs.next()){
-			preveri=true;
-		}
-		
+			povezava =  Povezava.getConnection();
+	
+			st=povezava.prepareStatement("select count(*) as st from zapisNaCl where tk_id_osebe=? and datumIzbrisa=null"); 
+			st.setInt(1, id);
+			rs=st.executeQuery();
+			if(rs.next()){
+				if(rs.getInt("st")>0)
+				{
+					preveri=true;
+				}
+			}
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
@@ -118,7 +120,6 @@ public class CrnaListaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
-
 		
 		return preveri;
 		
