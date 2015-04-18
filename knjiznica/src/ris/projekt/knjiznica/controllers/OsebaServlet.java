@@ -157,13 +157,14 @@ public class OsebaServlet extends HttpServlet {
 			uporabnik.setTk_id_naslova(naslov.getId());
 			uporabnik = osebaDAO.dodajOsebo(uporabnik);
 			
-			//uporabniški raèun
-			Prijava upRacun = new Prijava();
-			upRacun.setUpIme(request.getParameter("upIme"));
-			upRacun.setGeslo(request.getParameter("geslo"));
-			upRacun.setTk_id_osebe(uporabnik.getId());
-			osebaDAO.dodajPrijavo(upRacun);;
-			
+			if(uporabnik.getTipOsebe().toString().equals(TipOsebe.knjižnièar)){
+				//uporabniški raèun
+				Prijava upRacun = new Prijava();
+				upRacun.setUpIme(request.getParameter("upIme"));
+				upRacun.setGeslo(request.getParameter("geslo"));
+				upRacun.setTk_id_osebe(uporabnik.getId());
+				osebaDAO.dodajPrijavo(upRacun);;
+			}
 			request.setAttribute("naslov", naslov);
 			request.setAttribute("uporabnik", uporabnik);
 			stran="/glavnaVsebina/Domov.jsp"; //placeholder
@@ -197,14 +198,18 @@ public class OsebaServlet extends HttpServlet {
 			
 		}
 		else if(metoda.equals("urediTip")){
-			//iz clana v knjiznicarja
-			//iz knjiznicarja v clana
-			//ali to v daotu?
-			uporabnik.setId(idOsebe);
-			uporabnik.setTipOsebe(TipOsebe.valueOf(request.getParameter("tip")));
-			osebaDAO.spremeniTipOsebe(uporabnik);
+			String tip = request.getParameter("tip"); //stari tip!
 			
-			stran = "/glavnaVsebina/Oseba.jsp"; //placeholder
+			//iz knjiznicarja v clana
+			if(tip.equals(TipOsebe.knjižnièar)){
+				//se samo izbrise prijava pa spremeni tip
+				osebaDAO.spremeniTipOsebe(idOsebe, tip);
+				stran = "/glavnaVsebina/Oseba.jsp";
+			}
+			//iz clana v knjiznicarja
+			osebaDAO.spremeniTipOsebe(idOsebe, tip);
+			request.setAttribute("idOsebe", idOsebe);
+			stran = "/glavnaVsebina/novaPrijava.jsp"; //placeholder
 		}
 		else if(metoda.equals("izbrisiOsebo")){
 			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
