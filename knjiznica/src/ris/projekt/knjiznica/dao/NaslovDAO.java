@@ -84,7 +84,7 @@ public class NaslovDAO {
 			if(idNaslova==-1){
 				//vstavi in pridobi id
 			
-				st = povezava.prepareStatement("insert into oseba (ulica, hisnaSt, postnaSt, mesto, drzava) values (?, ?, ?, ?, ?)");
+				st = povezava.prepareStatement("insert into naslov (ulica, hisnaSt, postnaSt, mesto, drzava) values (?, ?, ?, ?, ?)");
 				st.setString(1, n.getUlica());
 				st.setString(2, n.getHisnaSt());
 				st.setInt(3, n.getPostnaSt());

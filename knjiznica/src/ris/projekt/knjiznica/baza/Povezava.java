@@ -12,7 +12,7 @@ public class Povezava {
 				DriverManager.registerDriver(new Driver()); 
 		        String baza = "jdbc:mysql://localhost/knjiznica"; 
 		        String user = "root"; 
-		        String geslo = "monnika"; 
+		        String geslo = "GESLO"; 
 		        povezava = DriverManager.getConnection(baza, user, geslo); 
 		        
 			}

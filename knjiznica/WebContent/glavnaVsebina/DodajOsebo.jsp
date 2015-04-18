@@ -46,7 +46,7 @@
 				<h1 class="templatemo-header">Registracija</h1>
 				</br>
 				<form
-					action="${pageContext.request.contextPath}/OsebaServlet?metoda=dodaj"
+					action="${pageContext.request.contextPath}/OsebaServlet?metoda=dodajOsebo"
 					method="post">
 
 
@@ -58,13 +58,13 @@
 
 					<h4>Tip uporabnika:</h4>
 					<p>
-						Knjiižničar <input id="knjiznicar" type="radio" name="tip"
-							class="radio" onclick="javascript:yesnoCheck();" />
+						Knjiižničar <input id="knjiznicar" value="knjižničar" type="radio"
+							name="tip" class="radio" onclick="javascript:yesnoCheck();" />
 					</p>
 
 					<p>
-						Uporabnik<input id="uporabnik" type="radio" name="tipOsebe"
-							class="radio" onclick="javascript:yesnoCheck();" />
+						Uporabnik<input id="uporabnik" value="član" type="radio"
+							name="tip" class="radio" onclick="javascript:yesnoCheck();" />
 					</p>
 
 
@@ -77,7 +77,7 @@
 					</div>
 
 					<div id="uporabnikDA" style="display: none">
-					
+
 						<h4>Ulica:</h4>
 						<input type="text" name="ulica" class="textbox" />
 
@@ -87,7 +87,7 @@
 						<h4>Mesto:</h4>
 						<input type="text" name="mesto" class="textbox" />
 
-						<h4>Pošta:</h4>
+						<h4>Poštna številka:</h4>
 						<input type="text" name="posta" class="textbox" />
 
 						<h4>Država:</h4>
@@ -107,7 +107,9 @@
 
 
 				</form>
-
+				
+				
+				
 
 
 			</div>
