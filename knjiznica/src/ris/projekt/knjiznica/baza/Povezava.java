@@ -10,7 +10,7 @@ public class Povezava {
 		
 			try{
 				DriverManager.registerDriver(new Driver()); 
-		        String baza = "jdbc:mysql://localhost/knjiznica"; 
+		        String baza = "jdbc:mysql://localhost/knjiznica?useUnicode=true&characterEncoding=utf-8"; 
 		        String user = "root"; 
 		        String geslo = "GESLO"; 
 		        povezava = DriverManager.getConnection(baza, user, geslo); 

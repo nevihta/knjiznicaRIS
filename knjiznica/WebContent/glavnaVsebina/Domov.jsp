@@ -10,10 +10,10 @@
 <link
 	href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
 	rel="stylesheet" type="text/css">
-<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="../css/font-awesome.min.css" rel="stylesheet"
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/font-awesome.min.css" rel="stylesheet"
 	type="text/css">
-<link href="../css/templatemo_style.css" rel="stylesheet"
+<link href="${pageContext.request.contextPath}/css/templatemo_style.css" rel="stylesheet"
 	type="text/css">
 </head>
 <body>
@@ -25,7 +25,7 @@
 
 		<div
 			class="col-lg-6 col-md-6 col-sm-6 col-xs-12 white-bg right-container">
-			<h1 class="logo-right hidden-xs margin-bottom-60">Knjižnica</h1>
+			<h1 class="logo-right hidden-xs margin-bottom-60"><b>Knjižnica</b></h1>
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header">Naslov</h1>
 

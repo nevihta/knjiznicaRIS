@@ -13,19 +13,19 @@
 		<ul class="nav nav-stacked templatemo-nav">
 			</br>
 			</br>
-			<li><img class="slika" src="../images/book_stack.png"></li>
+			<li><img class="slika"
+				src="${pageContext.request.contextPath}/images/book_stack.png"></li>
 			</br>
 			</br>
 			</br>
-			<li><a href="index.jsp" class="active"><i
+			<p>${pageContext.request.contextPath}</p>
+			<li><a href="${pageContext.request.contextPath}/glavnaVsebina/Domov.jsp" class="active"><i
 					class="fa fa-home fa-medium"></i>Domov</a></li>
-			<li><a href="Registracija.jsp"><i
-					class="fa fa-shopping-cart fa-medium"></i>Registracija uporabnikov</a></li>
-			<li><a href="Registracija.jsp"><i
-					class="fa fa-send-o fa-medium"></i>Člani </a></li>
-			<li><a href="testimonials.html"><i
-					class="fa fa-comments-o fa-medium"></i>Urejanje</a></li>
-			<li><a href="about.html"><i class="fa fa-gears fa-medium"></i>Iskanje</a></li>
+			<li><a href="${pageContext.request.contextPath}/glavnaVsebina/DodajOsebo.jsp"><i
+					class="fa fa-shopping-cart fa-medium"></i>Dodajanje uporabnikov</a></li>
+			<li><a href="${pageContext.request.contextPath}/glavnaVsebina/Osebe.jsp"><i
+					class="fa fa-shopping-cart fa-medium"></i>Pregled uporabnikov</a></li>
+
 
 		</ul>
 	</div>

@@ -11,23 +11,21 @@
 <link
 	href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,700"
 	rel="stylesheet" type="text/css">
-<link href="../css/bootstrap.min.css" rel="stylesheet" type="text/css">
-<link href="../css/font-awesome.min.css" rel="stylesheet"
-	type="text/css">
-<link href="../css/templatemo_style.css" rel="stylesheet"
-	type="text/css">
+<link href="${pageContext.request.contextPath}/css/bootstrap.min.css"
+	rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/font-awesome.min.css"
+	rel="stylesheet" type="text/css">
+<link href="${pageContext.request.contextPath}/css/templatemo_style.css"
+	rel="stylesheet" type="text/css">
 
 
 
 </head>
 <body>
 
-
 	<div class="templatemo-container">
 
 		<jsp:include page="meni.jsp" />
-
-
 
 
 		<div
@@ -37,24 +35,56 @@
 			</h1>
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header">Pregled oseb</h1>
-				</br>
-
-				<c:forEach items="${requestScope.osebe}" var="oseba">
+				<table>
 					<tr>
-						<td>${oseba.ime}</td>
+						<td>
+							<form action="${pageContext.request.contextPath}/OsebaServlet"
+								method="get">
+								<input type="hidden" name="metoda" value="pridobiVse"> <input
+									type="hidden" name="filter" value="clan"> <input
+									type="submit" value="Izpisi člane" class="button" />
 
-					</tr>
-				</c:forEach>
+							</form>
+						</td>
+						<td>
+							<form action="${pageContext.request.contextPath}/OsebaServlet"
+								method="get">
+								<input type="hidden" name="metoda" value="pridobiVse"> <input
+									type="hidden" name="filter" value="knjiznicar"> <input
+									type="submit" value="Izpisi knjiznicarje" class="button" />
 
+							</form>
+						</td>
+						<td>
+							<form action="${pageContext.request.contextPath}/OsebaServlet"
+								method="get">
+								<input type="hidden" name="metoda" value="pridobiVse"> <input
+									type="hidden" name="filter" value="vse"> <input
+									type="submit" value="Izpisi vse" class="button" />
 
+							</form>
+						</td>
+				</table>
+				<br>
 
-				<form
-					action="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=knjiznicar"
+				<form action="${pageContext.request.contextPath}/OsebaServlet"
 					method="get">
-
-					<input type="submit" value="Izpisi knjiznicarje" class="button" />,
-
+					<select name="idOsebe" size="10" class="textbox">
+						<c:forEach items="${requestScope.osebe}" var="oseba">
+							<option value="${oseba.id}">${oseba.ime}
+								${oseba.priimek}</option>
+						</c:forEach>
+					</select> 
+					<br><br>
+					<input type="hidden" name="metoda" value="pridobiOsebo"> <input
+						type="hidden" name="urejanjeOs" value="da"> <input
+						type="submit" value="Najdi" class="button" />
 				</form>
+
+
+
+
+
 
 			</div>
 		</div>

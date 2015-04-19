@@ -33,11 +33,11 @@ public class OsebaServlet extends HttpServlet {
 
 		Oseba uporabnik = new Oseba();
 		Naslov naslov = new Naslov();
-		
+
 		try {
 			metoda = request.getParameter("metoda");
 			if (request.getParameter("idOsebe") != null)
-				idOsebe = Integer.parseInt(request.getParameter("idOsebe"));
+				idOsebe = Integer.parseInt(request.getParameter("idOsebe")); 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -57,7 +57,7 @@ public class OsebaServlet extends HttpServlet {
 				naslov = naslovDAO.pridobiNaslov(uporabnik.getTk_id_naslova());
 				request.setAttribute("naslov", naslov);
 
-				urejanjeOs = request.getParameter("urejanjeOs");
+				urejanjeOs = request.getParameter("urejanjeOs"); 
 
 			} catch (NullPointerException e) {
 				e.getMessage();
@@ -77,7 +77,7 @@ public class OsebaServlet extends HttpServlet {
 					list = osebaDAO.pridobiOsebe();
 				else if (filter.equals("clan"))
 					list = osebaDAO.pridobiClane();
-				else if (filter.equals("knjiznicar"))					
+				else if (filter.equals("knjiznicar"))
 					list = osebaDAO.pridobiKnjiznicarje();
 				request.setAttribute("osebe", list);
 			} catch (NullPointerException e) {
@@ -85,7 +85,7 @@ public class OsebaServlet extends HttpServlet {
 			}
 			System.out.println("grem v osebe");
 			stran = "/glavnaVsebina/Osebe.jsp"; // placeholder
-			
+
 		} else if (metoda.equals("urediKnjiznicar")) {
 			request.setAttribute("metoda", "spremeniPrijavo");
 			idOsebe = (Integer) seja.getAttribute("ID");

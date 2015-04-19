@@ -91,7 +91,7 @@ public class OsebaDAO {
             st.setString(4, o.getEmail());
             st.setString(5, o.getTelefon()); 
             st.setInt(6,o.getTk_id_naslova()); 
-            st.setInt(8, o.getId()); 
+            st.setInt(7, o.getId());
             st.executeUpdate();
 		}
 		catch(SQLException e){
