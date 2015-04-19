@@ -48,7 +48,7 @@
 				</br>
 				<h1>Metoda:</h1>
 				<c:out value="${requestScope.metoda}" />
-				<form
+				<form id="forma"
 					action="${pageContext.request.contextPath}/OsebaServlet?metoda=<%=request.getAttribute("metoda")%>"
 					method="post">
 
@@ -115,20 +115,12 @@
 						value="${requestScope.uporabnik.email}" />
 
 					<h4>Telefon:</h4>
-
-
-					<%
-						System.out.println("METODA JE: " + request.getAttribute("metoda"));
-						if (request.getAttribute("metoda") == null) {
-							request.setAttribute("metoda", "dodajOs");
-						}
-
-						System.out.println("METODA JE: " + request.getAttribute("metoda"));
-					%>
-
 					<input type="text" name="tel" class="textbox"
-						value="${requestScope.uporabnik.telefon}" /> </br> <input
-						type="submit" value="Potrdi" name="submit" class="button" />
+						value="${requestScope.uporabnik.telefon}" />
+
+				
+
+					</br> <input type="submit" value="Potrdi" name="submit" class="button" />
 
 
 
@@ -144,6 +136,9 @@
 		</div>
 	</div>
 	<script>
+	if(<%=request.getAttribute("metoda")%> == null){
+		document.getElementById("forma").action = "${pageContext.request.contextPath}/OsebaServlet?metoda=dodajOsebo";
+	}
 		/*
 		if ('${requestScope.uporabnik.tipOsebe}' == 'knjižničar') {
 			document.getElementById('knjiznicar').checked = true;
