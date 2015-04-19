@@ -180,22 +180,33 @@ public class OsebaDAO {
 		return izbris;
 	}
 	
-	public void spremeniTipOsebe(Oseba o)
+	public void spremeniTipOsebe(int id, String tip)
 	{
-		TipOsebe tp= o.getTipOsebe();
-		if (tp.toString().equals(TipOsebe.èlan))
-			o.setTipOsebe(TipOsebe.knjižnièar);
+		povezava = Povezava.getConnection();
+		String novTip;
+		if (tip.equals("èlan"))
+			novTip="knjižnièar";
 		
 		else
-			o.setTipOsebe(TipOsebe.èlan);
-		//èe se tip spremeni s knjižnièara v èlana, se mora izbrisat njegova prijava!
-		//èe se pa spremeni s èlana v knjižnièarja se pa more dodati opcija za vnos up pa gesla!
+		{
+			novTip="èlan";		
+			try {
+				st=povezava.prepareStatement("delete from prijava where tk_id_osebe=? and ID_prijave<>0");
+				st.setInt(1, id);
+	            st.executeUpdate();
+	            st.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+
+		}
 		
-		povezava = Povezava.getConnection();
+		
 		try {
 			st = povezava.prepareStatement("update oseba set tipOsebe=? where ID_osebe=?");
-			st.setString(1, o.getTipOsebe().toString());
-	        st.setInt(2, o.getId());            
+			st.setString(1, novTip);
+	        st.setInt(2, id);            
 	        st.executeUpdate();
 
 		}
@@ -392,7 +403,33 @@ public class OsebaDAO {
 	}
 
 	public Prijava pridobiPrijavo(int idOsebe) {
-		// TODO Auto-generated method stub
-		return null;
+		Prijava prijava=new Prijava();
+		povezava = Povezava.getConnection();
+		try {
+			st = povezava.prepareStatement("select * from prijava where tk_id_osebe=?");
+			st.setInt(1, idOsebe);
+
+			rs = st.executeQuery();
+			
+			if(rs.next())
+			{
+				prijava.setGeslo(rs.getString("geslo"));
+				prijava.setId(rs.getInt("ID_prijave"));
+				prijava.setUpIme(rs.getString("upIme"));
+				prijava.setTk_id_osebe(idOsebe);	
+			}
+			
+			
+		}
+	     catch(SQLException e){
+				e.printStackTrace();
+		}
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}		
+		
+		return prijava;
 	}
 }
