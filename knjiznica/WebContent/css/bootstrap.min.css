@@ -40,7 +40,7 @@ audio:not ([controls] ){
 }
 
 a {
-	background: 0 0
+	background: 0 0;
 }
 
 a:active, a:hover {
@@ -197,8 +197,27 @@ table {
 }
 
 td, th {
-	padding: 0
+	padding: 0;
 }
+
+
+table#izpisOseb td,th{
+	padding-right: 70;
+}
+
+table#izpisOseb th{
+	padding-bottom: 5;
+}
+
+td#dodajUp {
+	padding-right:80;
+}
+
+div#meni_prijava{
+	width: 100%;
+	text-align: right;
+}
+
 
 @media print {
 	* {
@@ -1118,12 +1137,21 @@ input, button, select, textarea {
 }
 
 a {
-	color: #428bca;
+	color: black;
 	text-decoration: none
 }
 
+a.odjava
+{
+	color: white;
+	align: right;
+}
+
+a.odjava:hover, a:focus {
+	text-decoration: underline
+}
+
 a:hover, a:focus {
-	color: #2a6496;
 	text-decoration: underline
 }
 

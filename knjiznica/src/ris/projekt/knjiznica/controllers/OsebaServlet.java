@@ -97,7 +97,7 @@ public class OsebaServlet extends HttpServlet {
 			String tip = request.getParameter("tip"); //stari tip!
 			
 			//iz knjiznicarja v clana
-			if(tip.equals(TipOsebe.knjižnièar)){
+			if(tip.equals("knjižnièar")){
 				//se samo izbrise prijava pa spremeni tip
 				osebaDAO.spremeniTipOsebe(idOsebe, tip);
 				redirect = true;

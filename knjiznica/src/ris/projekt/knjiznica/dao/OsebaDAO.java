@@ -77,21 +77,16 @@ public class OsebaDAO {
 	
 	public Oseba urediOsebo(Oseba o)
 	{
-		
-		//èe se tip spremeni s knjižnièara v èlana, se mora izbrisat njegova prijava!
-		//- razen èe bomo dali loèeno za spreminjanje tipa pa v urejanju onemogoèili
-
 		try{
 			povezava = Povezava.getConnection();
-			st = povezava.prepareStatement("update oseba set ime=?, priimek=?, tipOsebe=?, email=?, telefon=?, tk_id_naslova=? where ID_osebe=?");
+			st = povezava.prepareStatement("update oseba set ime=?, priimek=?, email=?, telefon=?, tk_id_naslova=? where ID_osebe=?");
             
 			st.setString(1, o.getIme());
             st.setString(2, o.getPriimek());
-            st.setString(3, o.getTipOsebe().toString());
-            st.setString(4, o.getEmail());
-            st.setString(5, o.getTelefon()); 
-            st.setInt(6,o.getTk_id_naslova()); 
-            st.setInt(7, o.getId());
+            st.setString(3, o.getEmail());
+            st.setString(4, o.getTelefon()); 
+            st.setInt(5,o.getTk_id_naslova()); 
+            st.setInt(6, o.getId());
             st.executeUpdate();
 		}
 		catch(SQLException e){

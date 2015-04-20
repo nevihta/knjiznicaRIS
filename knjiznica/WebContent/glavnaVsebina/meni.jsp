@@ -26,12 +26,14 @@
 					class="fa fa-shopping-cart fa-medium"></i>Črna lista</a></li>
 
 		</ul>
-		<c:if test="${Prijava==true}" >
-			<a id="odjava" href="${pageContext.request.contextPath}/OsebaServlet?metoda=odjava">  Odjava</a> 
-		</c:if>
-		<c:if test="${(sessionScope.Prijava==false)||(sessionScope.Prijava==null)}">
-			<a id="odjava" href="${pageContext.request.contextPath}/glavnaVsebina/Login.jsp">  Prijava</a> 
-		</c:if> 
+		<div id="meni_prijava">
+			<c:if test="${Prijava==true}" >
+				<a class="odjava" href="${pageContext.request.contextPath}/OsebaServlet?metoda=odjava">  Odjava</a> 
+			</c:if>
+			<c:if test="${(sessionScope.Prijava==false)||(sessionScope.Prijava==null)}">
+				<a class="odjava" href="${pageContext.request.contextPath}/glavnaVsebina/Login.jsp">  Prijava</a> 
+			</c:if> 
+		</div>
 		
 	</div>
 </div>

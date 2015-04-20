@@ -60,7 +60,7 @@ public class NaslovDAO {
 	public Naslov dodajNaslov(Naslov n)
 	{
 		int idNaslova=-1;
-		
+		System.out.println("v dodaj naslov je");
 		
 		try {
 			//prveri èe že obstaja
@@ -75,8 +75,12 @@ public class NaslovDAO {
 		    rs = st.executeQuery();
 		    if (rs.next())
 		    {
+			    System.out.println("v rs.next je");
+
 		    	idNaslova=rs.getInt("ID_naslova");
 		    }
+		    
+		    System.out.println(idNaslova);
 		    
 		    rs.close();
 		    st.close();

@@ -16,46 +16,41 @@
 					<b>Knjižnica</b>
 				</h1>
 				<div class="tm-right-inner-container">
-					<h1 class="templatemo-header">Pregled oseb</h1>
-					<table>
+					<h1 class="templatemo-header">Pregled oseb</h1>			
+					<br/>				
+					<table >
 						<tr>
-							<td>
-								<form action="${pageContext.request.contextPath}/OsebaServlet" method="get">
-									<input type="hidden" name="metoda" value="pridobiVse"> <input
-										type="hidden" name="filter" value="clan"> <input
-										type="submit" value="Izpisi člane" class="button" />
-								</form>
+							<td id="dodajUp">
+							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=dodajOs"
+							> Dodaj novega uporabnika</a>	
 							</td>
-							<td>
-								<form action="${pageContext.request.contextPath}/OsebaServlet" method="get">
-									<input type="hidden" name="metoda" value="pridobiVse"> <input
-										type="hidden" name="filter" value="knjiznicar"> <input
-										type="submit" value="Izpisi knjiznicarje" class="button" />
-								</form>
+							<td>	
+							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=clan">Člani</a> | 
+							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=knjiznicar"> Knjižničarji </a> | 
+							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=vse"> Vsi</a>
 							</td>
-							<td>
-								<form action="${pageContext.request.contextPath}/OsebaServlet"
-									method="get">
-									<input type="hidden" name="metoda" value="pridobiVse"> <input
-										type="hidden" name="filter" value="vse"> <input
-										type="submit" value="Izpisi vse" class="button" />
-								</form>
-							</td>
+						</tr>
 					</table>
 					<br>
-	
-					<form action="${pageContext.request.contextPath}/OsebaServlet" method="get">
-						<select name="idOsebe" size="10" class="textbox">
-							<c:forEach items="${requestScope.osebe}" var="oseba">
-								<option value="${oseba.id}">${oseba.ime}
-									${oseba.priimek}</option>
-							</c:forEach>
-						</select> 
-						<br><br>
-						<input type="hidden" name="metoda" value="pridobiOsebo"> <input
-							type="hidden" name="urejanjeOs" value="da"> <input
-							type="submit" value="Uredi" class="button" />
-					</form>
+					
+					<table id="izpisOseb">
+						<tr>
+							<th>Članska št.</th>
+							<th>Ime in priimek</th>
+							<th>Email</th>	
+						</tr>
+						
+						<c:forEach var="oseba" items="${osebe}">
+							<tr>
+							
+								<td><c:out value="${1000+oseba.id}" /></td>
+								<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${oseba.id}" />"><c:out value="${oseba.ime}" /> <c:out value="${oseba.priimek}" /></a></td>
+								<td><c:out value="${oseba.email }" /></td>
+						
+							</tr>
+						</c:forEach>
+					</table>
+
 				</div>
 			</div>
 		</div>

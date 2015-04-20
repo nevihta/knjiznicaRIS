@@ -34,6 +34,14 @@
 						</tr>
 						<tr>
 							<td></td>
+							<td><h4></h4></td>
+						</tr>
+						<tr>
+							<td>Članska št:</td>
+							<td><c:out value="${1000 + uporabnik.id}" /></td>
+						</tr>
+						<tr>
+							<td></td>
 							<td></td>
 						</tr>
 						<tr>
@@ -73,7 +81,7 @@
 							<td><c:out value="${naslov.postnaSt}" /></td>
 						</tr>
 						<tr>
-							<td>Država::</td>
+							<td>Država:</td>
 							<td><c:out value="${naslov.drzava}" /></td>
 						</tr>
 					</table>
