@@ -40,7 +40,6 @@ public class OsebaServlet extends HttpServlet {
 		}catch(Exception e){e.printStackTrace();}
 		
 		String stran="";
-
 		HttpSession seja = request.getSession();
 		
 		if(metoda.equals("dodajOs")){
@@ -56,12 +55,10 @@ public class OsebaServlet extends HttpServlet {
 				naslov = naslovDAO.pridobiNaslov(uporabnik.getTk_id_naslova());
 				request.setAttribute("naslov", naslov);
 
-	
 				urejanjeOs = request.getParameter("urejanjeOs");
 				
 			}catch(NullPointerException e){e.getMessage();}
 			if(urejanjeOs!=null){
-
 				request.setAttribute("metoda", "urediOsebo");
 				stran="/glavnaVsebina/DodajOsebo.jsp"; //placeholder
 			}
@@ -78,16 +75,11 @@ public class OsebaServlet extends HttpServlet {
 					list = osebaDAO.pridobiOsebe();
 				else if(filter.equals("clan"))
 					list = osebaDAO.pridobiClane();
-
 				else if(filter.equals("knjiznicar"))
-
 					list = osebaDAO.pridobiKnjiznicarje();
 				request.setAttribute("osebe", list);
 			}
-
-			catch(NullPointerException e){
-				
-			}
+			catch(NullPointerException e){	}
 			
 			stran="/glavnaVsebina/Osebe.jsp"; //placeholder
 		}
@@ -99,6 +91,14 @@ public class OsebaServlet extends HttpServlet {
 			request.setAttribute("upIme", prijava.getUpIme()); 
 			
 			stran="/glavnaVsebina/urediPrijava.jsp"; //placeholder
+		}
+		else if(metoda.equals("domov")){
+			stran = "/glavnaVsebina/Domov.jsp"; 
+		}
+		else if(metoda.equals("odjava")){
+			seja.removeAttribute("Prijava");
+			seja.removeAttribute("ID");
+			stran="/glavnaVsebina/Domov.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
@@ -137,7 +137,7 @@ public class OsebaServlet extends HttpServlet {
 			{
 				seja.setAttribute("Prijava",true);
 				seja.setAttribute("ID", idUporabnika);
-				stran="/glavnaVsebina/Test.jsp";
+				stran="/glavnaVsebina/Domov.jsp";
 			}
 			else{
 				seja.setAttribute("Prijava",false);
