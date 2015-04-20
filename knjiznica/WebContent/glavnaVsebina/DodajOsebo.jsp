@@ -4,7 +4,7 @@
 <html>
 	<head>
 		<!-- http://www.templatemo.com/preview/templatemo_419_black_white -->
-		<title>Knjižnica</title>
+		<title>Uporabnik</title>
 		<%@ include file="head.jsp"%>
 	
 		<script type="text/javascript">
@@ -79,7 +79,8 @@
 						<h4>Država:</h4>
 						<input type="text" name="drzava" class="textbox" value='<c:out value="${naslov.drzava}" />' required/> 
 						<input type="hidden" name=idNaslov value='<c:out value="${naslov.id}" />' />
-	
+						
+						<h3>Kontakt: </h3>
 						<h4>Email:</h4>
 						<input type="text" name="email" class="textbox" value='<c:out value="${uporabnik.email}" />' required/>
 	

@@ -40,6 +40,7 @@ public class OsebaServlet extends HttpServlet {
 		}catch(Exception e){e.printStackTrace();}
 		
 		String stran="";
+		boolean redirect = false;
 		HttpSession seja = request.getSession();
 		
 		if(metoda.equals("dodajOs")){
@@ -92,6 +93,32 @@ public class OsebaServlet extends HttpServlet {
 			
 			stran="/glavnaVsebina/urediPrijava.jsp"; //placeholder
 		}
+		else if(metoda.equals("urediTip")){
+			String tip = request.getParameter("tip"); //stari tip!
+			
+			//iz knjiznicarja v clana
+			if(tip.equals(TipOsebe.knjižnièar)){
+				//se samo izbrise prijava pa spremeni tip
+				osebaDAO.spremeniTipOsebe(idOsebe, tip);
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+idOsebe;
+			}
+			//iz clana v knjiznicarja
+			osebaDAO.spremeniTipOsebe(idOsebe, tip);
+			request.setAttribute("idOsebe", idOsebe);
+			stran = "/glavnaVsebina/novaPrijava.jsp"; //placeholder
+		}
+		else if(metoda.equals("izbrisiOsebo")){
+			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
+			if(osebaDAO.izbrisiOsebo(idOsebe))
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			else{ //neko opozorilo da ne more zbrisat
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+idOsebe;
+			}
+			//naslov izbris?
+		
+		}
 		else if(metoda.equals("domov")){
 			stran = "/glavnaVsebina/Domov.jsp"; 
 		}
@@ -100,9 +127,12 @@ public class OsebaServlet extends HttpServlet {
 			seja.removeAttribute("ID");
 			stran="/glavnaVsebina/Domov.jsp";
 		}
-		
+
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
-		disp.forward(request,response);
+		if(redirect)
+			response.sendRedirect(stran);
+		else if(disp !=null)
+			disp.forward(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -122,6 +152,8 @@ public class OsebaServlet extends HttpServlet {
 		}
 		
 		String stran="";
+		boolean redirect = false;
+		
 		OsebaDAO osebaDAO = OsebaDAO.dobiInstanco();
 		NaslovDAO naslovDAO = NaslovDAO.dobiInstanco();
 		HttpSession seja = request.getSession();
@@ -173,9 +205,9 @@ public class OsebaServlet extends HttpServlet {
 				upRacun.setTk_id_osebe(uporabnik.getId());
 				osebaDAO.dodajPrijavo(upRacun);;
 			}
-			request.setAttribute("naslov", naslov);
-			request.setAttribute("uporabnik", uporabnik);
-			stran="/glavnaVsebina/Domov.jsp"; //placeholder
+			//ce je blo uspesno dodano.. kaj pa ce ni blo?
+			redirect = true;
+			stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+uporabnik.getId();
 		}
 		else if(metoda.equals("urediOsebo")){
 			//naslov
@@ -198,34 +230,10 @@ public class OsebaServlet extends HttpServlet {
 			uporabnik.setTk_id_naslova(naslov.getId());
 			uporabnik.setId(idOsebe);
 			uporabnik = osebaDAO.urediOsebo(uporabnik);
+
+			redirect = true;
+			stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+uporabnik.getId();	
 			
-			request.setAttribute("naslov", naslov);
-			request.setAttribute("uporabnik", uporabnik);
-			stran="/glavnaVsebina/Domov.jsp"; //placeholder	za osebo..		
-			
-		}
-		else if(metoda.equals("urediTip")){
-			String tip = request.getParameter("tip"); //stari tip!
-			
-			//iz knjiznicarja v clana
-			if(tip.equals(TipOsebe.knjižnièar)){
-				//se samo izbrise prijava pa spremeni tip
-				osebaDAO.spremeniTipOsebe(idOsebe, tip);
-				stran = "/glavnaVsebina/Oseba.jsp";
-			}
-			//iz clana v knjiznicarja
-			osebaDAO.spremeniTipOsebe(idOsebe, tip);
-			request.setAttribute("idOsebe", idOsebe);
-			stran = "/glavnaVsebina/novaPrijava.jsp"; //placeholder
-		}
-		else if(metoda.equals("izbrisiOsebo")){
-			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
-			if(osebaDAO.izbrisiOsebo(idOsebe))
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Oseba.jsp"; //placeholder
-			//naslov izbris?
-		
 		}
 		else if(metoda.equals("spremeniPrijavo")){
 			Prijava prijava = new Prijava();
@@ -245,9 +253,24 @@ public class OsebaServlet extends HttpServlet {
 			}		
 			
 		}
+		//redirect iz posta
+		else if(metoda.equals("pridobiOsebo")){
+			try{
+				uporabnik = osebaDAO.pridobiOsebo(idOsebe);
+				request.setAttribute("uporabnik", uporabnik);
+				
+				naslov = naslovDAO.pridobiNaslov(uporabnik.getTk_id_naslova());
+				request.setAttribute("naslov", naslov);
+
+			}catch(NullPointerException e){e.getMessage();}
+			stran="/glavnaVsebina/Oseba.jsp"; //placeholder	
+		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
-		disp.forward(request,response);
+		if(redirect)
+			response.sendRedirect(stran);
+		else if(disp !=null)
+			disp.forward(request,response);
 	}
 
 }
