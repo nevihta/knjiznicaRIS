@@ -29,77 +29,70 @@
 				</h1>
 				
 				<div class="tm-right-inner-container">
-					<h1 class="templatemo-header">Registracija</h1>
+					<h1 class="templatemo-header">Uporabnik</h1>
 					<form id="forma"
-						action="${pageContext.request.contextPath}/OsebaServlet?metoda=<%=request.getAttribute("metoda")%>"
+						action="${pageContext.request.contextPath}/OsebaServlet?metoda=<c:out value="${metoda}" />"
 						method="post">
-	
-						<input type="hidden" name="idOsebe" class="textbox" value="${requestScope.uporabnik.id}" />
+												
+						<input type="hidden" name="idOsebe" class="textbox" value='<c:out value="${uporabnik.id}" />' />
 	
 						<h4>Ime:</h4>
-						<input type="text" name="ime" class="textbox" value="${requestScope.uporabnik.ime}" />
+						<input type="text" name="ime" class="textbox" value='<c:out value="${uporabnik.ime}" />' required/>
 	
 						<h4>Priimek:</h4>
-						<input type="text" name="priimek" class="textbox" value="${requestScope.uporabnik.priimek}" />
-	
-						<h4>Tip uporabnika:</h4>
-						<p>
-							Knjižničar <input id="knjiznicar" value="knjižničar" type="radio"
-								name="tip" class="radio" onclick="javascript:yesnoCheck();" />
-								
-							Član<input id="uporabnik" value="član" type="radio" name="tip"
-								class="radio" onclick="javascript:yesnoCheck();" />
-						</p>	
-	
-						<div id="knjiznicarDA" style="display: none">
-							<h4>Uporabniško ime:</h4>
-							<input type="text" name="upIme" class="textbox" value="${requestScope.uporabnik.ime}" />
-	
-							<h4>Geslo:</h4>
-							<input type="password" name="geslo" class="textbox" />
-						</div>
-
+						<input type="text" name="priimek" class="textbox" value='<c:out value="${uporabnik.priimek}" />' required/>
+						
+						<c:if test="${uporabnik.ime==null}">
+							<h4>Tip uporabnika:</h4>
+							<p>
+								Knjižničar <input id="knjiznicar" value="knjižničar" type="radio"
+									name="tip" class="radio" onclick="javascript:yesnoCheck();" required/>
+									
+								Član<input id="uporabnik" value="član" type="radio" name="tip"
+									class="radio" onclick="javascript:yesnoCheck();" />
+							</p>	
+		
+							<div id="knjiznicarDA" style="display: none">
+								<h3>Račun: </h3>
+								<h4>Uporabniško ime:</h4>
+								<input type="text" name="upIme" class="textbox" required/>
+		
+								<h4>Geslo:</h4>
+								<input type="password" name="geslo" class="textbox" required/>
+							</div>
+						</c:if>
+						
+						<br />
+						<h3>Naslov: </h3>
 						<h4>Ulica:</h4>
-						<input type="text" name="ulica" class="textbox" value="${requestScope.naslov.ulica}" />
+						<input type="text" name="ulica" class="textbox" value='<c:out value="${naslov.ulica}" />' required/>
 	
-						<h4>Hisna:</h4>
-						<input type="text" name="hisna" class="textbox" value="${requestScope.naslov.hisnaSt}" />
+						<h4>Hišna številka:</h4>
+						<input type="text" name="hisna" class="textbox" value='<c:out value="${naslov.hisnaSt}" />' required/>
 	
 						<h4>Mesto:</h4>
-						<input type="text" name="mesto" class="textbox" value="${requestScope.naslov.mesto}" />
+						<input type="text" name="mesto" class="textbox" value='<c:out value="${naslov.mesto}" />' required/>
 	
 						<h4>Poštna številka:</h4>
-						<input type="text" name="posta" class="textbox" value="${requestScope.naslov.postnaSt}" />
+						<input type="text" name="posta" class="textbox" value='<c:out value="${naslov.postnaSt}" />' required/>
 	
 						<h4>Država:</h4>
-						<input type="text" name="drzava" class="textbox" value="${requestScope.naslov.drzava}" /> 
-						<input type="hidden" name=idNaslov value="${requestScope.naslov.id}" />
+						<input type="text" name="drzava" class="textbox" value='<c:out value="${naslov.drzava}" />' required/> 
+						<input type="hidden" name=idNaslov value='<c:out value="${naslov.id}" />' />
 	
 						<h4>Email:</h4>
-						<input type="text" name="email" class="textbox" value="${requestScope.uporabnik.email}" />
+						<input type="text" name="email" class="textbox" value='<c:out value="${uporabnik.email}" />' required/>
 	
 						<h4>Telefon:</h4>
-						<input type="text" name="tel" class="textbox" value="${requestScope.uporabnik.telefon}" />
+						<input type="text" name="tel" class="textbox" value='<c:out value="${uporabnik.telefon}" />' required/>
 
 						<br /> 
+						<input type="button" value="Prekliči" onClick="history.go(-1);return true;" class="button"/> 
 						<input type="submit" value="Potrdi" name="submit" class="button" />
 
 					</form>
 				</div>
 			</div>
 		</div>
-		<script>
-			/*
-			if ('${requestScope.uporabnik.tipOsebe}' == 'knjižničar') {
-				document.getElementById('knjiznicar').checked = true;
-				
-			} else {
-	
-				document.getElementById('uporabnik').checked = true;
-			}
-			
-			yesnoCheck();
-			 */
-		</script>
 	</body>
 </html>

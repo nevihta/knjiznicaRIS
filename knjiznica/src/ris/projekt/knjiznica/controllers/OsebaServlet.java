@@ -193,7 +193,6 @@ public class OsebaServlet extends HttpServlet {
 			uporabnik = new Oseba();
 			uporabnik.setIme(request.getParameter("ime"));
 			uporabnik.setPriimek(request.getParameter("priimek"));
-			uporabnik.setTipOsebe(TipOsebe.valueOf(request.getParameter("tip")));
 			uporabnik.setEmail(request.getParameter("email"));
 			uporabnik.setTelefon(request.getParameter("tel"));
 			uporabnik.setTk_id_naslova(naslov.getId());
@@ -202,7 +201,7 @@ public class OsebaServlet extends HttpServlet {
 			
 			request.setAttribute("naslov", naslov);
 			request.setAttribute("uporabnik", uporabnik);
-			stran="/glavnaVsebina/domov.jsp"; //placeholder			
+			stran="/glavnaVsebina/Domov.jsp"; //placeholder	za osebo..		
 			
 		}
 		else if(metoda.equals("urediTip")){
