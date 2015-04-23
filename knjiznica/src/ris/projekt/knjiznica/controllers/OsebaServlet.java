@@ -89,9 +89,9 @@ public class OsebaServlet extends HttpServlet {
 			idOsebe = (Integer)seja.getAttribute("ID"); 
 
 			Prijava prijava = osebaDAO.pridobiPrijavo(idOsebe);
-			request.setAttribute("upIme", prijava.getUpIme()); 
+			request.setAttribute("ime", prijava.getUpIme()); 
 			
-			stran="/glavnaVsebina/urediPrijava.jsp"; //placeholder
+			stran="/glavnaVsebina/novaPrijava.jsp"; //placeholder
 		}
 		else if(metoda.equals("urediTip")){
 			String tip = request.getParameter("tip"); //stari tip!
@@ -106,6 +106,7 @@ public class OsebaServlet extends HttpServlet {
 			//iz clana v knjiznicarja
 			osebaDAO.spremeniTipOsebe(idOsebe, tip);
 			request.setAttribute("idOsebe", idOsebe);
+			request.setAttribute("metoda", "dodajPrijavo");
 			stran = "/glavnaVsebina/novaPrijava.jsp"; //placeholder
 		}
 		else if(metoda.equals("izbrisiOsebo")){
@@ -245,27 +246,28 @@ public class OsebaServlet extends HttpServlet {
 			boolean uspesno = osebaDAO.spremeniUporabniskoImeInGeslo(prijava,novoGeslo);
 			
 			if(uspesno){
+				seja.setAttribute("Sprememba",true);
 				stran="/glavnaVsebina/Domov.jsp"; //placeholder
 			}
 			else{
-				//neki meessage
-				stran="/glavnaVsebina/urediPrijava.jsp"; //placeholder
+				seja.setAttribute("Sprememba",false);
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=urediKnjiznicar"; //placeholder
 			}		
 			
 		}
-		//redirect iz posta
-		else if(metoda.equals("pridobiOsebo")){
-			try{
-				uporabnik = osebaDAO.pridobiOsebo(idOsebe);
-				request.setAttribute("uporabnik", uporabnik);
-				
-				naslov = naslovDAO.pridobiNaslov(uporabnik.getTk_id_naslova());
-				request.setAttribute("naslov", naslov);
-
-			}catch(NullPointerException e){e.getMessage();}
-			stran="/glavnaVsebina/Oseba.jsp"; //placeholder	
+		else if(metoda.equals("dodajPrijavo")){
+			Prijava prijava = new Prijava();
+			prijava.setUpIme(request.getParameter("ime"));
+			prijava.setGeslo(request.getParameter("geslo"));
+			prijava.setTk_id_osebe(idOsebe);
+			
+			osebaDAO.dodajPrijavo(prijava);
+			
+			stran="/glavnaVsebina/Domov.jsp"; //placeholder
+	
 		}
-		
+	
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)
 			response.sendRedirect(stran);
