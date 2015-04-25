@@ -75,12 +75,10 @@ public class NaslovDAO {
 		    rs = st.executeQuery();
 		    if (rs.next())
 		    {
-			    System.out.println("v rs.next je");
-
-		    	idNaslova=rs.getInt("ID_naslova");
+		    	idNaslova= rs.getInt("ID_naslova");
+		    	n.setId(idNaslova);
 		    }
 		    
-		    System.out.println(idNaslova);
 		    
 		    rs.close();
 		    st.close();
@@ -126,7 +124,7 @@ public class NaslovDAO {
 	
 
 	
-	public Naslov urediNaslov(Naslov n)
+	public int urediNaslov(Naslov n)
 	{
 		int idNaslova=-1;
 
@@ -150,21 +148,34 @@ public class NaslovDAO {
 		    st.close();
 			
 			if(idNaslova==-1){
-				//èe še ne obstaja spremenimo ali naredimo novega? zaradi možnosti, da jih veè živi na istem naslovu....
-			
-				st = povezava.prepareStatement("update naslov set ulica=?, hisnaSt=?, postnaSt=?, mesto=?, drzava=? where ID_naslova=?");
+		
+				st = povezava.prepareStatement("insert into naslov (ulica, hisnaSt, postnaSt, mesto, drzava) values (?, ?, ?, ?, ?)");
 				st.setString(1, n.getUlica());
 				st.setString(2, n.getHisnaSt());
 				st.setInt(3, n.getPostnaSt());
 				st.setString(4, n.getMesto());
 				st.setString(5, n.getDrzava());
-				st.setInt(6, n.getId());
-				
+								
 				st.executeUpdate();
-		       
-				st.close();
-				idNaslova=n.getId();
+		       	st.close();
+				
+		       	st=povezava.prepareStatement("select ID_naslova from naslov where ulica=? and hisnaSt=? and postnaSt=? and mesto=? and drzava=?");
+				st.setString(1, n.getUlica());
+				st.setString(2, n.getHisnaSt());
+				st.setInt(3, n.getPostnaSt());
+				st.setString(4, n.getMesto());
+				st.setString(5, n.getDrzava());
+			       
+			    rs = st.executeQuery();
+			    if (rs.next())
+			    {
+			    	idNaslova=rs.getInt("ID_naslova");
+			    }
+			    
+			    rs.close();
+			    st.close();
 			}
+			
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
@@ -172,7 +183,7 @@ public class NaslovDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
-		return n;
+		return idNaslova;
 	}
 
 	public void izbrisiNaslov()

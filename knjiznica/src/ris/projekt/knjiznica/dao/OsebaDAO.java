@@ -273,20 +273,20 @@ public class OsebaDAO {
 		
 	}
 	
-	public ArrayList<Oseba> pridobiClane()
+	public ArrayList<Oseba> pridobiPoTipu(String tip)
 	{
 		ArrayList<Oseba> osebe = new ArrayList<Oseba>();
 		try{
 			povezava =  Povezava.getConnection();
 
 			st = povezava.prepareStatement("select * from oseba where tipOsebe=?");
-			st.setString(1, "èlan");
+			st.setString(1, tip);
 			rs = st.executeQuery();
 			
 			Oseba o;
 			while (rs.next())
 			{
-				o=new Oseba(rs.getInt("ID_osebe"), rs.getString("ime"), rs.getString("priimek"), TipOsebe.èlan, rs.getString("email"), rs.getString("telefon"), rs.getInt("tk_id_naslova"));
+				o=new Oseba(rs.getInt("ID_osebe"), rs.getString("ime"), rs.getString("priimek"), TipOsebe.valueOf(tip), rs.getString("email"), rs.getString("telefon"), rs.getInt("tk_id_naslova"));
 				osebe.add(o);
 			}
 		}
@@ -300,34 +300,6 @@ public class OsebaDAO {
 		return osebe;
 	}
 	
-	//monika - preveri =))
-	public ArrayList<Oseba> pridobiKnjiznicarje()
-	{
-		ArrayList<Oseba> osebe = new ArrayList<Oseba>();
-		try{
-			povezava =  Povezava.getConnection();
-
-			st = povezava.prepareStatement("select * from oseba where tipOsebe=?");
-			st.setString(1, "knjižnièar");
-			rs = st.executeQuery();
-			
-			Oseba o;
-			while (rs.next())
-			{
-				o=new Oseba(rs.getInt("ID_osebe"), rs.getString("ime"), rs.getString("priimek"), TipOsebe.knjižnièar, rs.getString("email"), rs.getString("telefon"), rs.getInt("tk_id_naslova"));
-				osebe.add(o);
-			}
-		}
-		catch(SQLException e){e.printStackTrace();} 
-		finally{
-			try{rs.close();} catch(SQLException e){}
-			try{st.close();} catch(SQLException e){}
-			try{povezava.close();} catch(SQLException e){}
-		}
-		
-		return osebe;
-	}
-
 	public int preveriPrijavo(Prijava p) {
 		int idKnjiznicarja=-1;
 
@@ -354,17 +326,29 @@ public class OsebaDAO {
 		
 	}
 	
-	//dodelaj za preverjanje ce staro vneseno geslo drzi, potem update z novim
 	public boolean spremeniUporabniskoImeInGeslo(Prijava p, String novoGeslo){
 		boolean uspesnaPrijava = false;
-		
+		String staroGeslo="";
 		povezava = Povezava.getConnection();
 		try {
-			st = povezava.prepareStatement("update prijava set upIme=?, geslo=? where tk_id_osebe=? and ID_prijave<>0");
+			st=povezava.prepareStatement("select geslo from prijava where ID_prijave=?");
+			st.setInt(1, p.getId());
+			rs=st.executeQuery();
+			if(rs.next())
+			{
+				staroGeslo=rs.getString("geslo");
+			}
+			rs.close();
+			st.close();
+			
+			if(staroGeslo.equals(p.getGeslo())){
+			
+			st = povezava.prepareStatement("update prijava set upIme=?, geslo=? where ID_prijave=?");
 			st.setString(1, p.getUpIme());
-			st.setString(2, p.getGeslo());
-	        st.setInt(3, p.getTk_id_osebe());
+			st.setString(2, novoGeslo);
+	        st.setInt(3, p.getId());
 	        st.executeUpdate();
+			}
 		}
 	     catch(SQLException e){
 				e.printStackTrace();

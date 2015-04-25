@@ -75,9 +75,9 @@ public class OsebaServlet extends HttpServlet {
 				if(filter.equals("vse"))
 					list = osebaDAO.pridobiOsebe();
 				else if(filter.equals("clan"))
-					list = osebaDAO.pridobiClane();
+					list = osebaDAO.pridobiPoTipu("èlan");
 				else if(filter.equals("knjiznicar"))
-					list = osebaDAO.pridobiKnjiznicarje();
+					list = osebaDAO.pridobiPoTipu("knjižnièar");
 				request.setAttribute("osebe", list);
 			}
 			catch(NullPointerException e){	}
@@ -104,10 +104,13 @@ public class OsebaServlet extends HttpServlet {
 				stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+idOsebe;
 			}
 			//iz clana v knjiznicarja
+			else
+			{
 			osebaDAO.spremeniTipOsebe(idOsebe, tip);
 			request.setAttribute("idOsebe", idOsebe);
 			request.setAttribute("metoda", "dodajPrijavo");
 			stran = "/glavnaVsebina/novaPrijava.jsp"; //placeholder
+			}
 		}
 		else if(metoda.equals("izbrisiOsebo")){
 			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
@@ -220,7 +223,7 @@ public class OsebaServlet extends HttpServlet {
 			naslov.setPostnaSt(Integer.parseInt(request.getParameter("posta")));
 			naslov.setDrzava(request.getParameter("drzava"));
 			naslov.setId(Integer.parseInt(request.getParameter("idNaslov"))); // try catch =)	
-			naslov = naslovDAO.urediNaslov(naslov);
+			int idNaslova = naslovDAO.urediNaslov(naslov);
 			
 			//ostalo oseba
 			uporabnik = new Oseba();
@@ -228,7 +231,7 @@ public class OsebaServlet extends HttpServlet {
 			uporabnik.setPriimek(request.getParameter("priimek"));
 			uporabnik.setEmail(request.getParameter("email"));
 			uporabnik.setTelefon(request.getParameter("tel"));
-			uporabnik.setTk_id_naslova(naslov.getId());
+			uporabnik.setTk_id_naslova(idNaslova);
 			uporabnik.setId(idOsebe);
 			uporabnik = osebaDAO.urediOsebo(uporabnik);
 

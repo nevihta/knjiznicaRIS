@@ -22,7 +22,7 @@
 					<form action="${pageContext.request.contextPath}/OsebaServlet?metoda=<c:out value="${metoda}" />" method="post">
 						<table>
 							<tr class="spaceUnder">
-								<td><h4>Ime:</h4></td>
+								<td><h4>Uporabniško ime:</h4></td>
 								<td><input type="text" name="ime" value='<c:out value="${ime}"/>' class="textbox" required></td>
 							</tr>
 							<tr class="spaceUnder">

@@ -62,7 +62,7 @@ CREATE TABLE `knjiznica`.`gradivo` (
   `naslov` VARCHAR (50) NULL,
   `originalNaslov` VARCHAR (50) NULL,
   `jezik` VARCHAR (20) NULL,
-  `letoIzida` DATE NULL,
+  `letoIzida` INT NULL,
   `ISBN` VARCHAR (15) NULL,
   `opis` VARCHAR (200) NULL,
   `tk_id_podrocja` INT NULL,
