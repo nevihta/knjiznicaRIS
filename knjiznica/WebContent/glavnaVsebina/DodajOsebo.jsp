@@ -55,10 +55,10 @@
 							<div id="knjiznicarDA" style="display: none">
 								<h3>Račun: </h3>
 								<h4>Uporabniško ime:</h4>
-								<input type="text" name="upIme" class="textbox" required/>
+								<input type="text" name="upIme" class="textbox" />
 		
 								<h4>Geslo:</h4>
-								<input type="password" name="geslo" class="textbox" required/>
+								<input type="password" name="geslo" class="textbox" />
 							</div>
 						</c:if>
 						
