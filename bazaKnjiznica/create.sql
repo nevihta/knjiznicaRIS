@@ -44,7 +44,6 @@ CREATE TABLE `knjiznica`.`zapisNaCl` (
 CREATE TABLE `knjiznica`.`zalozba` (
   `ID_zalozbe` INT NOT NULL AUTO_INCREMENT,
   `naziv` VARCHAR (100) NULL,
-  `mesto` VARCHAR (70) NULL,
   PRIMARY KEY (`ID_zalozbe`));
 
 CREATE TABLE `knjiznica`.`vrstaGradiva` (

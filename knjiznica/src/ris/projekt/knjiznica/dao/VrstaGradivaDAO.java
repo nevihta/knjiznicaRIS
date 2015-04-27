@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ris.projekt.knjiznica.baza.Povezava;
 import ris.projekt.knjiznica.beans.VrstaGradiva;
@@ -29,15 +30,45 @@ public class VrstaGradivaDAO {
 		return vgd;
 	}
 	
-	public void dodajVrstoGradiva(String vrsta)
+	public int dodajVrstoGradiva(String vrsta)
 	{
+		int idTipaGradiva=-1;
 		try{
 			povezava =  Povezava.getConnection();
 
+			//preveri, èe že obstaja
+			st=povezava.prepareStatement("select ID_vrste from vrstagradiva where naziv=?");
+			st.setString(1, vrsta);
+			rs= st.executeQuery();
+			
+			if(rs.next())
+			{
+				idTipaGradiva=rs.getInt("ID_vrste");
+			}
+			
+			rs.close();
+			st.close();
+			
+			if(idTipaGradiva==-1)
+			{
 			st = povezava.prepareStatement("insert into vrstagradiva (naziv) values (?)");
 			st.setString(1, vrsta);
-			
 			st.executeUpdate();
+			st.close();
+			
+			//pridobi id
+			st=povezava.prepareStatement("select ID_vrste from vrstagradiva where naziv=?");
+			st.setString(1, vrsta);
+			rs= st.executeQuery();
+			
+			if(rs.next())
+			{
+				idTipaGradiva=rs.getInt("ID_vrste");
+			}
+			
+			rs.close();
+			st.close();
+			}
 		}
 		
 		catch(SQLException e){e.printStackTrace();} 
@@ -46,6 +77,7 @@ public class VrstaGradivaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		return idTipaGradiva;
 	}
 	
 	public boolean izbrisiVrstoGradiva(int id)
@@ -133,7 +165,7 @@ public class VrstaGradivaDAO {
 		return g;
 	}
 	
-	public void pridobiVseVrsteGradiva()
+	public List<VrstaGradiva> pridobiVseVrsteGradiva()
 	{
 		ArrayList<VrstaGradiva> vrste=new ArrayList<VrstaGradiva>();
 		try{
@@ -153,5 +185,7 @@ public class VrstaGradivaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		
+		return vrste;
 	}
 }

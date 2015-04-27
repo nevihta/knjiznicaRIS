@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ris.projekt.knjiznica.baza.Povezava;
 import ris.projekt.knjiznica.beans.Zalozba;
@@ -29,16 +30,45 @@ public class ZalozbaDAO {
 		return zd;
 	}
 	
-	public void dodajZalozbo(Zalozba z)
+	public int dodajZalozbo(String zalozba)
 	{
+		int idZalozbe=-1;
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("insert into podrocje (naziv, mesto) values (?, ?)");
-			st.setString(1, z.getNaziv());
-			st.setString(2, z.getMesto());
+			//preveri, èe že obstaja
+			st=povezava.prepareStatement("select ID_zalozbe from zalozba where naziv=?");
+			st.setString(1, zalozba);
+			rs= st.executeQuery();
+			
+			if(rs.next())
+			{
+				idZalozbe=rs.getInt("ID_zalozbe");
+			}
+			
+			rs.close();
+			st.close();
+			
+			if(idZalozbe==-1)
+			{
+			st = povezava.prepareStatement("insert into zalozba (naziv) values (?)");
+			st.setString(1, zalozba);
 			
 			st.executeUpdate();
+			
+			//pridobi id
+			st=povezava.prepareStatement("select ID_zalozbe from zalozba where naziv=?");
+			st.setString(1, zalozba);
+			rs= st.executeQuery();
+			
+			if(rs.next())
+			{
+				idZalozbe=rs.getInt("ID_zalozbe");
+			}
+			
+			rs.close();
+			st.close();
+			}
 		}
 		
 		catch(SQLException e){e.printStackTrace();} 
@@ -47,6 +77,8 @@ public class ZalozbaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		
+		return idZalozbe;
 	}
 	
 	public boolean izbrisiZalozbo(int id)
@@ -94,10 +126,9 @@ public class ZalozbaDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("update zalozba set naziv=?, mesto=? where ID_zalozbe=?");
+			st = povezava.prepareStatement("update zalozba set naziv=? where ID_zalozbe=?");
 			st.setString(1, z.getNaziv());
-			st.setString(2, z.getMesto());
-			st.setInt(3, z.getId());
+			st.setInt(2, z.getId());
 				
 			st.executeUpdate();
 		}
@@ -124,7 +155,6 @@ public class ZalozbaDAO {
 			{
 				z.setId(rs.getInt("ID_zalozbe"));
 				z.setNaziv(rs.getString("naziv"));
-				z.setMesto(rs.getString("mesto"));
 			}
 		}
 		
@@ -137,7 +167,7 @@ public class ZalozbaDAO {
 		return z;
 	}
 	
-	public void pridobiVseZalozbe()
+	public List<Zalozba> pridobiVseZalozbe()
 	{
 		ArrayList<Zalozba> zalozbe=new ArrayList<Zalozba>();
 		try{
@@ -147,7 +177,7 @@ public class ZalozbaDAO {
 			rs=st.executeQuery();
 				
 			while(rs.next()){
-				zalozbe.add(new Zalozba(rs.getInt("ID_zalozbe"), rs.getString("mesto"),  rs.getString("naziv")));
+				zalozbe.add(new Zalozba(rs.getInt("ID_zalozbe"), rs.getString("naziv")));
 			}
 		}
 			
@@ -157,5 +187,6 @@ public class ZalozbaDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+	return zalozbe;
 	}
 }

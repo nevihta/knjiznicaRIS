@@ -3,16 +3,14 @@ package ris.projekt.knjiznica.beans;
 public class Zalozba {
 
 	private int id;
-	private String mesto;
 	private String naziv;
 	
 	public Zalozba(){
 		
 	}
 	
-	public Zalozba(int id, String mesto, String naziv){
+	public Zalozba(int id, String naziv){
 		this.id=id;
-		this.mesto=mesto;
 		this.naziv=naziv;
 	}
 
@@ -22,14 +20,6 @@ public class Zalozba {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getMesto() {
-		return mesto;
-	}
-
-	public void setMesto(String mesto) {
-		this.mesto = mesto;
 	}
 
 	public String getNaziv() {

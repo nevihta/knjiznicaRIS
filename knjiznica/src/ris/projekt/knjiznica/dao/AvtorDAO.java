@@ -38,20 +38,7 @@ public class AvtorDAO {
 			st.setString(2, a.getPriimek());
 			
 			st.executeUpdate();
-           
-			//sploh rabimo id, glede na to da nikjer ni podrobnejšega pregleda?
-			/*st.close();
-			
-            st=povezava.prepareStatement("select ID_avtorja from avtor where ime=? and priimek=?");
-            st.setString(1, a.getIme());
-			st.setString(2, a.getPriimek());
-           
-            rs = st.executeQuery();
-            if (rs.next())
-            {
-            	a.setId(rs.getInt("ID_avtorja"));
-            }
-			*/
+  
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
@@ -59,6 +46,26 @@ public class AvtorDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+	}
+	
+	public void urediAvtorja(Avtor a) {
+		try{
+			povezava = Povezava.getConnection();
+			st = povezava.prepareStatement("update avtor set ime=?, priimek=? where ID_avtorja=?");
+            
+			st.setString(1, a.getIme());
+            st.setString(2, a.getPriimek());
+            st.setInt(3, a.getId());
+            st.executeUpdate();
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally{
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		
 	}
 	
 	public ArrayList<Avtor> pridobiVseAvtorje() 
@@ -146,6 +153,8 @@ public class AvtorDAO {
 		
 		return izbris;
 	}
+
+	
 
 	
 }

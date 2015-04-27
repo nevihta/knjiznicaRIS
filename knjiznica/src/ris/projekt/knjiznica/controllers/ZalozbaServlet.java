@@ -70,9 +70,7 @@ public class ZalozbaServlet extends HttpServlet {
 		boolean redirect = false;
 		
 		if(metoda.equals("dodaj")){
-			zalozba.setNaziv(request.getParameter("naziv"));
-			zalozbaDAO.dodajZalozbo(zalozba);
-			
+			zalozbaDAO.dodajZalozbo(request.getParameter("naziv"));
 			redirect = true;
 			stran="/knjiznica/ZalozbaServlet?metoda=pridobiVse";	
 		}

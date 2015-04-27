@@ -29,15 +29,47 @@ public class PodrocjeDAO {
 		return pd;
 	}
 	
-	public void dodajPodrocje(String podrocje)
+	public int dodajPodrocje(String podrocje)
 	{
+		int idPodrocja=-1;
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("insert into podrocje (naziv) values (?)");
+			//preveri, èe že obstaja
+			st=povezava.prepareStatement("select ID_podrocja from podrocje where naziv=?");
 			st.setString(1, podrocje);
+			rs= st.executeQuery();
 			
-			st.executeUpdate();
+			if(rs.next())
+			{
+				idPodrocja=rs.getInt("ID_podrocja");
+			}
+			
+			rs.close();
+			st.close();
+			
+			if(idPodrocja==-1)
+			{
+				st = povezava.prepareStatement("insert into podrocje (naziv) values (?)");
+				st.setString(1, podrocje);
+				
+				st.executeUpdate();
+				
+				st.close();
+				
+				//pridobi id
+				st=povezava.prepareStatement("select ID_podrocja from podrocje where naziv=?");
+				st.setString(1, podrocje);
+				rs= st.executeQuery();
+				
+				if(rs.next())
+				{
+					idPodrocja=rs.getInt("ID_podrocja");
+				}
+				
+				rs.close();
+				st.close();
+			}
 		}
 		
 		catch(SQLException e){e.printStackTrace();} 
@@ -46,6 +78,8 @@ public class PodrocjeDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		
+		return idPodrocja;
 	}
 	
 	public boolean izbrisiPodrocje(int id)
@@ -133,7 +167,7 @@ public class PodrocjeDAO {
 		return p;
 	}
 	
-	public void pridobiVsaPodrocja()
+	public ArrayList<Podrocje> pridobiVsaPodrocja()
 	{
 		ArrayList<Podrocje> podrocja=new ArrayList<Podrocje>();
 		try{
@@ -153,6 +187,9 @@ public class PodrocjeDAO {
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+	
+		return podrocja;
+
 	}
 	
 }
