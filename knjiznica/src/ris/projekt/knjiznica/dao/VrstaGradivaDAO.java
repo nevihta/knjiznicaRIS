@@ -146,7 +146,7 @@ public class VrstaGradivaDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from vrsta where ID_vrste=?");
+			st = povezava.prepareStatement("select * from vrstagradiva where ID_vrste=?");
 			st.setInt(1, id);
 			rs=st.executeQuery();
 			if(rs.next())
@@ -171,7 +171,7 @@ public class VrstaGradivaDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from vrsta");
+			st = povezava.prepareStatement("select * from vrstagradiva");
 			rs=st.executeQuery();
 				
 			while(rs.next()){
