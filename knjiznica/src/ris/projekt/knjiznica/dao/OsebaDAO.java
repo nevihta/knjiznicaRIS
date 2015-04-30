@@ -168,6 +168,7 @@ public class OsebaDAO {
             e.printStackTrace();
         }
 		finally{
+			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
@@ -354,6 +355,7 @@ public class OsebaDAO {
 				e.printStackTrace();
 		}
 		finally{
+			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
