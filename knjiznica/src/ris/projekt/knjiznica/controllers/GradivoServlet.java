@@ -54,15 +54,18 @@ public class GradivoServlet extends HttpServlet {
 			request.setAttribute("vrsteGradiva", vrste);
 			List<Zalozba> zalozbe = zalozbaDAO.pridobiVseZalozbe();
 			request.setAttribute("zalozbe", zalozbe);
+			Jezik[] jeziki = Jezik.values();
+			request.setAttribute("jeziki", jeziki);
 			
 			request.setAttribute("metoda","dodajGradivo" );
 			stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
 		}
 		else if(metoda.equals("pridobiVse")){
-			List<Gradivo> list = new ArrayList<Gradivo>();
+			List<GradivoZaIzpis> list = new ArrayList<GradivoZaIzpis>();
 			
 			try{
-				list = gradivoDAO.pridobiVsaGradiva();
+				//AVTORJI!!!!!!
+				list = gradivoDAO.pridobiVsaGradivaZaIzpis();
 				request.setAttribute("gradiva", list);
 			}
 			catch(NullPointerException e){
@@ -84,7 +87,14 @@ public class GradivoServlet extends HttpServlet {
 					request.setAttribute("vrsta", vrsta);
 					Zalozba zalozba = zalozbaDAO.pridobiZalozbo(gradivo.getTk_id_zalozbe());
 					request.setAttribute("zalozba", zalozba);
-	
+					//avtorji
+					List<Integer> IDavtorji= gradivoAvtorDAO.pridobiAvtorjeGradiva(gradivo.getId());
+					List<Avtor> avtorji = new ArrayList<Avtor>();
+					for(int i=0; i<IDavtorji.size(); i++){
+						avtorji.add(avtorDAO.pridobiAvtorja(IDavtorji.get(i)));
+					}
+					request.setAttribute("avtorji", avtorji);
+					
 					urejanjeGr = request.getParameter("urejanjeGr");
 				}
 				else
@@ -92,15 +102,16 @@ public class GradivoServlet extends HttpServlet {
 				
 			}catch(NullPointerException e){e.getMessage();}
 			if(urejanjeGr!=null){
-				//?? seznam podrocij itd?
 				List<Avtor> avtorji = avtorDAO.pridobiVseAvtorje();
-				request.setAttribute("avtorji", avtorji);
+				request.setAttribute("vsiAvtorji", avtorji);
 				List<Podrocje> podrocja= podrocjeDAO.pridobiVsaPodrocja();
 				request.setAttribute("podrocja", podrocja);
 				List<VrstaGradiva> vrste = vrstaDAO.pridobiVseVrsteGradiva();
 				request.setAttribute("vrsteGradiva", vrste);
 				List<Zalozba> zalozbe = zalozbaDAO.pridobiVseZalozbe();
 				request.setAttribute("zalozbe", zalozbe);
+				Jezik[] jeziki = Jezik.values();
+				request.setAttribute("jeziki", jeziki);
 				
 				request.setAttribute("metoda", "urediGradivo");
 				stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
@@ -144,37 +155,159 @@ public class GradivoServlet extends HttpServlet {
 			gradivo = new Gradivo();
 			gradivo.setNaslov(request.getParameter("naslov"));
 			gradivo.setOriginalNaslov(request.getParameter("originalNaslov"));
-			gradivo.setJezik(jezik);
 			gradivo.setLetoIzida(Integer.parseInt(request.getParameter("leto")));
 			gradivo.setISBN(request.getParameter("isbn"));
 			gradivo.setOpis(request.getParameter("opis"));
-			gradivo.setTk_id_podrocja(tk_id_podrocja);
-			gradivo.setTk_id_vrste(tk_id_vrste);
-			gradivo.setTk_id_zalozbe(tk_id_zalozbe);
+			gradivo.setJezik(Jezik.valueOf(request.getParameter("jezik")));
 			
-			//gradivoDAO.dodajGradivo(gradivo);
-			//avtorji?
+			String podrocjeInput = request.getParameter("podrocjeInput");
+			int idPodrocja = -1;
+			if(podrocjeInput!=null && !podrocjeInput.isEmpty()) //? prazn?
+				idPodrocja = podrocjeDAO.dodajPodrocje(podrocjeInput);
+			else if (!request.getParameter("podrocjeSelect").equals("nic"))
+				idPodrocja = Integer.parseInt(request.getParameter("podrocjeSelect"));
+			gradivo.setTk_id_podrocja(idPodrocja);
 			
-			redirect = true;
-			stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+gradivo.getId();
+			String vrstaInput = request.getParameter("vrstaInput");
+			int idVrste = -1;
+			if(vrstaInput!=null && !vrstaInput.isEmpty()) //? prazn?
+				idVrste = vrstaDAO.dodajVrstoGradiva(vrstaInput);
+			else if (!request.getParameter("vrstaSelect").equals("nic"))
+				idVrste = Integer.parseInt(request.getParameter("vrstaSelect"));
+			gradivo.setTk_id_vrste(idVrste);
+
+			String zalozbaInput = request.getParameter("zalozbaInput");
+			int idZalozbe = -1;
+			if(zalozbaInput!=null && !zalozbaInput.isEmpty()) //? prazn?
+				idZalozbe = zalozbaDAO.dodajZalozbo(zalozbaInput);
+			else if (!request.getParameter("zalozbaSelect").equals("nic"))
+				idZalozbe = Integer.parseInt(request.getParameter("zalozbaSelect"));
+			gradivo.setTk_id_zalozbe(idZalozbe);
+			
+			if(idPodrocja!=-1 && idVrste!=-1 && idZalozbe!=-1){
+				List<Integer> idAvtorjev = new ArrayList<Integer>();
+				Avtor avtor = new Avtor();
+				String[] avtorjiSelect = request.getParameterValues("avtorjiSelect");
+				String[] avtorjiImeInput = request.getParameterValues("avtorjiImeInput");
+				String[] avtorjiPriimekInput = request.getParameterValues("avtorjiPriimekInput");
+				
+				String testWhiteSpaceIme = avtorjiImeInput[0].replaceAll("\\s+","");
+				String testWhiteSpacePriimek = avtorjiPriimekInput[0].replaceAll("\\s+","");
+				boolean prviPoln = testWhiteSpaceIme != "" && testWhiteSpacePriimek != "";
+				
+				if(prviPoln){
+					//for zanka pa skozi avtorje, + preverjanja povsod da ni prazno
+					for(int i=0;i<avtorjiImeInput.length;i++){
+						testWhiteSpaceIme = avtorjiImeInput[i].replaceAll("\\s+","");
+						testWhiteSpacePriimek = avtorjiPriimekInput[i].replaceAll("\\s+","");
+						if(testWhiteSpaceIme!="" && testWhiteSpacePriimek!=""){
+							avtor.setIme(avtorjiImeInput[i]);
+							avtor.setPriimek(avtorjiPriimekInput[i]);
+							idAvtorjev.add(avtorDAO.dodajAvtorja(avtor));
+						}
+						
+					}
+				}
+				boolean selectPoln = !avtorjiSelect[0].equals("-1");
+				if(selectPoln){
+					for(int j=0; j<avtorjiSelect.length; j++){
+						if(!avtorjiSelect[j].equals("-1"))
+							idAvtorjev.add(Integer.parseInt(avtorjiSelect[j]));
+					}
+				}
+				
+				if(!prviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
+					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+				else {
+					idGradiva = gradivoDAO.dodajGradivo(gradivo);
+					gradivoAvtorDAO.dodajAvtorGradivo(seznamAvtorjev, idGradiva);
+					redirect = true;
+					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva;
+				}
+			}
+			else{//neko opozorilo  da nekaj ni blo vneseno
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			}
 		}
-		else if(metoda.equals("urediGradivo")){
+		else if(metoda.equals("urediGradivo") && idGradiva!=-1){
 			gradivo = new Gradivo();
+			gradivo.setId(idGradiva);
 			gradivo.setNaslov(request.getParameter("naslov"));
 			gradivo.setOriginalNaslov(request.getParameter("originalNaslov"));
-			gradivo.setJezik(jezik);
-			gradivo.setLetoIzida(letoIzida);
-			gradivo.setISBN(iSBN);
-			gradivo.setOpis(opis);
-			gradivo.setTk_id_podrocja(tk_id_podrocja);
-			gradivo.setTk_id_vrste(tk_id_vrste);
-			gradivo.setTk_id_zalozbe(tk_id_zalozbe);
+			gradivo.setLetoIzida(Integer.parseInt(request.getParameter("leto")));
+			gradivo.setISBN(request.getParameter("isbn"));
+			gradivo.setJezik(Jezik.valueOf(request.getParameter("jezik")));
 			
-			//gradivoDAO.dodajGradivo(gradivo);
-			//avtorji?
+			String podrocjeInput = request.getParameter("podrocjeInput");
+			int idPodrocja = -1;
+			if(podrocjeInput!=null && !podrocjeInput.isEmpty()) //? prazn?
+				idPodrocja = podrocjeDAO.dodajPodrocje(podrocjeInput);
+			else if (!request.getParameter("podrocjeSelect").equals("nic"))
+				idPodrocja = Integer.parseInt(request.getParameter("podrocjeSelect"));
+			gradivo.setTk_id_podrocja(idPodrocja);
+			
+			String vrstaInput = request.getParameter("vrstaInput");
+			int idVrste = -1;
+			if(vrstaInput!=null && !vrstaInput.isEmpty()) //? prazn?
+				idVrste = vrstaDAO.dodajVrstoGradiva(vrstaInput);
+			else if (!request.getParameter("vrstaSelect").equals("nic"))
+				idVrste = Integer.parseInt(request.getParameter("vrstaSelect"));
+			gradivo.setTk_id_vrste(idVrste);
 
-			redirect = true;
-			stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+gradivo.getId();
+			String zalozbaInput = request.getParameter("zalozbaInput");
+			int idZalozbe = -1;
+			if(zalozbaInput!=null && !zalozbaInput.isEmpty()) //? prazn?
+				idZalozbe = zalozbaDAO.dodajZalozbo(zalozbaInput);
+			else if (!request.getParameter("zalozbaSelect").equals("nic"))
+				idZalozbe = Integer.parseInt(request.getParameter("zalozbaSelect"));
+			gradivo.setTk_id_zalozbe(idZalozbe);
+			
+			if(idPodrocja!=-1 && idVrste!=-1 && idZalozbe!=-1){
+				List<Integer> idAvtorjev = new ArrayList<Integer>();
+				Avtor avtor = new Avtor();
+				String[] avtorjiSelect = request.getParameterValues("avtorjiSelect");
+				String[] avtorjiImeInput = request.getParameterValues("avtorjiImeInput");
+				String[] avtorjiPriimekInput = request.getParameterValues("avtorjiPriimekInput");
+				
+				String testWhiteSpaceIme = avtorjiImeInput[0].replaceAll("\\s+","");
+				String testWhiteSpacePriimek = avtorjiPriimekInput[0].replaceAll("\\s+","");
+				boolean prviPoln = testWhiteSpaceIme != "" && testWhiteSpacePriimek != "";
+				
+				if(prviPoln){
+					//for zanka pa skozi avtorje, + preverjanja povsod da ni prazno
+					for(int i=0;i<avtorjiImeInput.length;i++){
+						testWhiteSpaceIme = avtorjiImeInput[i].replaceAll("\\s+","");
+						testWhiteSpacePriimek = avtorjiPriimekInput[i].replaceAll("\\s+","");
+						if(testWhiteSpaceIme!="" && testWhiteSpacePriimek!=""){
+							avtor.setIme(avtorjiImeInput[i]);
+							avtor.setPriimek(avtorjiPriimekInput[i]);
+							idAvtorjev.add(avtorDAO.dodajAvtorja(avtor));
+						}
+						
+					}
+				}
+				boolean selectPoln = !avtorjiSelect[0].equals("-1");
+				if(selectPoln){
+					for(int j=0; j<avtorjiSelect.length; j++){
+						if(!avtorjiSelect[j].equals("-1"))
+							idAvtorjev.add(Integer.parseInt(avtorjiSelect[j]));
+					}
+				}
+				
+				if(!prviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
+					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+				else {
+					//prvo izbris vseh vmesnih za avtorje
+					gradivoAvtorDAO.izbrisiVseAvtorGradivo(idGradiva);
+					gradivoDAO.urediGradivo(gradivo);
+					gradivoAvtorDAO.dodajAvtorGradivo(seznamAvtorjev, idGradiva);
+					redirect = true;
+					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva;
+				}
+			}
+			else{//neko opozorilo  da nekaj ni blo vneseno
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			}
 			
 		}
 		else if(metoda.equals("izbrisi")){
@@ -186,6 +319,9 @@ public class GradivoServlet extends HttpServlet {
 				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 		
 		}
+		
+		if(stran=="") // ce slo kje kaj narobe..
+			stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)
