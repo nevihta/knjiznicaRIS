@@ -43,11 +43,12 @@ public class GradivoServlet extends HttpServlet {
 		String stran="";
 		Gradivo gradivo = new Gradivo();
 		String urejanjeGr=null;
+		boolean redirect = false;
 		
 		if(metoda.equals("dodajGr")){
 			//? dodat neki default id=-1?
 			List<Avtor> avtorji = avtorDAO.pridobiVseAvtorje();
-			request.setAttribute("avtorji", avtorji);
+			request.setAttribute("vsiAvtorji", avtorji);
 			List<Podrocje> podrocja= podrocjeDAO.pridobiVsaPodrocja();
 			request.setAttribute("podrocja", podrocja);
 			List<VrstaGradiva> vrste = vrstaDAO.pridobiVseVrsteGradiva();
@@ -120,9 +121,21 @@ public class GradivoServlet extends HttpServlet {
 			}
 			
 		}
+		else if(metoda.equals("izbrisi")){
+			if(gradivoDAO.izbrisiGradivo(idGradiva)){
+				redirect = true;
+				stran="/knjiznica/GradivoServlet?metoda=pridobiVse";	
+			}
+			else //neko opozorilo da ne more zbrisat
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+		
+		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
-		disp.forward(request,response);
+		if(redirect)
+			response.sendRedirect(stran);
+		else if(disp !=null)
+			disp.forward(request,response);
 
 	}
 
@@ -235,6 +248,7 @@ public class GradivoServlet extends HttpServlet {
 			gradivo.setOriginalNaslov(request.getParameter("originalNaslov"));
 			gradivo.setLetoIzida(Integer.parseInt(request.getParameter("leto")));
 			gradivo.setISBN(request.getParameter("isbn"));
+			gradivo.setOpis(request.getParameter("opis"));
 			gradivo.setJezik(Jezik.valueOf(request.getParameter("jezik")));
 			
 			String podrocjeInput = request.getParameter("podrocjeInput");
@@ -308,15 +322,6 @@ public class GradivoServlet extends HttpServlet {
 				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 			}
 			
-		}
-		else if(metoda.equals("izbrisi")){
-			if(gradivoDAO.izbrisiGradivo(idGradiva)){
-				redirect = true;
-				stran="/knjiznica/GradivoServlet?metoda=pridobiVse";	
-			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-		
 		}
 		
 		if(stran=="") // ce slo kje kaj narobe..
