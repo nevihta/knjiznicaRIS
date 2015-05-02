@@ -28,11 +28,15 @@ public class VrstaGradivaServlet extends HttpServlet {
 		
 		VrstaGradivaDAO vrstaGradivaDAO = VrstaGradivaDAO.dobiInstanco();
 		String metoda="";
+		int idVrsteGradiva=-1;
 		try{
 			metoda = request.getParameter("metoda");
+			idVrsteGradiva = Integer.parseInt(request.getParameter("idVrstaGradiva"));
+
 		}
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
+		boolean redirect=false;
 		
 		
 		if(metoda.equals("pridobiVse")){
@@ -48,9 +52,23 @@ public class VrstaGradivaServlet extends HttpServlet {
 			stran="/glavnaVsebina/VrsteGradiva.jsp"; //placeholder
 		}
 		
+		else if(metoda.equals("izbrisi")){
+			if(vrstaGradivaDAO.izbrisiVrstoGradiva(idVrsteGradiva)){
+				redirect = true;
+				stran="/knjiznica/VrstaGradivaServlet?metoda=pridobiVse";	
+			}
+			else //neko opozorilo da ne more zbrisat
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+		
+		}
+
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
-		disp.forward(request,response);
+		if(redirect)
+			response.sendRedirect(stran);
+		else if(disp !=null)
+			disp.forward(request,response);
 	}
+
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -84,15 +102,7 @@ public class VrstaGradivaServlet extends HttpServlet {
 			stran="/knjiznica/VrstaGradivaServlet?metoda=pridobiVse";		
 			
 		}
-		else if(metoda.equals("izbrisi")){
-			if(vrstaGradivaDAO.izbrisiVrstoGradiva(idVrsteGradiva)){
-				redirect = true;
-				stran="/knjiznica/VrstaGradivaServlet?metoda=pridobiVse";	
-			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-		
-		}
+
 
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)

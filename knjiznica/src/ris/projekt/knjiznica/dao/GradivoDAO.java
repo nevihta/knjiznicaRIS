@@ -162,7 +162,7 @@ public class GradivoDAO {
 					g.setId(id);
 					g.setNaslov(rs.getString("naslov"));
 					g.setOriginalNaslov(rs.getString("originalNaslov"));
-					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
 					g.setLetoIzida(rs.getInt("letoIzida"));
 					g.setISBN(rs.getString("ISBN"));
 					g.setOpis(rs.getString("opis"));
@@ -276,7 +276,7 @@ public class GradivoDAO {
 					g.setId(rs.getInt("ID_gradiva"));
 					g.setNaslov(rs.getString("naslov"));
 					g.setOriginalNaslov(rs.getString("originalNaslov"));
-					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
+					//g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
 					g.setLetoIzida(rs.getInt("letoIzida"));
 					g.setISBN(rs.getString("ISBN"));
 					g.setOpis(rs.getString("opis"));
@@ -288,7 +288,7 @@ public class GradivoDAO {
 			
 			rs.close();
 			st.close();
-			
+				
 			ArrayList<Avtor> avtorjiGradiva;
 			Avtor a;
 			st=povezava.prepareStatement("select a.* from avtor a, gradivo_avtor ga where a.ID_avtorja=ga.tk_id_avtorja and ga.tk_id_gradiva=?");
@@ -306,7 +306,8 @@ public class GradivoDAO {
 			}
 		
 		}
-		catch(SQLException e){e.printStackTrace();} 
+		catch(SQLException e){
+			e.printStackTrace();} 
 		finally{
 			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}

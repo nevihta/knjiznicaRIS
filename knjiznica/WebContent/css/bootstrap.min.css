@@ -205,6 +205,10 @@ table#izpisOseb td,th{
 	padding-right: 70;
 }
 
+#izpisGradiva td,th{
+	padding-right: 25;
+}
+
 table#izpisOseb th{
 	padding-bottom: 5;
 }
