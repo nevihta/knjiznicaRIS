@@ -64,7 +64,6 @@ public class GradivoServlet extends HttpServlet {
 			List<GradivoZaIzpis> list = new ArrayList<GradivoZaIzpis>();
 			
 			try{
-				//AVTORJI!!!!!!
 				list = gradivoDAO.pridobiVsaGradivaZaIzpis();
 				request.setAttribute("gradiva", list);
 			}
@@ -174,7 +173,7 @@ public class GradivoServlet extends HttpServlet {
 				idVrste = vrstaDAO.dodajVrstoGradiva(vrstaInput);
 			else if (!request.getParameter("vrstaSelect").equals("nic"))
 				idVrste = Integer.parseInt(request.getParameter("vrstaSelect"));
-			gradivo.setTk_id_vrste(idVrste);
+			gradivo.setTk_id_vrste(idVrste); 
 
 			String zalozbaInput = request.getParameter("zalozbaInput");
 			int idZalozbe = -1;
@@ -220,7 +219,7 @@ public class GradivoServlet extends HttpServlet {
 					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 				else {
 					idGradiva = gradivoDAO.dodajGradivo(gradivo);
-					gradivoAvtorDAO.dodajAvtorGradivo(seznamAvtorjev, idGradiva);
+					gradivoAvtorDAO.dodajAvtorGradivo(idAvtorjev, idGradiva);
 					redirect = true;
 					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva;
 				}
@@ -300,7 +299,7 @@ public class GradivoServlet extends HttpServlet {
 					//prvo izbris vseh vmesnih za avtorje
 					gradivoAvtorDAO.izbrisiVseAvtorGradivo(idGradiva);
 					gradivoDAO.urediGradivo(gradivo);
-					gradivoAvtorDAO.dodajAvtorGradivo(seznamAvtorjev, idGradiva);
+					gradivoAvtorDAO.dodajAvtorGradivo(idAvtorjev, idGradiva);
 					redirect = true;
 					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva;
 				}

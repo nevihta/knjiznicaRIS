@@ -18,7 +18,7 @@
 				<i	class="fa fa-home fa-medium"> </i>Domov</a></li>
 			<li><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=vse"  <c:if test= "${meni eq 'osebe'}"> class="active" </c:if>>
 				<i class="fa fa-shopping-cart fa-medium"></i>Uporabniki</a></li>
-			<li><a href="${pageContext.request.contextPath}/glavnaVsebina/Gradivo.jsp"  <c:if test= "${meni eq 'gradivo'}"> class="active" </c:if>><i
+			<li><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiVse"  <c:if test= "${meni eq 'gradivo'}"> class="active" </c:if>><i
 					class="fa fa-shopping-cart fa-medium"></i>Gradivo</a></li>
 			<li><a href="${pageContext.request.contextPath}/glavnaVsebina/Izposoja.jsp"  <c:if test= "${meni eq 'izposoja'}"> class="active" </c:if>><i
 					class="fa fa-shopping-cart fa-medium"></i>Izposoja</a></li>

@@ -16,16 +16,17 @@
 			<b>Knjižnica</b>
 		</h1>
 		<div class="tm-right-inner-container">
-		<h1 class="templatemo-header"></h1>			
+		<h1 class="templatemo-header">Pregled gradiva</h1>			
 		<br/>			
 		<table >
 			<tr>
-				<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse">Avtorji</a>|</td>
-				<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse">Področja</a> |</td> 
-				<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse">Vrste gradiva</a> |</td> 
+				<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse">Avtorji</a> | </td>
+				<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse">Področja</a> | </td> 
+				<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse">Vrste gradiva</a> | </td> 
 				<td><a href="${pageContext.request.contextPath}/ZalozbaServlet?metoda=pridobiVse">Založbe</a></td>
 			</tr>
 		</table>
+		<br/>
 		</div>
 	</div>
 </div>

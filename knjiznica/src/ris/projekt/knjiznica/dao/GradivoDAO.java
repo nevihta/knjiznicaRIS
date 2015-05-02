@@ -6,14 +6,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import com.sun.xml.internal.ws.developer.MemberSubmissionAddressing.Validation;
+import java.util.List;
 
 import ris.projekt.knjiznica.baza.Povezava;
+import ris.projekt.knjiznica.beans.Avtor;
 import ris.projekt.knjiznica.beans.Gradivo;
+import ris.projekt.knjiznica.beans.GradivoZaIzpis;
 import ris.projekt.knjiznica.beans.Jezik;
-import ris.projekt.knjiznica.beans.Oseba;
-import ris.projekt.knjiznica.beans.TipOsebe;
+
 
 public class GradivoDAO {
 
@@ -251,6 +251,60 @@ public class GradivoDAO {
 					g.setTk_id_zalozbe(rs.getInt("tk_id_zalozbe"));
 					gradiva.add(g);
 			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return gradiva;
+	}
+
+	public List<GradivoZaIzpis> pridobiVsaGradivaZaIzpis() {
+		ArrayList<GradivoZaIzpis> gradiva=new ArrayList<GradivoZaIzpis>();
+		GradivoZaIzpis g;
+		try{
+			povezava =  Povezava.getConnection();
+
+			st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja ");
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+					g=new GradivoZaIzpis();
+					g.setId(rs.getInt("ID_gradiva"));
+					g.setNaslov(rs.getString("naslov"));
+					g.setOriginalNaslov(rs.getString("originalNaslov"));
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
+					g.setLetoIzida(rs.getInt("letoIzida"));
+					g.setISBN(rs.getString("ISBN"));
+					g.setOpis(rs.getString("opis"));
+					g.setPodrocje(rs.getString("podrocje"));
+					g.setVrsta(rs.getString("vrsta"));
+					g.setZalozba(rs.getString("zalozba"));
+					gradiva.add(g);
+			}
+			
+			rs.close();
+			st.close();
+			
+			ArrayList<Avtor> avtorjiGradiva;
+			Avtor a;
+			st=povezava.prepareStatement("select a.* from avtor a, gradivo_avtor ga where a.ID_avtorja=ga.tk_id_avtorja and ga.tk_id_gradiva=?");
+			for(int i=0; i<gradiva.size(); i++){
+				avtorjiGradiva=new ArrayList<Avtor>();
+				st.setInt(1, gradiva.get(i).getId());
+				rs=st.executeQuery();
+				while (rs.next())
+				{
+					a=new Avtor(rs.getInt("ID_avtorja"), rs.getString("ime"), rs.getString("priimek"));
+					avtorjiGradiva.add(a);
+				}
+				rs.close();
+				gradiva.get(i).setAvtorji(avtorjiGradiva);
+			}
+		
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
