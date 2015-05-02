@@ -10,7 +10,13 @@ http://stackoverflow.com/questions/10525744/css-table-cell-equal-width
 * {	font-family: 'Open Sans', sans-serif; }
 
 html, body { height: 100%; }
+.hidden{
+    display:none;
+}
 
+.unhidden{
+    display:block;
+}
 .green { color: #3B3; }
 .blue { color: #09E; }
 

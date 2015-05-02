@@ -6,6 +6,7 @@
 		<!-- http://www.templatemo.com/preview/templatemo_419_black_white -->
 		<title>Gradivo</title>
 		<%@ include file="head.jsp"%>
+		<script src="${pageContext.request.contextPath}/js/dodajanjeGradiva.js"></script>
 	</head>
 	<body>
 		<div class="templatemo-container">
@@ -52,30 +53,48 @@
 						<input type="text" name="jezik" class="textbox" value='<c:out value="${gradivo.jezik}" />' required/>
 	
 						<h4>Področje:</h4>
-						<input type="text" name="podrocjeInput" class="textbox" /> 
-						<select name="podrocjeSelect">
-						  	<c:forEach var="podr" items="${podrocja}" >
-								<option value='<c:out value="${podr.id}" />'><c:out value="${podr.naziv}" /></option>
-							</c:forEach>
-						</select> 
-
+						<a href="javascript:unhide('podrocjeS', 'podrocjeI')" class="button">Izberi iz seznama</a>
+    					<a href="javascript:unhide('podrocjeI', 'podrocjeS')" class="button">Dodaj novo</a><br /> <br /> 
+						<div id="podrocjeI"  class="hidden">
+							<input type="text" name="podrocjeInput" class="textbox" /> 
+						</div>
+						<div id="podrocjeS"  class="hidden">
+							<select name="podrocjeSelect">
+							  	<c:forEach var="podr" items="${podrocja}" >
+									<option value='<c:out value="${podr.id}" />'><c:out value="${podr.naziv}" /></option>
+								</c:forEach>
+							</select> 
+						</div>
+						
 						<h4>Vrsta gradiva: </h4>
-						<input type="text" name="vrstaInput" class="textbox" />
-						<select name="vrstaSelect">
-						  	<c:forEach var="vrst" items="${vrsteGradiva}" >
-								<option value='<c:out value="${vrst.id}" />'><c:out value="${vrst.naziv}" /></option>
-							</c:forEach>
-						</select>
+						<a href="javascript:unhide('vrstaS', 'vrstaI')" class="button">Izberi iz seznama</a>
+    					<a href="javascript:unhide('vrstaI', 'vrstaS')" class="button">Dodaj novo</a><br /> <br /> 
+						<div id="vrstaI"  class="hidden">
+							<input type="text" name="vrstaInput" class="textbox" />
+						</div>
+						<div id="vrstaS"  class="hidden">
+							<select name="vrstaSelect">
+							  	<c:forEach var="vrst" items="${vrsteGradiva}" >
+									<option value='<c:out value="${vrst.id}" />'><c:out value="${vrst.naziv}" /></option>
+								</c:forEach>
+							</select>
+						</div>
 						
 						<h4>Založba:</h4>
-						<input type="text" name="zalozbaInput" class="textbox" />
-						<select name="zalozbaSelect">
-						  	<c:forEach var="zal" items="${zalozbe}" >
-								<option value='<c:out value="${zal.id}" />'><c:out value="${zal.naziv}" /></option>
-							</c:forEach>
-						</select>
+						<a href="javascript:unhide('zalozbaS', 'zalozbaI')" class="button">Izberi iz seznama</a>
+    					<a href="javascript:unhide('zalozbaI', 'zalozbaS')" class="button">Dodaj novo</a><br /> <br /> 
+						<div id="zalozbaI"  class="hidden">
+							<input type="text" name="zalozbaInput" class="textbox" />
+						</div>
+						<div id="zalozbaS"  class="hidden">
+							<select name="zalozbaSelect">
+							  	<c:forEach var="zal" items="${zalozbe}" >
+									<option value='<c:out value="${zal.id}" />'><c:out value="${zal.naziv}" /></option>
+								</c:forEach>
+							</select>
+						</div>
 						
-						<br /> 
+						<br /> <br /> 
 						<input type="button" value="Prekliči" onClick="history.go(-1);return true;" class="button"/> 
 						<input type="submit" value="Potrdi" name="submit" class="button" />
 
