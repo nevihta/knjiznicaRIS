@@ -1,3 +1,4 @@
+DROP TABLE `knjiznica`.`gradivo_storitev`;
 DROP TABLE `knjiznica`.`gradivo_avtor`;
 DROP TABLE `knjiznica`.`storitev`;
 DROP TABLE `knjiznica`.`gradivo`;

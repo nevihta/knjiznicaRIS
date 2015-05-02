@@ -55,7 +55,7 @@ public class GradivoDAO {
            
 			st.close();
 			
-            st=povezava.prepareStatement("select ID_gradiva from gradivo where naslov=?, originalNaslov=?, jezik=?, letoIzida=?, ISBN=?, opis=?, tk_id_podrocja=?, tk_id_vrste=?, tk_id_zalozbe=?");
+            st=povezava.prepareStatement("select ID_gradiva from gradivo where naslov=? and originalNaslov=? and jezik=? and letoIzida=? and ISBN=? and opis=? and tk_id_podrocja=? and tk_id_vrste=? and tk_id_zalozbe=?");
         	st.setString(1, g.getNaslov());
 			st.setString(2, g.getOriginalNaslov());
 			st.setString(3, g.getJezik().toString());
@@ -88,6 +88,8 @@ public class GradivoDAO {
 	{
 		try
 		{
+			povezava =  Povezava.getConnection();
+
 	        st=povezava.prepareStatement("update gradivo set naslov=?, originalNaslov=?, jezik=?, letoIzida=?, ISBN=?, opis=?, tk_id_podrocja=?, tk_id_vrste=?, tk_id_zalozbe=? where ID_gradiva=?");
 	    	st.setString(1, g.getNaslov());
 			st.setString(2, g.getOriginalNaslov());
@@ -118,8 +120,10 @@ public class GradivoDAO {
 		boolean izbris=false;
 		try
 		{
+			povezava =  Povezava.getConnection();
+
 	        //preveri, èe je gradivo že bilo izposojeno
-			st=povezava.prepareStatement("select count(*) as st from gradivo_storitev where tk_id_gradiva=?");
+			st=povezava.prepareStatement("select count(*) as st from storitev where tk_id_gradiva=?");
 			st.setInt(1, id);
 			rs=st.executeQuery();
 			if(rs.next()){
@@ -139,7 +143,6 @@ public class GradivoDAO {
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
-			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
@@ -216,6 +219,47 @@ public class GradivoDAO {
 		return gradiva;
 	}
 	
+	//pridobi gradiva preko roka
+	public ArrayList<Gradivo> pridobiGradivaKiSoPrekoRokaVrnitve(){
+		
+		ArrayList<Gradivo> gradiva=new ArrayList<Gradivo>();
+		Gradivo g;
+		java.util.Date danasnjiDatum=new java.util.Date();
+
+		try{
+			povezava =  Povezava.getConnection();
+			
+			st = povezava.prepareStatement("select g.* from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.rokVracila<?");
+			
+			st.setDate(1, (Date) danasnjiDatum);
+			rs = st.executeQuery();
+			
+			if (rs.next())
+			{
+					g=new Gradivo();
+					g.setId(rs.getInt("ID_Gradiva"));
+					g.setNaslov(rs.getString("naslov"));
+					g.setOriginalNaslov(rs.getString("originalNaslov"));
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
+					g.setLetoIzida(rs.getInt("letoIzida"));
+					g.setISBN(rs.getString("ISBN"));
+					g.setOpis(rs.getString("opis"));
+					g.setTk_id_podrocja(rs.getInt("tk_id_podrocja"));
+					g.setTk_id_vrste(rs.getInt("tk_id_vrste"));
+					g.setTk_id_zalozbe(rs.getInt("tk_id_zalozbe"));
+					gradiva.add(g);
+			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return gradiva;
+	}
+	
+	
 	//èe je izposojeno ali prosto
 	public ArrayList<Gradivo> pridobiGradivaGledeNaStanje(String stanje){
 		
@@ -227,11 +271,11 @@ public class GradivoDAO {
 			povezava =  Povezava.getConnection();
 			
 			if(stanje.equals("izposojeno")){
-				st = povezava.prepareStatement("select g.* from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.datumVracila>?");
+				st = povezava.prepareStatement("select g.* from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.datumVracila=null");
 			}
 			else{ //èe je prosto
 				//bo potrebno preverit èe logika štima ... ko pridemo tak daleè :D
-				st = povezava.prepareStatement("select * from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.datumVracila<?");
+				st = povezava.prepareStatement("select * from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.datumVracila!=null");
 			}
 			st.setDate(1, (Date) danasnjiDatum);
 			rs = st.executeQuery();

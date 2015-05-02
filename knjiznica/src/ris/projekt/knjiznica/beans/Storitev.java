@@ -7,20 +7,24 @@ public class Storitev {
 	private int id;
 	private Date datumIzposoje;
 	private Date datumVrnitve;
+	private Date rokVrnitve;
 	private boolean zePodaljsano;
 	private int tk_id_clana;
+	private int tk_id_gradiva;
 	private int tk_id_knjiznicarja;
 
 	public Storitev(){
 		
 	}
 	
-	public Storitev(int id, Date datumIzposoje, Date datumVrnitve, boolean zePodaljsano, int tk_id_clana, int tk_id_knjiznicarja){
+	public Storitev(int id, Date datumIzposoje, Date datumVrnitve, Date rokVrnitve, boolean zePodaljsano, int tk_id_clana, int tk_id_gradiva, int tk_id_knjiznicarja){
 		this.id=id;
 		this.datumIzposoje=datumIzposoje;
 		this.datumVrnitve=datumVrnitve;
+		this.rokVrnitve=rokVrnitve;
 		this.zePodaljsano=zePodaljsano;
 		this.tk_id_clana=tk_id_clana;
+		this.tk_id_gradiva=tk_id_gradiva;
 		this.tk_id_knjiznicarja=tk_id_knjiznicarja;
 
 	}
@@ -71,6 +75,22 @@ public class Storitev {
 
 	public void setTk_id_knjiznicarja(int tk_id_knjiznicarja) {
 		this.tk_id_knjiznicarja = tk_id_knjiznicarja;
+	}
+
+	public Date getRokVrnitve() {
+		return rokVrnitve;
+	}
+
+	public void setRokVrnitve(Date rokVrnitve) {
+		this.rokVrnitve = rokVrnitve;
+	}
+
+	public int getTk_id_gradiva() {
+		return tk_id_gradiva;
+	}
+
+	public void setTk_id_gradiva(int tk_id_gradiva) {
+		this.tk_id_gradiva = tk_id_gradiva;
 	}
 	
 	

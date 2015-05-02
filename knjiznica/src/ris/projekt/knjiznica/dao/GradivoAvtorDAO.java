@@ -31,6 +31,8 @@ public class GradivoAvtorDAO {
 	public void dodajAvtorGradivo(List<Integer> idAvtorjev, int idGradiva)
 	{
 		try {
+			povezava =  Povezava.getConnection();
+			
 			st=povezava.prepareStatement("insert into gradivo_avtor(tk_id_gradiva, tk_id_avtorja) values (?,?)");
 			st.setInt(1, idGradiva);
 			for(int i=0; i<idAvtorjev.size(); i++)

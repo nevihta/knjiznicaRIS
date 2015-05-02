@@ -73,16 +73,12 @@ CREATE TABLE `knjiznica`.`storitev` (
   `ID_storitve` INT NOT NULL AUTO_INCREMENT,
   `datumIzposoje` DATE NULL,
   `datumVracila` DATE NULL,
+  `rokVracila` DATE NULL,
   `zePodaljsano` BOOLEAN NULL,
   `tk_id_clana` INT NULL,
+  `tk_id_gradiva` INT NULL,
   `tk_id_knjiznicarja` INT NULL,
   PRIMARY KEY (`ID_storitve`));
-
-CREATE TABLE `knjiznica`.`gradivo_storitev` (
-  `ID_gs` INT NOT NULL AUTO_INCREMENT,
-  `tk_id_gradiva` INT NULL,
-  `tk_id_storitve` INT NULL,
-  PRIMARY KEY (`ID_gs`));
 
 CREATE TABLE `knjiznica`.`gradivo_avtor` (
   `ID_ga` INT NOT NULL AUTO_INCREMENT,
