@@ -39,10 +39,23 @@
 							<select name="avtorjiSelect">
 								<option value="-1"> ----- </option>
 								<c:forEach var="avt" items="${vsiAvtorji}" >
-									<option value='<c:out value="${avt.id}" />'><c:out value="${avt.ime}" /><c:out value="${avt.priimek}" /></option>
+									<option value='<c:out value="${avt.id}" />' ${avt.id == avtorji[0].id ? 'selected' : ''}><c:out value="${avt.ime}" /><c:out value="${avt.priimek}" /></option>
 								</c:forEach>
 							</select>
-							<br /><br />
+							<br />
+							<c:forEach items="${avtorji}" var="avtor" varStatus="i">
+								<c:if test="${i.index >= 1}">
+									<div id="${i.index }urejanje">
+										<select name="avtorjiSelect">
+											<option value="-1"> ----- </option>
+											<c:forEach var="avt" items="${vsiAvtorji}" >
+												<option value='<c:out value="${avt.id}" />' ${avt.id == avtor.id ? 'selected' : ''}><c:out value="${avt.ime}" /><c:out value="${avt.priimek}" /></option>
+											</c:forEach>
+										</select>
+										<a href="javascript:izbrisi('${i.index }urejanje')">Izbriši</a><br /><br />
+									</div>
+						       	</c:if>
+						    </c:forEach>
 						</div>
 
 						<h4>Leto izida:</h4>
@@ -67,11 +80,11 @@
 						<div id="podrocjeI"  class="hidden">
 							<input type="text" name="podrocjeInput" class="textbox" /> 
 						</div>
-						<div id="podrocjeS"  class="hidden">
+						<div id="podrocjeS" >
 							<select name="podrocjeSelect">
 								<option value="nic"> ----- </option>
 							  	<c:forEach var="podr" items="${podrocja}" >
-									<option value='<c:out value="${podr.id}" />'><c:out value="${podr.naziv}" /></option>
+									<option value='<c:out value="${podr.id}" />' ${podr.id == podrocje.id ? 'selected' : ''}><c:out value="${podr.naziv}" /></option>
 								</c:forEach>
 							</select> 
 						</div>
@@ -82,11 +95,11 @@
 						<div id="vrstaI"  class="hidden">
 							<input type="text" name="vrstaInput" class="textbox" />
 						</div>
-						<div id="vrstaS"  class="hidden">
+						<div id="vrstaS" >
 							<select name="vrstaSelect">
 								<option value="nic"> ----- </option>
 							  	<c:forEach var="vrst" items="${vrsteGradiva}" >
-									<option value='<c:out value="${vrst.id}" />'><c:out value="${vrst.naziv}" /></option>
+									<option value='<c:out value="${vrst.id}" />' ${vrst.id == vrsta.id ? 'selected' : ''}><c:out value="${vrst.naziv}" /></option>
 								</c:forEach>
 							</select>
 						</div>
@@ -97,11 +110,11 @@
 						<div id="zalozbaI"  class="hidden">
 							<input type="text" name="zalozbaInput" class="textbox" />
 						</div>
-						<div id="zalozbaS"  class="hidden">
+						<div id="zalozbaS" >
 							<select name="zalozbaSelect">
 								<option value="nic"> ----- </option>
 							  	<c:forEach var="zal" items="${zalozbe}" >
-									<option value='<c:out value="${zal.id}" />'><c:out value="${zal.naziv}" /></option>
+									<option value='<c:out value="${zal.id}" />' ${zal.id == zalozba.id ? 'selected' : ''}><c:out value="${zal.naziv}" /></option>
 								</c:forEach>
 							</select>
 						</div>

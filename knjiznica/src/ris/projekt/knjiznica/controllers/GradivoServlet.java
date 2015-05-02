@@ -80,6 +80,7 @@ public class GradivoServlet extends HttpServlet {
 //				}
 //				else
 					list = gradivoDAO.pridobiVsaGradivaZaIzpis();
+					System.out.println("vsa gradiva:"+list.size());
 				request.setAttribute("gradiva", list);
 			}
 			catch(NullPointerException e){
@@ -300,23 +301,6 @@ public class GradivoServlet extends HttpServlet {
 				String[] avtorjiImeInput = request.getParameterValues("avtorjiImeInput");
 				String[] avtorjiPriimekInput = request.getParameterValues("avtorjiPriimekInput");
 				
-				String testWhiteSpaceIme = avtorjiImeInput[0].replaceAll("\\s+","");
-				String testWhiteSpacePriimek = avtorjiPriimekInput[0].replaceAll("\\s+","");
-				boolean prviPoln = testWhiteSpaceIme != "" && testWhiteSpacePriimek != "";
-				
-				if(prviPoln){
-					//for zanka pa skozi avtorje, + preverjanja povsod da ni prazno
-					for(int i=0;i<avtorjiImeInput.length;i++){
-						testWhiteSpaceIme = avtorjiImeInput[i].replaceAll("\\s+","");
-						testWhiteSpacePriimek = avtorjiPriimekInput[i].replaceAll("\\s+","");
-						if(testWhiteSpaceIme!="" && testWhiteSpacePriimek!=""){
-							avtor.setIme(avtorjiImeInput[i]);
-							avtor.setPriimek(avtorjiPriimekInput[i]);
-							idAvtorjev.add(avtorDAO.dodajAvtorja(avtor));
-						}
-						
-					}
-				}
 				boolean selectPoln = !avtorjiSelect[0].equals("-1");
 				if(selectPoln){
 					for(int j=0; j<avtorjiSelect.length; j++){
@@ -324,6 +308,27 @@ public class GradivoServlet extends HttpServlet {
 							idAvtorjev.add(Integer.parseInt(avtorjiSelect[j]));
 					}
 				}
+				
+				boolean prviPoln = false;
+				try{
+					String testWhiteSpaceIme = avtorjiImeInput[0].replaceAll("\\s+","");
+					String testWhiteSpacePriimek = avtorjiPriimekInput[0].replaceAll("\\s+","");
+					prviPoln = testWhiteSpaceIme != "" && testWhiteSpacePriimek != "";
+					if(prviPoln){
+						System.out.println("prvi poln");
+						//for zanka pa skozi avtorje, + preverjanja povsod da ni prazno
+						for(int i=0;i<avtorjiImeInput.length;i++){
+							testWhiteSpaceIme = avtorjiImeInput[i].replaceAll("\\s+","");
+							testWhiteSpacePriimek = avtorjiPriimekInput[i].replaceAll("\\s+","");
+							if(testWhiteSpaceIme!="" && testWhiteSpacePriimek!=""){
+								avtor.setIme(avtorjiImeInput[i]);
+								avtor.setPriimek(avtorjiPriimekInput[i]);
+								idAvtorjev.add(avtorDAO.dodajAvtorja(avtor));
+							}
+							
+						}
+					}
+				}catch(NullPointerException e){}
 				
 				if(!prviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
 					stran = "/glavnaVsebina/Domov.jsp"; //placeholder

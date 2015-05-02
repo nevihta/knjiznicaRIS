@@ -54,3 +54,8 @@ function dodajNovo(){
 	noviDiv.appendChild(br);
 	div.appendChild(noviDiv);
 }
+
+function izbrisi(id){
+	var div = document.getElementById(id);
+	div.remove();
+}
