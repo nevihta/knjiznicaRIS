@@ -63,9 +63,23 @@ public class GradivoServlet extends HttpServlet {
 		}
 		else if(metoda.equals("pridobiVse")){
 			List<GradivoZaIzpis> list = new ArrayList<GradivoZaIzpis>();
+			String filter = request.getParameter("filter");
+			
+			List<Podrocje> podrocja= podrocjeDAO.pridobiVsaPodrocja();
+			request.setAttribute("podrocja", podrocja);
+			List<VrstaGradiva> vrste = vrstaDAO.pridobiVseVrsteGradiva();
+			request.setAttribute("vrsteGradiva", vrste);
+			List<Zalozba> zalozbe = zalozbaDAO.pridobiVseZalozbe();
+			request.setAttribute("zalozbe", zalozbe);
+			Jezik[] jeziki = Jezik.values();
+			request.setAttribute("jeziki", jeziki);
 			
 			try{
-				list = gradivoDAO.pridobiVsaGradivaZaIzpis();
+				if(filter.equals("true")){
+					
+				}
+				else
+					list = gradivoDAO.pridobiVsaGradivaZaIzpis();
 				request.setAttribute("gradiva", list);
 			}
 			catch(NullPointerException e){
@@ -195,7 +209,7 @@ public class GradivoServlet extends HttpServlet {
 			else if (!request.getParameter("zalozbaSelect").equals("nic"))
 				idZalozbe = Integer.parseInt(request.getParameter("zalozbaSelect"));
 			gradivo.setTk_id_zalozbe(idZalozbe);
-			
+			System.out.println(idZalozbe);
 			if(idPodrocja!=-1 && idVrste!=-1 && idZalozbe!=-1){
 				List<Integer> idAvtorjev = new ArrayList<Integer>();
 				Avtor avtor = new Avtor();
