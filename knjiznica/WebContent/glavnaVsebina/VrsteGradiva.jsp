@@ -57,14 +57,7 @@
 				<br />
 
 
-				<table>
-					<tr>
-
-						<td><a
-							href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse">Vrste gradiv</a>
-						</td>
-					</tr>
-				</table>
+				
 				<br>
 
 				<table id="izpisVrst">
@@ -80,14 +73,11 @@
 							<td><p><c:out value="${vrsta.naziv}" /></p></td>							
 							<td><p hidden><c:out value="${vrsta.id }" /></p></td>
 
-							<td><button value="${loop.index}"
-									onClick="uredi(this.value)" class="button">Uredi</button></td>
+							<td><form><button value="${loop.index}"
+									onClick="uredi(this.value)" class="smallbutton">Uredi</button></form></td>
 									
-							<td><form
-									action="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />"
-									method="post">
-									<input type="submit" value="Izbrisi" name="submit"
-										class="button" />
+							<td><form action="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />" method="post">
+									<input type="submit" value="Izbrisi" name="submit"	class="smallbutton" />
 								</form></td>
 						</tr>
 					</c:forEach>

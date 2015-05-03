@@ -74,7 +74,7 @@
 					<tr>
 						<th>Ime</th>
 						<th>Priimek</th>
-
+<hr>
 					</tr>
 
 					<c:forEach var="avtor" items="${avtorji}" varStatus="loop">
@@ -84,13 +84,13 @@
 							<td><p><c:out value="${avtor.priimek }" /></p></td>
 							<td><p hidden><c:out value="${avtor.id }" /></p></td>
 
-							<td><button value="${loop.index}"
-									onClick="uredi(this.value)" class="button">Uredi</button></td>
+							<td><form><button value="${loop.index}"
+									onClick="uredi(this.value)" class="smallbutton">Uredi</button></form></td>
 							<td><form
 									action="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />"
 									method="post">
 									<input type="submit" value="Izbrisi" name="submit"
-										class="button" />
+										class="smallbutton" />
 								</form></td>
 						</tr>
 					</c:forEach>

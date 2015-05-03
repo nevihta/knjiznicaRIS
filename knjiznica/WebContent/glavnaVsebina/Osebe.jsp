@@ -29,10 +29,11 @@
 							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=knjiznicar"> Knjižničarji </a> | 
 							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=vse"> Vsi</a>
 							</td>
+							
 						</tr>
 					</table>
 					<br>
-					
+					<hr>
 					<table id="izpisOseb">
 						<tr>
 							<th>Članska št.</th>

@@ -2364,6 +2364,32 @@ pre code {
 table {
 	background-color: transparent
 }
+.smallbutton {
+  background: #7a787a;
+  background-image: -webkit-linear-gradient(top, #7a787a, #000000);
+  background-image: -moz-linear-gradient(top, #7a787a, #000000);
+  background-image: -ms-linear-gradient(top, #7a787a, #000000);
+  background-image: -o-linear-gradient(top, #7a787a, #000000);
+  background-image: linear-gradient(to bottom, #7a787a, #000000);
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  border-radius: 0px;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 13px;
+  padding: 3px 5px 3px 5px;
+  text-decoration: none;
+}
+
+.smallbutton:hover {
+  background: #bfbfbf;
+  background-image: -webkit-linear-gradient(top, #bfbfbf, #6e6e6e);
+  background-image: -moz-linear-gradient(top, #bfbfbf, #6e6e6e);
+  background-image: -ms-linear-gradient(top, #bfbfbf, #6e6e6e);
+  background-image: -o-linear-gradient(top, #bfbfbf, #6e6e6e);
+  background-image: linear-gradient(to bottom, #bfbfbf, #6e6e6e);
+  text-decoration: none;
+}
 .button {
    border: 1px solid #435057;
    background: #000000;

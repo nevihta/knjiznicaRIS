@@ -81,13 +81,13 @@
 							<td><p hidden><c:out value="${zalozba.id }" /></p></td>
 
 							<td><button value="${loop.index}"
-									onClick="uredi(this.value)" class="button">Uredi</button></td>
+									onClick="uredi(this.value)" class="smallbutton">Uredi</button></td>
 									
 							<td><form
 									action="${pageContext.request.contextPath}/ZalozbaServlet?metoda=izbrisi&idZalozba=<c:out value='${zalozba.id}' />"
 									method="post">
 									<input type="submit" value="Izbrisi" name="submit"
-										class="button" />
+										class="smallbutton" />
 								</form></td>
 						</tr>
 					</c:forEach>
