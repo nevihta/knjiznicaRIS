@@ -39,9 +39,21 @@
 				<b>Knjižnica</b> 
 			</h1>
 			<div class="tm-right-inner-container">
-				<h1 class="templatemo-header">Pregled področij</h1>
+				<h1 class="templatemo-header"></h1>
+				<br/>
+				<table >
+					<tr>
+						<td><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiVse">Gradiva</a> | </td>
+				<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse">Avtorji</a> | </td>
+				<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse"><b>Področja</b></a> | </td> 
+				<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse">Vrste gradiva</a> | </td> 
+				<td><a href="${pageContext.request.contextPath}/ZalozbaServlet?metoda=pridobiVse">Založbe</a></td>
+					</tr>
+				</table>
+				<br/>
+				
 				<input id="dodaj" type="button" value="Dodaj" onClick="prikaz()" class="button" />
-				</br>
+				<br/>
 				<div id="obrazec" style="display: none;">
 					<form id="f"
 						action="${pageContext.request.contextPath}/PodrocjeServlet?metoda=dodaj"
@@ -51,44 +63,23 @@
 							id="idPodrocje" type="hidden" name="idPodrocje" class="textbox" />
 					</form>
 				</div>
-
-
-
-				<br />
-
-
-				<table>
+				<br/>
+		
+				<table class="izpis" id="izpisPodrocij">
 					<tr>
-
-						<td><a
-							href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse">Področja</a>
-						</td>
+						<th>Naziv področja</th>
 					</tr>
-				</table>
-				<br>
-
-				<table id="izpisPodrocij">
-					<tr>
-						<th>Naziv</th>
-						
-
-					</tr>
+							
 
 					<c:forEach var="podrocje" items="${podrocja}" varStatus="loop">
 						<tr>
 						
 							<td><p><c:out value="${podrocje.naziv}" /></p></td>							
-							<td><p hidden><c:out value="${podrocje.id }" /></p></td>
-
-							<td><button value="${loop.index}"
-									onClick="uredi(this.value)" class="button">Uredi</button></td>
-									
-							<td><form
-									action="${pageContext.request.contextPath}/PodrocjeServlet?metoda=izbrisi&idPodrocje=<c:out value='${podrocje.id}' />"
-									method="post">
-									<input type="submit" value="Izbrisi" name="submit"
-										class="button" />
-								</form></td>
+							<td><p hidden="true"><c:out value="${podrocje.id }" /></p></td>
+							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=izbrisi&idPodrocje=<c:out value='${podrocje.id}' />">Izbriši</a>
+							
+							</td>
 						</tr>
 					</c:forEach>
 				</table>

@@ -39,9 +39,21 @@
 				<b>Knjižnica</b> 
 			</h1>
 			<div class="tm-right-inner-container">
-				<h1 class="templatemo-header">Pregled vrst gradiv</h1>
+				<h1 class="templatemo-header"></h1>
+				<br/>
+				<table >
+					<tr>
+						<td><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiVse">Gradiva</a> | </td>
+						<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse">Avtorji</a> | </td>
+						<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse">Področja</a> | </td> 
+						<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse"><b>Vrste gradiva</b></a> | </td> 
+						<td><a href="${pageContext.request.contextPath}/ZalozbaServlet?metoda=pridobiVse">Založbe</a></td>
+					</tr>
+				</table>
+				<br/>
+				
 				<input id="dodaj" type="button" value="Dodaj" onClick="prikaz()" class="button" />
-				</br>
+				<br/>
 				<div id="obrazec" style="display: none;">
 					<form id="f"
 						action="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=dodaj"
@@ -52,33 +64,24 @@
 					</form>
 				</div>
 
+				<br/>
 
-
-				<br />
-
-
-				
-				<br>
 
 				<table id="izpisVrst">
 					<tr>
-						<th>Naziv</th>
-						
-
+						<th>Naziv vrste gradiva</th>
+	
 					</tr>
 
 					<c:forEach var="vrsta" items="${vrsteGradiva}" varStatus="loop">
 						<tr>
 						
 							<td><p><c:out value="${vrsta.naziv}" /></p></td>							
-							<td><p hidden><c:out value="${vrsta.id }" /></p></td>
 
-							<td><form><button value="${loop.index}"
-									onClick="uredi(this.value)" class="smallbutton">Uredi</button></form></td>
-									
-							<td><form action="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />" method="post">
-									<input type="submit" value="Izbrisi" name="submit"	class="smallbutton" />
-								</form></td>
+							<td><p hidden="true"><c:out value="${vrsta.id }" /></p></td>
+							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />">Izbriši</a>
+
 						</tr>
 					</c:forEach>
 				</table>

@@ -4,10 +4,7 @@
 <html>
 	<head>
 		<!-- http://www.templatemo.com/preview/templatemo_419_black_white -->
-		<title>Knjižnica</title>
-		<%@ include file="head.jsp"%>
-	</head>
-	<body>
+
 		<div class="templatemo-container">
 			<%@ include file="meni.jsp" %>
 			
@@ -15,36 +12,76 @@
 				<h1 class="logo-right hidden-xs margin-bottom-60">
 					<b>Knjižnica</b>
 				</h1>
+
+				
 				<div class="tm-right-inner-container">
-					<h1 class="templatemo-header">Gradivo</h1>			
-					<br/>				
-					<table >
+					<h1 class="templatemo-header"><c:out value="${gradivo.naslov}" /> </h1>
+					<p>
+						<a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&idGradiva=<c:out value='${gradivo.id}' />">Uredi </a> 
+						| 
+						<a href="${pageContext.request.contextPath}/GradivoServlet?metoda=izbrisi&idGradiva=<c:out value='${gradivo.id}' />">Izbriši</a>
+						<c:if test="${uporabnik.id == sessionScope.ID}">
+						| <a href="${pageContext.request.contextPath}/GlavnaVsebina/ZgodovinaIzposoj.jsp">Poglej zgodovino izposoj</a>
+						</c:if>
+					</p>								
+					<input type="hidden" name="idGradiva" class="textbox" value='<c:out value="${gradivo.id}" />' />
+					<table>
 						<tr>
-							<td>	
-							<a href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse">Avtorji</a> | 
-							<a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse"> Področja </a> | 
-							<a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse"> Vrste Gradiva</a>
-							</td>
+							<td>Naslov v originalu: </td>
+							<td><c:out value='${gradivo.originalNaslov}'/></td>
 						</tr>
-					</table>
-					<br>
-					
-					<table id="izpisOseb">
 						<tr>
-							<th>Članska št.</th>
-							<th>Ime in priimek</th>
-							<th>Email</th>	
+							<td>Vrsta gradiva: </td>
+							<td><c:out value='${vrsta.naziv}'/></td>
 						</tr>
-						
-						<c:forEach var="oseba" items="${osebe}">
-							<tr>
-							
-								<td><c:out value="${1000+oseba.id}" /></td>
-								<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${oseba.id}" />"><c:out value="${oseba.ime}" /> <c:out value="${oseba.priimek}" /></a></td>
-								<td><c:out value="${oseba.email }" /></td>
-						
-							</tr>
+						<tr>
+							<td>Št. gradiva:</td>
+							<td><c:out value="${1000 + gradivo.id}" /></td>
+						</tr>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h3>Avtorji</h3></td>
+							<td> </td>
+						</tr>
+						<c:forEach var="a" items="${avtorji}">
+							<tr><td colspan="2"><c:out value="${a.ime}"/> <c:out value="${a.priimek}"></c:out></td></tr>
 						</c:forEach>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td><h3>Ostali podatki</h3></td>
+							<td></td>
+						</tr>
+						<tr>
+							<td>Jezik:</td>
+							<td><c:out value="${gradivo.jezik}" /></td>
+						</tr>
+						<tr>
+							<td>Podrocje:</td>
+							<td><c:out value="${podrocje.naziv}" /></td>
+						</tr>
+						<tr>
+							<td>Leto izida:</td>
+							<td><c:out value="${gradivo.letoIzida}" /></td>
+						</tr>
+						<tr>
+							<td>Zalozba:</td>
+							<td><c:out value="${zalozba.naziv}" /></td>
+						</tr>
+						<tr>
+							<td>ISBN:</td>
+							<td><c:out value="${gradivo.ISBN}" /></td>
+						</tr>
+						<tr>
+							<td>Opis:</td>
+							<td><c:out value="${gradivo.opis}" /></td>
+						</tr>
+
 					</table>
 
 				</div>

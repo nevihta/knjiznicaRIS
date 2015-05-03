@@ -41,9 +41,21 @@
 				<b>Knjižnica</b> <a id="demo"></a>
 			</h1>
 			<div class="tm-right-inner-container">
-				<h1 class="templatemo-header">Pregled avtorjev</h1>
+				<h1 class="templatemo-header"></h1>
+				<br/>
+				<table >
+					<tr>
+						<td><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiVse">Gradiva</a> | </td>
+						<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse"><b>Avtorji</b></a> | </td>
+						<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=pridobiVse">Področja</a> | </td> 
+						<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=pridobiVse">Vrste gradiva</a> | </td> 
+						<td><a href="${pageContext.request.contextPath}/ZalozbaServlet?metoda=pridobiVse">Založbe</a></td>
+					</tr>
+				</table>
+				<br/>
+				
 				<input id="dodaj" type="button" value="Dodaj" onClick="prikaz()" class="button" />
-				</br>
+				<br/>
 				<div id="obrazec" style="display: none;">
 					<form id="f"
 						action="${pageContext.request.contextPath}/AvtorServlet?metoda=dodaj"
@@ -55,20 +67,7 @@
 					</form>
 				</div>
 
-
-
 				<br />
-
-
-				<table>
-					<tr>
-
-						<td><a
-							href="${pageContext.request.contextPath}/AvtorServlet?metoda=pridobiVse">Avtorji</a>
-						</td>
-					</tr>
-				</table>
-				<br>
 
 				<table id="izpipsAvtorjev">
 					<tr>
@@ -82,16 +81,11 @@
 						
 							<td><p><c:out value="${avtor.ime}" /></p></td>
 							<td><p><c:out value="${avtor.priimek }" /></p></td>
-							<td><p hidden><c:out value="${avtor.id }" /></p></td>
 
-							<td><form><button value="${loop.index}"
-									onClick="uredi(this.value)" class="smallbutton">Uredi</button></form></td>
-							<td><form
-									action="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />"
-									method="post">
-									<input type="submit" value="Izbrisi" name="submit"
-										class="smallbutton" />
-								</form></td>
+							<td><p hidden="true"><c:out value="${avtor.id }" /></p></td>
+							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />">Izbriši</a>
+
 						</tr>
 					</c:forEach>
 				</table>

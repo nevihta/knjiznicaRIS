@@ -28,12 +28,15 @@ public class AvtorServlet extends HttpServlet {
 		
 		AvtorDAO avtorDAO = AvtorDAO.dobiInstanco();
 		String metoda="";
+		int idAvtorja=-1;
 		try{
 			metoda = request.getParameter("metoda");
+			idAvtorja = Integer.parseInt(request.getParameter("idAvtor"));
+
 		}
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
-		
+		boolean redirect=false;
 		
 		if(metoda.equals("pridobiVse")){
 			List<Avtor> list = new ArrayList<Avtor>();
@@ -47,10 +50,21 @@ public class AvtorServlet extends HttpServlet {
 			
 			stran="/glavnaVsebina/Avtorji.jsp"; //placeholder
 		}
+		else if(metoda.equals("izbrisi")){
+			if(avtorDAO.izbrisi(idAvtorja)){
+				redirect = true;
+				stran="/knjiznica/AvtorServlet?metoda=pridobiVse";	
+			}
+			else //neko opozorilo da ne more zbrisat
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 		
+		}
+
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
-		disp.forward(request,response);
-		
+		if(redirect)
+			response.sendRedirect(stran);
+		else if(disp !=null)
+			disp.forward(request,response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -88,16 +102,7 @@ public class AvtorServlet extends HttpServlet {
 			stran="/knjiznica/AvtorServlet?metoda=pridobiVse";	
 			
 		}
-		else if(metoda.equals("izbrisi")){
-			if(avtorDAO.izbrisi(idAvtorja)){
-				redirect = true;
-				stran="/knjiznica/AvtorServlet?metoda=pridobiVse";	
-			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-		
-		}
-
+	
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)
 			response.sendRedirect(stran);

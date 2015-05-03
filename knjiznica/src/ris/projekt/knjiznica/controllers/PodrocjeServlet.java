@@ -28,8 +28,14 @@ public class PodrocjeServlet extends HttpServlet {
 		
 		PodrocjeDAO podrocjeDAO = PodrocjeDAO.dobiInstanco();
 		String metoda="";
+		int idPodrocja=-1;
+		boolean redirect = false;
+
+		
 		try{
 			metoda = request.getParameter("metoda");
+			idPodrocja = Integer.parseInt(request.getParameter("idPodrocje"));
+
 		}
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
@@ -47,10 +53,22 @@ public class PodrocjeServlet extends HttpServlet {
 			
 			stran="/glavnaVsebina/Podrocja.jsp"; //placeholder
 		}
+		else if(metoda.equals("izbrisi")){
+			if(podrocjeDAO.izbrisiPodrocje(idPodrocja)){
+				stran="/knjiznica/PodrocjeServlet?metoda=pridobiVse";
+				redirect=true;
+			}
+			else //neko opozorilo da ne more zbrisat
+				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 		
+		}
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
-		disp.forward(request,response);
+		if(redirect)
+			response.sendRedirect(stran);
+		else if(disp !=null)
+			disp.forward(request,response);
 	}
+	
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
@@ -84,15 +102,7 @@ public class PodrocjeServlet extends HttpServlet {
 			stran="/knjiznica/PodrocjeServlet?metoda=pridobiVse";		
 			
 		}
-		else if(metoda.equals("izbrisi")){
-			if(podrocjeDAO.izbrisiPodrocje(idPodrocja)){
-				redirect = true;
-				stran="/knjiznica/PodrocjeServlet?metoda=pridobiVse";	
-			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-		
-		}
+	
 
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)

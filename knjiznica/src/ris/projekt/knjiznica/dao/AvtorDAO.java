@@ -28,7 +28,7 @@ public class AvtorDAO {
 		return ad;
 	}
 	
-	public void dodajAvtorja(Avtor a)
+	public int dodajAvtorja(Avtor a)
 	{
 		try{
 			povezava =  Povezava.getConnection();
@@ -38,14 +38,23 @@ public class AvtorDAO {
 			st.setString(2, a.getPriimek());
 			
 			st.executeUpdate();
-  
+			
+			st.close();
+			st=povezava.prepareStatement("select ID_avtorja from avtor where ime=? and priimek=?");
+			st.setString(1, a.getIme());
+			st.setString(2, a.getPriimek());
+			rs =st.executeQuery();
+			if(rs.next())
+			{
+				a.setId(rs.getInt("ID_avtorja"));
+			}
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
-			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
+		return a.getId();
 	}
 	
 	public void urediAvtorja(Avtor a) {

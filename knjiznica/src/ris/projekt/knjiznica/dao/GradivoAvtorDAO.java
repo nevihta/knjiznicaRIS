@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ris.projekt.knjiznica.baza.Povezava;
 
@@ -27,20 +28,21 @@ public class GradivoAvtorDAO {
 		return gad;
 	}
 	
-	public void dodajAvtorGradivo(String[] seznamAvtorjev, int idGradiva)
+	public void dodajAvtorGradivo(List<Integer> idAvtorjev, int idGradiva)
 	{
 		try {
+			povezava =  Povezava.getConnection();
+			
 			st=povezava.prepareStatement("insert into gradivo_avtor(tk_id_gradiva, tk_id_avtorja) values (?,?)");
 			st.setInt(1, idGradiva);
-			for(int i=0; i<seznamAvtorjev.length; i++)
+			for(int i=0; i<idAvtorjev.size(); i++)
 			{
-				st.setInt(2, Integer.parseInt(seznamAvtorjev[i]));
+				st.setInt(2, idAvtorjev.get(i));
 				st.executeUpdate();
 			}
-			
+					
 		}catch(SQLException e){e.printStackTrace();} 
 		finally{
-			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
@@ -58,7 +60,6 @@ public class GradivoAvtorDAO {
 		}	
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
-			try{rs.close();} catch(SQLException e){}
 			try{st.close();} catch(SQLException e){}
 			try{povezava.close();} catch(SQLException e){}
 		}
@@ -110,6 +111,22 @@ public class GradivoAvtorDAO {
 		}
 		
 		return gradiva;
+	}
+
+	public void izbrisiVseAvtorGradivo(int idGradiva) {
+		
+		try{
+			povezava = Povezava.getConnection();
+			st=povezava.prepareStatement("delete from gradivo_avtor where tk_id_gradiva=? and ID_ga<>0"); 
+			st.setInt(1, idGradiva);
+			st.executeUpdate();
+		}	
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		
 	}
 	
 }

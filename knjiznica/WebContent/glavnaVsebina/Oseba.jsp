@@ -22,8 +22,11 @@
 						<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&urejanjeOs=true&idOsebe=<c:out value='${uporabnik.id}' />">Uredi </a> 
 						| 
 						<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=izbrisiOsebo&idOsebe=<c:out value='${uporabnik.id}' />">Izbriši</a>
+						| <a href="${pageContext.request.contextPath}/GlavnaVsebina/ZgodovinaIzposoj.jsp">Poglej zgodovino izposoj</a>
+						
 						<c:if test="${uporabnik.id == sessionScope.ID}">
 						| <a href="${pageContext.request.contextPath}/OsebaServlet?metoda=urediKnjiznicar">Uredi uporabniško ime in geslo</a>
+						
 						</c:if>
 					</p>								
 					<input type="hidden" name="idOsebe" class="textbox" value='<c:out value="${uporabnik.id}" />' />
