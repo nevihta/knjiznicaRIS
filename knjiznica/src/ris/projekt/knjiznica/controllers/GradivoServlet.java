@@ -71,9 +71,15 @@ public class GradivoServlet extends HttpServlet {
 			stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
 		}
 		else if(metoda.equals("pridobiVse")){
+
 			List<GradivoZaIzpis> list = new ArrayList<GradivoZaIzpis>();
-			String filter = request.getParameter("filter");
+			String filter="false";
 			
+			try{
+			 filter=request.getParameter("filter");
+			}
+			catch(Exception e){e.printStackTrace();}
+
 			List<Podrocje> podrocja= podrocjeDAO.pridobiVsaPodrocja();
 			request.setAttribute("podrocja", podrocja);
 			List<VrstaGradiva> vrste = vrstaDAO.pridobiVseVrsteGradiva();
@@ -84,12 +90,32 @@ public class GradivoServlet extends HttpServlet {
 			request.setAttribute("jeziki", jeziki);
 			
 			try{
-//				if(filter.equals("true")){
-//					
-//				}
-//				else
+
+				if(filter==null){
 					list = gradivoDAO.pridobiVsaGradivaZaIzpis();
-					System.out.println("vsa gradiva:"+list.size());
+				}
+				else if(filter.equals("a")){
+					System.out.println("v filtri je");
+					String avtorImeFilter=request.getParameter("imeAvtorjaFilter");
+					String avtorPriimekFilter=request.getParameter("priimekAvtorjaFilter");
+					list=gradivoDAO.pridobiFiltriranaGradivaA(avtorImeFilter, avtorPriimekFilter);
+				}
+				else if(filter.equals("l"))
+				{
+					String jezikFilter=request.getParameter("jezikFilter");
+					String letoIzidaFilter=request.getParameter("letoFilter");
+					int vrstaFilter=Integer.parseInt(request.getParameter("vrstaFilter"));
+					int podrocjeFilter=Integer.parseInt(request.getParameter("podrocjeFilter"));
+					int zalozbaFilter=Integer.parseInt(request.getParameter("zalozbaFilter"));
+					list=gradivoDAO.pridobiFiltriranaGradivaL(jezikFilter, letoIzidaFilter, vrstaFilter, podrocjeFilter, zalozbaFilter);
+				}
+				else if(filter.equals("s")){
+					String statusFilter=request.getParameter("statusFilter");
+					list=gradivoDAO.pridobiFiltriranaGradivaS(statusFilter);
+				}
+				else
+					list = gradivoDAO.pridobiVsaGradivaZaIzpis(); //èe se najde šaljivec, pa bo v get šel vrednost filtra spreminjat
+
 				request.setAttribute("gradiva", list);
 			}
 			catch(NullPointerException e){
@@ -161,6 +187,7 @@ public class GradivoServlet extends HttpServlet {
 		}
 		else if(metoda.equals("izbrisi")){
 			if(gradivoDAO.izbrisiGradivo(idGradiva)){
+				gradivoAvtorDAO.izbrisiVseAvtorGradivo(idGradiva);
 				redirect = true;
 				stran="/knjiznica/GradivoServlet?metoda=pridobiVse";	
 			}

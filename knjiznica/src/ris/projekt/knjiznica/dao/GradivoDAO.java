@@ -359,5 +359,214 @@ public class GradivoDAO {
 		}
 		return gradiva;
 	}
-	
+
+	public List<GradivoZaIzpis> pridobiFiltriranaGradivaL(String jezikFilter, String letoIzidaFilter, int vrstaFilter,	int podrocjeFilter, int zalozbaFilter) {
+		ArrayList<GradivoZaIzpis> gradiva=new ArrayList<GradivoZaIzpis>();
+		GradivoZaIzpis g;
+		try{
+			povezava =  Povezava.getConnection();
+		
+			String sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste";
+			
+			if(!jezikFilter.equals("brez")){
+				sql+=" and g.jezik='" + jezikFilter+ "'";
+			}
+			if(vrstaFilter!=-1){
+				sql+=" and vg.ID_vrste='" + vrstaFilter+ "'";
+			}
+			if(zalozbaFilter!=-1){
+				sql+=" and z.ID_zalozbe='" + zalozbaFilter+ "'";
+
+			}
+			if(podrocjeFilter!=-1){
+				sql+=" and p.ID_podrocja='" + podrocjeFilter+ "'";
+
+			}
+			if(letoIzidaFilter!=""){
+				sql+=" and g.letoIzida='" + letoIzidaFilter+ "'";
+
+			}
+			
+			
+			System.out.println(sql);
+			
+			st = povezava.prepareStatement(sql);
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+					g=new GradivoZaIzpis();
+					g.setId(rs.getInt("ID_gradiva"));
+					g.setNaslov(rs.getString("naslov"));
+					g.setOriginalNaslov(rs.getString("originalNaslov"));
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
+					g.setLetoIzida(rs.getInt("letoIzida"));
+					g.setISBN(rs.getString("ISBN"));
+					g.setOpis(rs.getString("opis"));
+					g.setPodrocje(rs.getString("podrocje"));
+					g.setVrsta(rs.getString("vrsta"));
+					g.setZalozba(rs.getString("zalozba"));
+					gradiva.add(g);
+			}
+			
+			rs.close();
+			st.close();
+				
+			ArrayList<Avtor> avtorjiGradiva;
+			Avtor a;
+			st=povezava.prepareStatement("select a.* from avtor a, gradivo_avtor ga where a.ID_avtorja=ga.tk_id_avtorja and ga.tk_id_gradiva=?");
+			for(int i=0; i<gradiva.size(); i++){
+				avtorjiGradiva=new ArrayList<Avtor>();
+				st.setInt(1, gradiva.get(i).getId());
+				rs=st.executeQuery();
+				while (rs.next())
+				{
+					a=new Avtor(rs.getInt("ID_avtorja"), rs.getString("ime"), rs.getString("priimek"));
+					avtorjiGradiva.add(a);
+				}
+				rs.close();
+				gradiva.get(i).setAvtorji(avtorjiGradiva);
+			}
+		
+		}
+		catch(SQLException e){
+			e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return gradiva;
+	}
+
+	public List<GradivoZaIzpis> pridobiFiltriranaGradivaA(String avtorImeFilter, String avtorPriimekFilter) {
+		ArrayList<GradivoZaIzpis> gradiva=new ArrayList<GradivoZaIzpis>();
+		GradivoZaIzpis g;
+		try{
+			povezava =  Povezava.getConnection();
+			String sql;
+			if((avtorImeFilter!="")||(avtorPriimekFilter!=""))
+			{
+				sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z, gradivo_avtor ga, avtor a where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and ga.tk_id_gradiva=g.ID_gradiva and ga.tk_id_avtorja=a.ID_avtorja";
+				if(avtorImeFilter!="")
+					sql+=" and a.ime like '" + avtorImeFilter.trim() +"'";
+				if(avtorPriimekFilter!="")
+					sql+=" and a.priimek like '" + avtorPriimekFilter.trim() +"'";
+			}
+			else
+			{
+				sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste";
+			}
+			
+			System.out.println(sql);
+			st = povezava.prepareStatement(sql);
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+					g=new GradivoZaIzpis();
+					g.setId(rs.getInt("ID_gradiva"));
+					g.setNaslov(rs.getString("naslov"));
+					g.setOriginalNaslov(rs.getString("originalNaslov"));
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
+					g.setLetoIzida(rs.getInt("letoIzida"));
+					g.setISBN(rs.getString("ISBN"));
+					g.setOpis(rs.getString("opis"));
+					g.setPodrocje(rs.getString("podrocje"));
+					g.setVrsta(rs.getString("vrsta"));
+					g.setZalozba(rs.getString("zalozba"));
+					gradiva.add(g);
+			}
+			
+			rs.close();
+			st.close();
+				
+			ArrayList<Avtor> avtorjiGradiva;
+			Avtor a;
+			st=povezava.prepareStatement("select a.* from avtor a, gradivo_avtor ga where a.ID_avtorja=ga.tk_id_avtorja and ga.tk_id_gradiva=?");
+			for(int i=0; i<gradiva.size(); i++){
+				avtorjiGradiva=new ArrayList<Avtor>();
+				st.setInt(1, gradiva.get(i).getId());
+				rs=st.executeQuery();
+				while (rs.next())
+				{
+					a=new Avtor(rs.getInt("ID_avtorja"), rs.getString("ime"), rs.getString("priimek"));
+					avtorjiGradiva.add(a);
+				}
+				rs.close();
+				gradiva.get(i).setAvtorji(avtorjiGradiva);
+			}
+		
+			
+		}
+		catch(SQLException e){
+			e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return gradiva;
+	}
+
+	public List<GradivoZaIzpis> pridobiFiltriranaGradivaS(String statusFilter) {
+
+		ArrayList<GradivoZaIzpis> gradiva=new ArrayList<GradivoZaIzpis>();
+		GradivoZaIzpis g;
+		try{
+			povezava =  Povezava.getConnection();
+
+			if(statusFilter.equals("izposojeno"))
+				st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z, storitev s where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and s.tk_id_gradiva=g.ID_gradiva and s.datumVracila=null");
+			else
+				st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z, storitev s where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and s.tk_id_gradiva=g.ID_gradiva and s.datumVracila!=null");
+
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+					g=new GradivoZaIzpis();
+					g.setId(rs.getInt("ID_gradiva"));
+					g.setNaslov(rs.getString("naslov"));
+					g.setOriginalNaslov(rs.getString("originalNaslov"));
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
+					g.setLetoIzida(rs.getInt("letoIzida"));
+					g.setISBN(rs.getString("ISBN"));
+					g.setOpis(rs.getString("opis"));
+					g.setPodrocje(rs.getString("podrocje"));
+					g.setVrsta(rs.getString("vrsta"));
+					g.setZalozba(rs.getString("zalozba"));
+					gradiva.add(g);
+			}
+			
+			rs.close();
+			st.close();
+				
+			ArrayList<Avtor> avtorjiGradiva;
+			Avtor a;
+			st=povezava.prepareStatement("select a.* from avtor a, gradivo_avtor ga where a.ID_avtorja=ga.tk_id_avtorja and ga.tk_id_gradiva=?");
+			for(int i=0; i<gradiva.size(); i++){
+				avtorjiGradiva=new ArrayList<Avtor>();
+				st.setInt(1, gradiva.get(i).getId());
+				rs=st.executeQuery();
+				while (rs.next())
+				{
+					a=new Avtor(rs.getInt("ID_avtorja"), rs.getString("ime"), rs.getString("priimek"));
+					avtorjiGradiva.add(a);
+				}
+				rs.close();
+				gradiva.get(i).setAvtorji(avtorjiGradiva);
+			}
+		
+		}
+		catch(SQLException e){
+			e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return gradiva;
+
+	}
 }

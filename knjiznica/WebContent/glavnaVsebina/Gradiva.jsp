@@ -8,11 +8,29 @@
 <title>Gradivo</title>
 <%@ include file="head.jsp"%>
 <script type="text/javascript">
-	function prikaz() {
-
-		document.getElementById('obrazec').style.display = 'block';
-		document.getElementById('dodaj').style.display = 'none';
-
+	function prikazL() {
+		document.getElementById('obrazecL').style.display = 'block';
+		//document.getElementById('dodajL').style.display = 'none';
+		document.getElementById('obrazecA').style.display = 'none';
+		document.getElementById('dodajA').style.display = 'block';
+		document.getElementById('obrazecS').style.display = 'none';
+		document.getElementById('dodajS').style.display = 'block';
+	}
+	function prikazA() {
+		document.getElementById('obrazecA').style.display = 'block';
+		//document.getElementById('dodajA').style.display = 'none';
+		document.getElementById('obrazecL').style.display = 'none';
+		document.getElementById('dodajL').style.display = 'block';
+		document.getElementById('obrazecS').style.display = 'none';
+		document.getElementById('dodajS').style.display = 'block';
+	}
+	function prikazS() {
+		document.getElementById('obrazecS').style.display = 'block';
+		//document.getElementById('dodajS').style.display = 'none';
+		document.getElementById('obrazecA').style.display = 'none';
+		document.getElementById('dodajA').style.display = 'block';
+		document.getElementById('obrazecL').style.display = 'none';
+		document.getElementById('dodajL').style.display = 'block';
 	}
 </script>
 </head>
@@ -41,19 +59,52 @@
 		<table>
 		<tr>
 		<td><input type="hidden" name="metoda" value="dodajGr"/><input type="submit" value="Dodaj gradivo" class="button"> </td>
-		<td><input id="dodaj" type="button" value="Filtriraj" onClick="prikaz()" class="button" />
-		</td></tr>
-		
+		<td><input id="dodajL" type="button" value="Filtriraj po lastnostih" onClick="prikazL()" class="button" />
+		<td><input id="dodajA" type="button" value="Filtriraj po avtorju" onClick="prikazA()" class="button" />
+		<td><input id="dodajS" type="button" value="Filtriraj glede na status" onClick="prikazS()" class="button" />
 		</table>
-		
-		
+				
 		</form>
 		
 		<br/>
-		<div id="obrazec" style="display: none;">
-					
-			<form method="get" action="${pageContext.request.contextPath}/GradivoServlet?metoda=prikaziFiltrirane">
-			<table>
+		
+		<div id="obrazecS" style="display: none;">
+			<form method="get" action="${pageContext.request.contextPath}/GradivoServlet">
+			<input type="hidden" name="metoda" value="pridobiVse"/>
+			<input type="hidden" name="filter" value="s">
+ 			<table>
+ 			<tr><td> Filtriraj glede na status:</td></tr>
+ 			<tr><td><h3></h3></td></tr>
+ 			<tr><td>Prosto</td><td><input type="radio" name="statusFilter" value="prosto"></td></tr>
+ 			<tr><td>Izposojeno</td><td><input type="radio" name="statusFilter" value="izposojeno"></td></tr>
+ 			<tr><td><h4></h4></td></tr>
+ 			<tr><td><input type="submit" value="Prikaži rezultate" name="submit" class="button" />	</td></tr>
+			</table>
+		</form>
+		<br/>
+		</div>
+		
+		<div id="obrazecA" style="display: none;">
+			<form method="get" action="${pageContext.request.contextPath}/GradivoServlet">
+			<input type="hidden" name="metoda" value="pridobiVse"/>
+			<input type="hidden" name="filter" value="a">
+ 			<table>
+ 			<tr><td> Filtriraj po avtorju:</td></tr>
+ 			<tr><td><h3></h3></td></tr>
+ 			<tr><td>Ime:</td><td><input type="text" name="imeAvtorjaFilter" placeholder="ime"></td></tr>
+ 			<tr><td>Priimek:</td><td><input type="text" name="priimekAvtorjaFilter" placeholder="priimek"></td></tr>
+ 			<tr><td><h4></h4></td></tr>
+ 			<tr><td></td><td><input type="submit" value="Prikaži rezultate" name="submit" class="button" />	</td></tr>
+			</table>
+		</form>
+		<br/>
+		</div>
+		
+		<div id="obrazecL" style="display: none;">	
+			<form method="get" action="${pageContext.request.contextPath}/GradivoServlet">
+			<input type="hidden" name="metoda" value="pridobiVse"/>
+			<input type="hidden" name="filter" value="l">
+ 			<table>
 				<tr><td>Filtriraj glede na: </td></tr>
 				<tr><td><h3></h3></td></tr>
 				<tr><td>Vrsto gradiva:</td>
@@ -63,10 +114,6 @@
 						<option value='<c:out value="${vrsta.id}" />'><c:out value="${vrsta.naziv}" /></option>
 					</c:forEach>
 				</select></td></tr>
-				<tr><td>Avtorja:</td><td>
-				<input type="text" name="imeAvtorjaFilter" placeholder="ime">
-				<input type="text" name="priimekAvtorjaFilter" placeholder="priimek">
-				</td></tr>
 				<tr><td>Jezik: </td>
 				<td><select name="jezikFilter">
 					<option value="brez">----</option>
@@ -90,6 +137,7 @@
 							<option value='<c:out value="${zal.id}" />'><c:out value="${zal.naziv}" /></option>
 					</c:forEach>
 				</select></td></tr>
+				<tr><td><h4></h4></td></tr>
 				<tr><td></td>
 				<td><input 	type="submit" value="Prikaži rezultate" name="submit" class="button" />	</td></tr>
 			</table>

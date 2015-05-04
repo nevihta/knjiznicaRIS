@@ -349,6 +349,8 @@ public class OsebaDAO {
 			st.setString(2, novoGeslo);
 	        st.setInt(3, p.getId());
 	        st.executeUpdate();
+	        
+	        uspesnaPrijava=true;
 			}
 		}
 	     catch(SQLException e){
