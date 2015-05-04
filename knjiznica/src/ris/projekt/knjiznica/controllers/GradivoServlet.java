@@ -32,6 +32,8 @@ public class GradivoServlet extends HttpServlet {
 		GradivoAvtorDAO gradivoAvtorDAO = GradivoAvtorDAO.dobiInstanco();
 		PodrocjeDAO podrocjeDAO = PodrocjeDAO.dobiInstanco();
 		VrstaGradivaDAO vrstaDAO = VrstaGradivaDAO.dobiInstanco();
+		StoritevDAO storitevDAO=StoritevDAO.dobiInstanco();
+
 		
 		String metoda="";
 		int idGradiva = -1;
@@ -194,6 +196,15 @@ public class GradivoServlet extends HttpServlet {
 			else //neko opozorilo da ne more zbrisat
 				redirect = true;
 				stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva+"&neizbrisan=true";
+		}
+		else if(metoda.equals("pridobiZgG")){
+			ArrayList<StoritevZaIzpis> szi=storitevDAO.pridobiVseIzposojeGradiva(idGradiva);
+			Gradivo g=gradivoDAO.pridobiGradivo(idGradiva);
+			request.setAttribute("zgodovinag", szi);
+			request.setAttribute("zgo", "gradivo");
+			request.setAttribute("g", g);
+		
+			stran="/glavnaVsebina/ZgodovinaIzposoj.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);

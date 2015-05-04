@@ -4,6 +4,7 @@ public class StoritevZaIzpis {
 
 	private Storitev storitev;
 	private Gradivo gradivo;
+	private Oseba oseba;
 	
 	public StoritevZaIzpis(){
 		
@@ -14,6 +15,11 @@ public class StoritevZaIzpis {
 		this.gradivo=gradivo;
 	}
 
+	public StoritevZaIzpis(Storitev storitev, Oseba oseba){
+		this.storitev=storitev;
+		this.oseba=oseba;
+	}
+	
 	public Storitev getStoritev() {
 		return storitev;
 	}
@@ -29,6 +35,16 @@ public class StoritevZaIzpis {
 	public void setGradivo(Gradivo gradivo) {
 		this.gradivo = gradivo;
 	}
+
+	public Oseba getOseba() {
+		return oseba;
+	}
+
+	public void setOseba(Oseba oseba) {
+		this.oseba = oseba;
+	}
+	
+	
 	
 	
 }
