@@ -47,6 +47,10 @@ public class OsebaServlet extends HttpServlet {
 			request.setAttribute("metoda","dodajOsebo" );
 			stran="/glavnaVsebina/DodajOsebo.jsp"; //placeholder
 		}
+		else if(metoda.equals("pridobiPrijavo")){
+			seja.removeAttribute("Prijava");
+			stran="/glavnaVsebina/Login.jsp"; //placeholder
+		}
 		else if(metoda.equals("pridobiOsebo")){
 			String urejanjeOs=null;
 			try{
@@ -200,14 +204,14 @@ public class OsebaServlet extends HttpServlet {
 			uporabnik.setTelefon(request.getParameter("tel"));
 			uporabnik.setTk_id_naslova(naslov.getId());
 			uporabnik = osebaDAO.dodajOsebo(uporabnik);
-			
-			if(uporabnik.getTipOsebe().toString().equals(TipOsebe.knjižnièar)){
+
+			if(uporabnik.getTipOsebe().equals(TipOsebe.knjižnièar)){
 				//uporabniški raèun
 				Prijava upRacun = new Prijava();
 				upRacun.setUpIme(request.getParameter("upIme"));
 				upRacun.setGeslo(request.getParameter("geslo"));
 				upRacun.setTk_id_osebe(uporabnik.getId());
-				osebaDAO.dodajPrijavo(upRacun);;
+				osebaDAO.dodajPrijavo(upRacun);
 			}
 			//ce je blo uspesno dodano.. kaj pa ce ni blo?
 			redirect = true;

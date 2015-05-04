@@ -31,7 +31,7 @@
 				<a class="odjava" href="${pageContext.request.contextPath}/OsebaServlet?metoda=odjava">  Odjava</a> 
 			</c:if>
 			<c:if test="${(sessionScope.Prijava==false)||(sessionScope.Prijava==null)}">
-				<a class="odjava" href="${pageContext.request.contextPath}/glavnaVsebina/Login.jsp">  Prijava</a> 
+				<a class="odjava" href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a> 
 			</c:if> 
 		</div>
 		
