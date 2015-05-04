@@ -357,7 +357,7 @@ public class GradivoServlet extends HttpServlet {
 				
 				if(!prviPoln && !selectPoln){
 					redirect = true;
-					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&niAvtorjev=true";
+					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&niAvtorjev=true&idGradiva="+idGradiva;
 				}
 				else {
 					//prvo izbris vseh vmesnih za avtorje
@@ -370,7 +370,7 @@ public class GradivoServlet extends HttpServlet {
 			}
 			else{
 				redirect = true;
-				stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&niOstalo=true";
+				stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&niOstalo=true&idGradiva="+idGradiva;
 			}
 			
 		}
