@@ -40,10 +40,13 @@ public class AvtorServlet extends HttpServlet {
 		
 		if(metoda.equals("pridobiVse")){
 			List<Avtor> list = new ArrayList<Avtor>();
-			
+			String neizbrisan=null;
 			try{
 				list = avtorDAO.pridobiVseAvtorje();
 				request.setAttribute("avtorji", list);
+				neizbrisan = request.getParameter("neizbrisan");
+				if(neizbrisan!=null)
+					request.setAttribute("neizbrisan", true);
 			}
 			catch(NullPointerException e){
 			}
@@ -55,8 +58,10 @@ public class AvtorServlet extends HttpServlet {
 				redirect = true;
 				stran="/knjiznica/AvtorServlet?metoda=pridobiVse";	
 			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			else{
+				redirect = true;
+				stran="/knjiznica/AvtorServlet?metoda=pridobiVse&neizbrisan=true";
+			}
 		
 		}
 
@@ -96,7 +101,7 @@ public class AvtorServlet extends HttpServlet {
 			avtor.setIme(request.getParameter("ime"));
 			avtor.setPriimek(request.getParameter("priimek"));
 			avtor.setId(idAvtorja); 
-			avtorDAO.urediAvtorja(avtor); //potrebna implementacija metode
+			avtorDAO.urediAvtorja(avtor); 
 
 			redirect = true;
 			stran="/knjiznica/AvtorServlet?metoda=pridobiVse";	

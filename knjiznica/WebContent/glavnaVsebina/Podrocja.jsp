@@ -65,6 +65,10 @@
 				</div>
 				<br/>
 		
+				<c:if test="${neizbrisan==true}">
+					<p>Opozorilo: področja ni mogoče izbrisati, ker je vezano na gradivo.</p>
+				</c:if>
+					
 				<table class="izpis" id="izpisPodrocij">
 					<tr>
 						<th>Naziv področja</th>

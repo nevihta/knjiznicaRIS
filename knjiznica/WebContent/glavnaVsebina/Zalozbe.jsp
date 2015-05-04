@@ -64,7 +64,9 @@
 					</form>
 				</div>
 				<br/>
-
+				<c:if test="${neizbrisan==true}">
+					<p>Opozorilo: založbe ni mogoče izbrisati, ker je vezana na gradivo.</p>
+				</c:if>
 				<table id="izpisZaložb">
 					<tr>
 						<th>Naziv založbe</th>

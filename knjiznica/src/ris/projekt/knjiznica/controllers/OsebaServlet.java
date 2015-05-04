@@ -53,13 +53,16 @@ public class OsebaServlet extends HttpServlet {
 		}
 		else if(metoda.equals("pridobiOsebo")){
 			String urejanjeOs=null;
+			String neizbrisan=null;
 			try{
 				uporabnik = osebaDAO.pridobiOsebo(idOsebe);
 				request.setAttribute("uporabnik", uporabnik);
 				
 				naslov = naslovDAO.pridobiNaslov(uporabnik.getTk_id_naslova());
 				request.setAttribute("naslov", naslov);
-
+				neizbrisan = request.getParameter("neizbrisan");
+				if(neizbrisan!=null)
+					request.setAttribute("neizbrisan", true);
 				urejanjeOs = request.getParameter("urejanjeOs");
 				
 			}catch(NullPointerException e){e.getMessage();}
@@ -118,13 +121,13 @@ public class OsebaServlet extends HttpServlet {
 		}
 		else if(metoda.equals("izbrisiOsebo")){
 			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
-			if(osebaDAO.izbrisiOsebo(idOsebe))
+			if(osebaDAO.izbrisiOsebo(idOsebe)){ //izbrise tudi naslov in prijavo
 				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-			else{ //neko opozorilo da ne more zbrisat
-				redirect = true;
-				stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+idOsebe;
 			}
-			//naslov izbris?
+			else{ 
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+idOsebe+"&neizbrisan=true";
+			}
 		
 		}
 		else if(metoda.equals("domov")){

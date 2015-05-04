@@ -68,7 +68,9 @@
 				</div>
 
 				<br />
-
+				<c:if test="${neizbrisan==true}">
+						<p>Opozorilo: avtorja ni mogoče izbrisat, saj je že vezan na gradivo.</p>
+					</c:if>
 				<table id="izpipsAvtorjev">
 					<tr>
 						<th>Ime</th>

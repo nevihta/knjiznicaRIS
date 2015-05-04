@@ -30,6 +30,9 @@
 						</c:if>
 					</p>								
 					<input type="hidden" name="idOsebe" class="textbox" value='<c:out value="${uporabnik.id}" />' />
+					<c:if test="${neizbrisan==true}">
+						<p>Opozorilo: osebe ni mogoče izbrisati, saj je že uporabila storitve knjižnice.</p>
+					</c:if>
 					<table>
 						<tr>
 							<td><c:out value="${uporabnik.tipOsebe}" /></td>

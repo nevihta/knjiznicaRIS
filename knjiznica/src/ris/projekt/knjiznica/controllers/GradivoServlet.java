@@ -58,6 +58,15 @@ public class GradivoServlet extends HttpServlet {
 			Jezik[] jeziki = Jezik.values();
 			request.setAttribute("jeziki", jeziki);
 			
+			String niAvtorjev = null;
+			String niOstalo = null;
+			niAvtorjev = request.getParameter("niAvtorjev");
+			if(niAvtorjev!=null)
+				request.setAttribute("niAvtorjev", true);
+			niOstalo= request.getParameter("niOstalo");
+			if(niOstalo!=null)
+				request.setAttribute("niOstalo", true);
+			
 			request.setAttribute("metoda","dodajGradivo" );
 			stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
 		}
@@ -89,6 +98,7 @@ public class GradivoServlet extends HttpServlet {
 			stran="/glavnaVsebina/Gradiva.jsp"; //placeholder
 		}
 		else if(metoda.equals("pridobiGradivo")){
+			String neizbrisan=null;
 			try{
 				//sprememba - pridobi gradivo za izpis
 				gradivo = gradivoDAO.pridobiGradivo(idGradiva); 
@@ -110,6 +120,10 @@ public class GradivoServlet extends HttpServlet {
 					}
 					request.setAttribute("avtorji", avtorji);
 					
+					neizbrisan = request.getParameter("neizbrisan");
+					if(neizbrisan!=null)
+						request.setAttribute("neizbrisan", true);
+					
 					urejanjeGr = request.getParameter("urejanjeGr");
 				}
 				else
@@ -127,6 +141,15 @@ public class GradivoServlet extends HttpServlet {
 				request.setAttribute("zalozbe", zalozbe);
 				Jezik[] jeziki = Jezik.values();
 				request.setAttribute("jeziki", jeziki);
+
+				String niAvtorjev = null;
+				String niOstalo = null;
+				niAvtorjev = request.getParameter("niAvtorjev");
+				if(niAvtorjev!=null)
+					request.setAttribute("niAvtorjev", true);
+				niOstalo= request.getParameter("niOstalo");
+				if(niOstalo!=null)
+					request.setAttribute("niOstalo", true);
 				
 				request.setAttribute("metoda", "urediGradivo");
 				stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
@@ -142,8 +165,8 @@ public class GradivoServlet extends HttpServlet {
 				stran="/knjiznica/GradivoServlet?metoda=pridobiVse";	
 			}
 			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-		
+				redirect = true;
+				stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva+"&neizbrisan=true";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
@@ -178,7 +201,6 @@ public class GradivoServlet extends HttpServlet {
 		if(metoda.equals("dodajGradivo")){
 			//preverjanja ali je vnaprej doloceno ali ne? vec avtorjev?
 			
-			//verzija da je vse vnaprej doloceno
 			gradivo = new Gradivo();
 			gradivo.setNaslov(request.getParameter("naslov"));
 			gradivo.setOriginalNaslov(request.getParameter("originalNaslov"));
@@ -189,7 +211,7 @@ public class GradivoServlet extends HttpServlet {
 			
 			String podrocjeInput = request.getParameter("podrocjeInput");
 			int idPodrocja = -1;
-			if(podrocjeInput!=null && !podrocjeInput.isEmpty()) //? prazn?
+			if(podrocjeInput!=null && !podrocjeInput.isEmpty() && !podrocjeInput.trim().isEmpty()) //? prazn?
 				idPodrocja = podrocjeDAO.dodajPodrocje(podrocjeInput);
 			else if (!request.getParameter("podrocjeSelect").equals("nic"))
 				idPodrocja = Integer.parseInt(request.getParameter("podrocjeSelect"));
@@ -197,7 +219,7 @@ public class GradivoServlet extends HttpServlet {
 			
 			String vrstaInput = request.getParameter("vrstaInput");
 			int idVrste = -1;
-			if(vrstaInput!=null && !vrstaInput.isEmpty()) //? prazn?
+			if(vrstaInput!=null && !vrstaInput.isEmpty() && !vrstaInput.trim().isEmpty()) //? prazn?
 				idVrste = vrstaDAO.dodajVrstoGradiva(vrstaInput);
 			else if (!request.getParameter("vrstaSelect").equals("nic"))
 				idVrste = Integer.parseInt(request.getParameter("vrstaSelect"));
@@ -205,7 +227,7 @@ public class GradivoServlet extends HttpServlet {
 
 			String zalozbaInput = request.getParameter("zalozbaInput");
 			int idZalozbe = -1;
-			if(zalozbaInput!=null && !zalozbaInput.isEmpty()) //? prazn?
+			if(zalozbaInput!=null && !zalozbaInput.isEmpty() && !zalozbaInput.trim().isEmpty()) //? prazn?
 				idZalozbe = zalozbaDAO.dodajZalozbo(zalozbaInput);
 			else if (!request.getParameter("zalozbaSelect").equals("nic"))
 				idZalozbe = Integer.parseInt(request.getParameter("zalozbaSelect"));
@@ -247,8 +269,10 @@ public class GradivoServlet extends HttpServlet {
 					}
 				}catch(NullPointerException e){}
 				
-				if(!prviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
-					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+				if(!prviPoln && !selectPoln){
+					redirect = true;
+					stran="/knjiznica/GradivoServlet?metoda=dodajGr&niAvtorjev=true";
+				}
 				else {
 					idGradiva = gradivoDAO.dodajGradivo(gradivo);
 					gradivoAvtorDAO.dodajAvtorGradivo(idAvtorjev, idGradiva);
@@ -256,8 +280,9 @@ public class GradivoServlet extends HttpServlet {
 					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva;
 				}
 			}
-			else{//neko opozorilo  da nekaj ni blo vneseno
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			else{
+				redirect = true;
+				stran="/knjiznica/GradivoServlet?metoda=dodajGr&niOstalo=true";
 			}
 		}
 		else if(metoda.equals("urediGradivo") && idGradiva!=-1){
@@ -330,8 +355,10 @@ public class GradivoServlet extends HttpServlet {
 					}
 				}catch(NullPointerException e){}
 				
-				if(!prviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
-					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+				if(!prviPoln && !selectPoln){
+					redirect = true;
+					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&niAvtorjev=true";
+				}
 				else {
 					//prvo izbris vseh vmesnih za avtorje
 					gradivoAvtorDAO.izbrisiVseAvtorGradivo(idGradiva);
@@ -341,8 +368,9 @@ public class GradivoServlet extends HttpServlet {
 					stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&idGradiva="+idGradiva;
 				}
 			}
-			else{//neko opozorilo  da nekaj ni blo vneseno
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			else{
+				redirect = true;
+				stran="/knjiznica/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&niOstalo=true";
 			}
 			
 		}

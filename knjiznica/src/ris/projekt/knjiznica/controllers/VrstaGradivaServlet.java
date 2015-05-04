@@ -41,10 +41,13 @@ public class VrstaGradivaServlet extends HttpServlet {
 		
 		if(metoda.equals("pridobiVse")){
 			List<VrstaGradiva> list = new ArrayList<VrstaGradiva>();
-			
+			String neizbrisan=null;
 			try{
 				list = vrstaGradivaDAO.pridobiVseVrsteGradiva();
 				request.setAttribute("vrsteGradiva", list);
+				neizbrisan = request.getParameter("neizbrisan");
+				if(neizbrisan!=null)
+					request.setAttribute("neizbrisan", true);
 			}
 			catch(NullPointerException e){
 			}
@@ -57,8 +60,10 @@ public class VrstaGradivaServlet extends HttpServlet {
 				redirect = true;
 				stran="/knjiznica/VrstaGradivaServlet?metoda=pridobiVse";	
 			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			else {
+				redirect = true;
+				stran="/knjiznica/VrstaGradivaServlet?metoda=pridobiVse&neizbrisan=true";
+			}
 		
 		}
 

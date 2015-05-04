@@ -65,7 +65,9 @@
 				</div>
 
 				<br/>
-
+				<c:if test="${neizbrisan==true}">
+					<p>Opozorilo: vrste gradiva ni mogoče izbrisati, ker je vezano na gradivo.</p>
+				</c:if>
 
 				<table id="izpisVrst">
 					<tr>

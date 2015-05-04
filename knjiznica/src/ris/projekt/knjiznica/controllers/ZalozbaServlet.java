@@ -40,10 +40,13 @@ public class ZalozbaServlet extends HttpServlet {
 		
 		if(metoda.equals("pridobiVse")){
 			List<Zalozba> list = new ArrayList<Zalozba>();
-			
+			String neizbrisan=null;
 			try{
 				list = zalozbaDAO.pridobiVseZalozbe();
 				request.setAttribute("zalozbe", list);
+				neizbrisan = request.getParameter("neizbrisan");
+				if(neizbrisan!=null)
+					request.setAttribute("neizbrisan", true);
 			}
 			catch(NullPointerException e){
 			}
@@ -56,8 +59,10 @@ public class ZalozbaServlet extends HttpServlet {
 				redirect = true;
 				stran="/knjiznica/ZalozbaServlet?metoda=pridobiVse";	
 			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+			else {
+				redirect = true;
+				stran="/knjiznica/ZalozbaServlet?metoda=pridobiVse&neizbrisan=true";
+			}
 		
 		}
 

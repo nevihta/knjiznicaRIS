@@ -26,6 +26,9 @@
 						</c:if>
 					</p>								
 					<input type="hidden" name="idGradiva" class="textbox" value='<c:out value="${gradivo.id}" />' />
+					<c:if test="${neizbrisan==true}">
+						<p>Opozorilo: gradiva ni mogoce izbrisati, saj je bilo uporabljeno v storitvah knjižnice.</p>
+					</c:if>
 					<table>
 						<tr>
 							<td>Naslov v originalu: </td>

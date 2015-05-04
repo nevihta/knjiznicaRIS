@@ -43,10 +43,13 @@ public class PodrocjeServlet extends HttpServlet {
 		
 		if(metoda.equals("pridobiVse")){
 			List<Podrocje> list = new ArrayList<Podrocje>();
-			
+			String neizbrisan=null;
 			try{
 				list = podrocjeDAO.pridobiVsaPodrocja();
 				request.setAttribute("podrocja", list);
+				neizbrisan = request.getParameter("neizbrisan");
+				if(neizbrisan!=null)
+					request.setAttribute("neizbrisan", true);
 			}
 			catch(NullPointerException e){
 			}
@@ -55,12 +58,14 @@ public class PodrocjeServlet extends HttpServlet {
 		}
 		else if(metoda.equals("izbrisi")){
 			if(podrocjeDAO.izbrisiPodrocje(idPodrocja)){
-				stran="/knjiznica/PodrocjeServlet?metoda=pridobiVse";
 				redirect=true;
+				stran="/knjiznica/PodrocjeServlet?metoda=pridobiVse";
 			}
-			else //neko opozorilo da ne more zbrisat
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
-		
+			else {
+				redirect=true;
+				stran="/knjiznica/PodrocjeServlet?metoda=pridobiVse&neizbrisan=true";
+			}
+
 		}
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)

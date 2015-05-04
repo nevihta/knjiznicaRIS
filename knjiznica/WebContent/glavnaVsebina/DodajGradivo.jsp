@@ -24,7 +24,12 @@
 						method="post">
 												
 						<input type="hidden" name="idGradiva" class="textbox" value='<c:out value="${gradivo.id}" />' />
-	
+						<c:if test="${niAvtorjev==true}">
+							<p>Opozorilo: izberite avtorja!</p>
+						</c:if>	
+						<c:if test="${niOstalo==true}">
+							<p>Opozorilo: Izberite področje, vrsto gradiva in založbo!</p>
+						</c:if>
 						<h4>Naslov:</h4>
 						<input type="text" name="naslov" class="textbox" value='<c:out value="${gradivo.naslov}" />' required/>
 	
