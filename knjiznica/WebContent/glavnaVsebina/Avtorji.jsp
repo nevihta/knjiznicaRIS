@@ -73,7 +73,6 @@
 					<tr>
 						<th>Ime</th>
 						<th>Priimek</th>
-<hr>
 					</tr>
 
 					<c:forEach var="avtor" items="${avtorji}" varStatus="loop">

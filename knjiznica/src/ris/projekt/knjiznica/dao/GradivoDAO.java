@@ -311,7 +311,7 @@ public class GradivoDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja ");
+			st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste");
 			rs = st.executeQuery();
 			
 			while (rs.next())
@@ -320,7 +320,7 @@ public class GradivoDAO {
 					g.setId(rs.getInt("ID_gradiva"));
 					g.setNaslov(rs.getString("naslov"));
 					g.setOriginalNaslov(rs.getString("originalNaslov"));
-					//g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
+					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
 					g.setLetoIzida(rs.getInt("letoIzida"));
 					g.setISBN(rs.getString("ISBN"));
 					g.setOpis(rs.getString("opis"));

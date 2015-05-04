@@ -92,6 +92,7 @@ public class ZalozbaDAO {
 			st.setInt(1, id);
 			rs=st.executeQuery();
 			if(rs.next()){
+				System.out.println(rs.getInt("st"));
 				if(0==rs.getInt("st")){
 					izbris=true;
 				}

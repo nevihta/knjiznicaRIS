@@ -4,7 +4,8 @@
 <html>
 	<head>
 		<!-- http://www.templatemo.com/preview/templatemo_419_black_white -->
-
+<%@ include file="head.jsp"%>
+</head>
 		<div class="templatemo-container">
 			<%@ include file="meni.jsp" %>
 			
