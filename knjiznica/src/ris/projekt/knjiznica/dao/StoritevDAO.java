@@ -11,6 +11,7 @@ import java.util.List;
 import ris.projekt.knjiznica.baza.Povezava;
 import ris.projekt.knjiznica.beans.Gradivo;
 import ris.projekt.knjiznica.beans.Jezik;
+import ris.projekt.knjiznica.beans.Oseba;
 import ris.projekt.knjiznica.beans.Storitev;
 import ris.projekt.knjiznica.beans.StoritevZaIzpis;
 
@@ -116,20 +117,26 @@ public class StoritevDAO {
 		}
 	}
 	
-	public ArrayList<Storitev> pridobiVseIzposojeOsebe(int idOsebe)
+	public ArrayList<StoritevZaIzpis> pridobiVseIzposojeOsebe(int idOsebe)
 	{
-		ArrayList<Storitev> izposoje = new ArrayList<Storitev>();
+		ArrayList<StoritevZaIzpis> izposoje = new ArrayList<StoritevZaIzpis>();
+		StoritevZaIzpis szi;
 		Storitev s;
+		Gradivo g;
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from storitev where tk_id_clana=?");
+			st = povezava.prepareStatement("select s.*, g.naslov from storitev s, gradivo g where tk_id_clana=? and s.tk_id_gradiva=g.ID_gradiva");
 			st.setInt(1, idOsebe);
 			rs=st.executeQuery();
 			while (rs.next())
 			{
 				s=new Storitev(rs.getInt("ID_storitve"), rs.getDate("datumIzposoje"), rs.getDate("datumVracila"), rs.getDate("rokVracila"), rs.getBoolean("zePodaljsano"), idOsebe, rs.getInt("tk_id_gradiva"), rs.getInt("tk_id_knjiznicarja"));
-				izposoje.add(s);
+				g=new Gradivo();
+				g.setNaslov(rs.getString("naslov"));
+				g.setId(s.getTk_id_gradiva());
+				szi=new StoritevZaIzpis(s, g);
+				izposoje.add(szi);
 			}
 
 		}
@@ -141,20 +148,27 @@ public class StoritevDAO {
 		return izposoje;
 	}
 
-	public ArrayList<Storitev> pridobiVseIzposojeGradiva(int idGradiva)
+	public ArrayList<StoritevZaIzpis> pridobiVseIzposojeGradiva(int idGradiva)
 	{
-		ArrayList<Storitev> izposoje = new ArrayList<Storitev>();
+		ArrayList<StoritevZaIzpis> izposoje = new ArrayList<StoritevZaIzpis>();
+		StoritevZaIzpis szi;
 		Storitev s;
+		Oseba o;
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from storitev where tk_id_gradiva=?"); //odrer by datum izposoje mogoèe? :D
+			st = povezava.prepareStatement("select s.*, o.ime, o.priimek from storitev s, oseba o where tk_id_gradiva=? and o.ID_osebe=s.tk_id_clana");
 			st.setInt(1, idGradiva);
 			rs=st.executeQuery();
 			while (rs.next())
 			{
 				s=new Storitev(rs.getInt("ID_storitve"), rs.getDate("datumIzposoje"), rs.getDate("datumVracila"), rs.getDate("rokVracila"), rs.getBoolean("zePodaljsano"), rs.getInt("tk_id_clana"), idGradiva, rs.getInt("tk_id_knjiznicarja"));
-				izposoje.add(s);
+				o=new Oseba();
+				o.setIme(rs.getString("ime"));
+				o.setPriimek(rs.getString("priimek"));
+				o.setId(s.getTk_id_clana());
+				szi=new StoritevZaIzpis(s,o);
+				izposoje.add(szi);
 			}
 
 		}

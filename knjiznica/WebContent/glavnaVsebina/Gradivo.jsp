@@ -22,7 +22,7 @@
 						| 
 						<a href="${pageContext.request.contextPath}/GradivoServlet?metoda=izbrisi&idGradiva=<c:out value='${gradivo.id}' />">Izbriši</a>
 						<c:if test="${uporabnik.id == sessionScope.ID}">
-						| <a href="${pageContext.request.contextPath}/GlavnaVsebina/ZgodovinaIzposoj.jsp">Poglej zgodovino izposoj</a>
+						| <a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiZgG&idGradiva=<c:out value='${gradivo.id}' />">Poglej zgodovino izposoj</a>
 						</c:if>
 					</p>								
 					<input type="hidden" name="idGradiva" class="textbox" value='<c:out value="${gradivo.id}" />' />

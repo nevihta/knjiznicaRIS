@@ -28,6 +28,8 @@ public class OsebaServlet extends HttpServlet {
 
 		OsebaDAO osebaDAO = OsebaDAO.dobiInstanco();
 		NaslovDAO naslovDAO = NaslovDAO.dobiInstanco();
+		StoritevDAO storitevDAO=StoritevDAO.dobiInstanco();
+		
 		int idOsebe = -1;
 		String metoda="";
 		
@@ -137,6 +139,15 @@ public class OsebaServlet extends HttpServlet {
 			seja.removeAttribute("Prijava");
 			seja.removeAttribute("ID");
 			stran="/glavnaVsebina/Domov.jsp";
+		}
+		else if(metoda.equals("pridobiZgO")){
+			ArrayList<StoritevZaIzpis> szi=storitevDAO.pridobiVseIzposojeOsebe(idOsebe);
+			Oseba o=osebaDAO.pridobiOsebo(idOsebe);
+			request.setAttribute("zgodovinaO", szi);
+			request.setAttribute("zgo", "oseba");
+			request.setAttribute("o", o);
+		
+			stran="/glavnaVsebina/ZgodovinaIzposoj.jsp";
 		}
 
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
