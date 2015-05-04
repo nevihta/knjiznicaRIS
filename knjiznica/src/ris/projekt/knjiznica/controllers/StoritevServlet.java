@@ -47,7 +47,7 @@ public class StoritevServlet extends HttpServlet {
 		HttpSession seja = request.getSession();
 		
 		if (metoda.equals("pridobiIzposojeOsebe")){
-			List<Storitev> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebe(idOsebe);
+			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseAktualneIzposojeOsebe(idOsebe);
 			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 			stran="/glavnaVsebina/IzposojeOsebe.jsp"; 
 		}
@@ -57,19 +57,20 @@ public class StoritevServlet extends HttpServlet {
 			stran="/glavnaVsebina/preveriUporabnika.jsp"; 
 		}
 		else if (metoda.equals("nastaviPodaljsanje")){
-			//dao - nvoa metoda: pridobiVseIzposoje osebe, ki se niso bile podaljsane!
-			List<Storitev> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebeNepodaljsane(idOsebe);
+			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebeNepodaljsane(idOsebe);
 			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 			request.setAttribute("metoda", "podaljsaj");
 			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
 		}
 		else if (metoda.equals("nastaviVracilo")){
-			List<Storitev> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebe(idOsebe);
+			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseAktualneIzposojeOsebe(idOsebe);
 			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 			request.setAttribute("metoda", "vrni");
 			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
 		}
 		else if (metoda.equals("pridobiVseIzposojeGradiva")){
+			//!!!!to preuredi v vse izposoje, pa filtri tu not, pa preko roka
+			//pa flikni zgodovino izposoj gradiva drugam
 			int idGradiva = -1;
 			try{
 				idGradiva = Integer.parseInt(request.getParameter("idGradiva"));
@@ -131,15 +132,25 @@ public class StoritevServlet extends HttpServlet {
 					idOsebe = Integer.parseInt(request.getParameter("osebaSelect"));
 			
 				//preveri id osebe ce obstaja 
-				
-				//preveri, ce ni na crni list
-				if(crnaDAO.preveriCeJeClanNaCl(idOsebe))
-					stran="/glavnaVsebina/CrnaLista.jsp"; //placeholder
-				else{
-					List<Gradivo> seznamGradiv = gradivoDAO.pridobiGradivaGledeNaStanje("prosto");
-					request.setAttribute("prostaGradiva", seznamGradiv);
-					request.setAttribute("idOsebe", idOsebe);
-					stran="/glavnaVsebina/Izposoja.jsp"; 
+				if(osebaDAO.pridobiOsebo(idOsebe).getIme()!=null){
+					//preveri, ce ni na crni list
+					if(crnaDAO.preveriCeJeClanNaCl(idOsebe)){
+						//rabimo osebe!
+						List<ZapisNaCl> crnaLista = crnaDAO.pridobiSeznamClanovNaCl();
+						request.setAttribute("crnaLista", crnaLista);
+						stran="/glavnaVsebina/CrnaLista.jsp"; //placeholder
+					}
+					else{
+						List<Gradivo> seznamGradiv = gradivoDAO.pridobiGradivaGledeNaStanje("prosto");
+						request.setAttribute("prostaGradiva", seznamGradiv);
+						request.setAttribute("idOsebe", idOsebe);
+						stran="/glavnaVsebina/Izposoja.jsp"; 
+					}
+				}
+				else{ //oseba ne obstaja
+					//nastavi v jsp obvestilo, preuredi vsiClani^^
+					redirect = true;
+					stran="/knjiznica/StoritevServlet?metoda=vsiClani&neObstaja=true";
 				}
 
 			}
@@ -155,17 +166,12 @@ public class StoritevServlet extends HttpServlet {
 			}catch(Exception e){}
 			
 			if(idKnjiznicarja!=-1){
-				//dao: gradivo status updataj na izposojeno!!
-				storitev.setDatumIzposoje(new Date()); //preveri kako je s time zone
+				Date datumIzposoje = new Date(); //preveri kako je s time zone
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(new Date());
 				cal.add(Calendar.DATE, 28); 
 				Date rokVrnitve = cal.getTime();
-				storitev.setRokVrnitve(rokVrnitve);
-				storitev.setZePodaljsano(false);
-				storitev.setTk_id_clana(idOsebe);
-				storitev.setTk_id_knjiznicarja(idKnjiznicarja);
-				
+
 				//za gradiva dve moznosti: 1-iz lista, 2-stevilka gradiva (tu treba preverit ce ni izposojeno)
 				List<Integer> idGradiv = new ArrayList<Integer>();
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
@@ -198,10 +204,12 @@ public class StoritevServlet extends HttpServlet {
 				if(!inputPrviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
 					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 				else {
+					List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 					for(int k=0;k<idGradiv.size();k++){
-						storitev.setTk_id_gradiva(idGradiv.get(k));
-						storitevDAO.izposodi(storitev);
+						storitev = new Storitev(datumIzposoje, null, rokVrnitve, false, idOsebe, idGradiv.get(k), idKnjiznicarja);
+						seznamStoritev.add(storitev);
 					}
+					storitevDAO.izposodi(seznamStoritev);
 					redirect = true;
 					stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;
 				}
@@ -222,11 +230,11 @@ public class StoritevServlet extends HttpServlet {
 			if(idKnjiznicarja!=-1){
 				//podaljsa jih lahko vec hkrati, preverjanje ce so idji (clan, gradivo),
 
-				//dao: ze podaljasno updataj!
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
-				//hidden input za datume
+				//hidden input za datume????
 				String[] gradivaDatumi = request.getParameterValues("gradivaDatumi");
-
+				
+				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 				for(int j=0; j<gradivaSelect.length; j++){
 					if(!gradivaSelect[j].equals("-1")){
 						try{
@@ -235,15 +243,16 @@ public class StoritevServlet extends HttpServlet {
 							Calendar c = Calendar.getInstance();
 							c.setTime(sdf.parse(date));
 							c.add(Calendar.DATE, 28);  
-							Date rokVrnitve = c.getTime();  
-	
+							Date rokVrnitve = c.getTime(); 
+							
+							storitev = new Storitev();
 							storitev.setId(Integer.parseInt(gradivaSelect[j]));
 							storitev.setRokVrnitve(rokVrnitve);
-							storitev.setZePodaljsano(true);
-							storitevDAO.podaljsaj(storitev);
+							seznamStoritev.add(storitev);
 						}catch(Exception e){}
 					}
 				}
+				storitevDAO.podaljsaj(seznamStoritev);
 				redirect = true;
 				stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;
 				
@@ -264,16 +273,18 @@ public class StoritevServlet extends HttpServlet {
 			if(idKnjiznicarja!=-1){
 				//vrne jih lahko vec hkrati, preverjanje ce so idji (clan, gradivo),
 
-				//dao: gradivo status updataj na prosto!!
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
-
+				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
+				
 				for(int j=0; j<gradivaSelect.length; j++){
 					if(!gradivaSelect[j].equals("-1")){
+						storitev = new Storitev();
 						storitev.setId(Integer.parseInt(gradivaSelect[j]));
 						storitev.setDatumVrnitve(new Date());
-						storitevDAO.vrni(storitev);
+						seznamStoritev.add(storitev);
 					}
 				}
+				storitevDAO.vrni(seznamStoritev);
 				redirect = true;
 				stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;	
 			}

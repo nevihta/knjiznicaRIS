@@ -29,6 +29,17 @@ public class Storitev {
 
 	}
 
+	public Storitev(Date datumIzposoje, Date datumVrnitve, Date rokVrnitve, boolean zePodaljsano, int tk_id_clana, int tk_id_gradiva, int tk_id_knjiznicarja){
+		this.datumIzposoje=datumIzposoje;
+		this.datumVrnitve=datumVrnitve;
+		this.rokVrnitve=rokVrnitve;
+		this.zePodaljsano=zePodaljsano;
+		this.tk_id_clana=tk_id_clana;
+		this.tk_id_gradiva=tk_id_gradiva;
+		this.tk_id_knjiznicarja=tk_id_knjiznicarja;
+
+	}
+	
 	public int getId() {
 		return id;
 	}
