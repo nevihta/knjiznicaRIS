@@ -48,7 +48,7 @@
 								<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${oseba.id}" />"><c:out value="${oseba.ime}" /> <c:out value="${oseba.priimek}" /></a></td>
 								<td><c:out value="${oseba.email }" /></td>
 								<c:if test="${filt}">
-								<td><a>Obvesti</a></td>
+								<td><a  href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=email&idOsebe=<c:out value="${oseba.id}" />">Obvesti</a></td>
 								</c:if>
 						
 							</tr>

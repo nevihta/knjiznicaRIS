@@ -18,10 +18,10 @@ public class Email {
 	static Session getMailSession;
 	static MimeMessage generateMailMessage;
 	
-	public static boolean posljiEmailZamudnina(List<StoritevZaIzpis> zamujenoGradivo){
+	public static boolean posljiEmailZamudnina(String email, List<StoritevZaIzpis> zamujenoGradivo){
 		boolean uspesnoPoslano = false;
 		try {
-			generateAndSendEmail(zamujenoGradivo);
+			generateAndSendEmail(email, zamujenoGradivo);
 			uspesnoPoslano = true;
 		} catch (AddressException e) {
 			// TODO Auto-generated catch block
@@ -33,7 +33,7 @@ public class Email {
 		return uspesnoPoslano;
 	}
 	
-	public static void generateAndSendEmail(List<StoritevZaIzpis> zamujenoGradivo) throws AddressException, MessagingException {
+	private static void generateAndSendEmail(String email, List<StoritevZaIzpis> zamujenoGradivo) throws AddressException, MessagingException {
 	 
 	//Step1		
 			System.out.println("\n 1st ===> setup Mail Server Properties..");
@@ -47,7 +47,7 @@ public class Email {
 			System.out.println("\n\n 2nd ===> get Mail Session..");
 			getMailSession = Session.getDefaultInstance(mailServerProperties, null);
 			generateMailMessage = new MimeMessage(getMailSession);
-			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("uporabnik.ris@gmail.com")); //zamujenoGradivo.getOseba().getEmail()
+			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("uporabnik.ris@gmail.com")); //email
 			generateMailMessage.setSubject("Zamujen rok vrnitve izposojenega gradiva", "UTF-8");
 			StringBuilder sb = new StringBuilder();
 			sb.append("Spoštovani! <br /> Obvešèamo vas, da ste zamudili rok vrnitve izposojenega gradiva."

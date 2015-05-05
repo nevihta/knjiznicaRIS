@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import ris.projekt.knjiznica.Email;
 import ris.projekt.knjiznica.beans.*;
 import ris.projekt.knjiznica.dao.*;
 
@@ -61,6 +62,20 @@ public class CrnaListaServlet extends HttpServlet {
 			List<ZapisNaCl> crnaLista = crnaDAO.pridobiSeznamClanovNaCl();
 			request.setAttribute("crnaLista", crnaLista);
 			stran="/glavnaVsebina/CrnaLista.jsp"; //placeholder
+		}
+		else if(metoda.equals("email")){
+			OsebaDAO os = OsebaDAO.dobiInstanco();
+			Oseba o = os.pridobiOsebo(idOsebe);
+			StoritevDAO st = StoritevDAO.dobiInstanco();
+			List<StoritevZaIzpis> zamujenoGradivo = st.pridobiStoritveOsebePrekoRoka(idOsebe);
+			if(Email.posljiEmailZamudnina(o.getEmail(), zamujenoGradivo)){
+				//obvestilo, da je bil mail poslan
+			}
+			else{
+				//obvestilo, da je prislo do napake
+			}
+			redirect = true;
+			stran="/knjiznica/OsebaServlet?metoda=pridobiVse&filter=zamudnik"; //placeholder
 		}
 		else if(metoda.equals("odstrani")){
 			//ne izbrise iz baze, ampak samo iz crne liste - "odstrani"
