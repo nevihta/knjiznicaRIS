@@ -57,32 +57,39 @@ public class StoritevServlet extends HttpServlet {
 			stran="/glavnaVsebina/preveriUporabnika.jsp"; 
 		}
 		else if (metoda.equals("nastaviPodaljsanje")){
-			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebeNepodaljsane(idOsebe);
-			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
-			request.setAttribute("metoda", "podaljsaj");
-			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
+			if(idOsebe!=-1){
+				List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebeNepodaljsane(idOsebe);
+				request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
+				request.setAttribute("metoda", "podaljsaj");
+				stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
+			}
+			else{
+				redirect=true;
+				stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje"; //placeholder ^
+			}
+
 		}
 		else if (metoda.equals("nastaviVracilo")){
+			if(idOsebe!=-1){
 			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseAktualneIzposojeOsebe(idOsebe);
 			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 			request.setAttribute("metoda", "vrni");
 			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
-		}
-		else if (metoda.equals("pridobiVseIzposojeGradiva")){
-			//!!!!to preuredi v vse izposoje, pa filtri tu not, pa preko roka
-			//pa flikni zgodovino izposoj gradiva drugam
-			int idGradiva = -1;
-			try{
-				idGradiva = Integer.parseInt(request.getParameter("idGradiva"));
-			}catch(Exception e){}
-			//kaj ce id  gradiva ne obstaja? ^^
-			if(idGradiva!=-1){
-				List<Storitev> seznamIzposojGradiva = storitevDAO.pridobiVseIzposojeGradiva(idGradiva);
-				request.setAttribute("seznamIzposoj", seznamIzposojGradiva);
-				stran="/glavnaVsebina/IzposojeGradiva.jsp";
 			}
-			else //neka napaka
-				stran="/glavnaVsebina/Domov.jsp"; //placeholdeer
+			else{
+				redirect=true;
+				stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje"; //placeholder ^
+			}
+
+		}
+		else if (metoda.equals("pridobiVseAktualneIzposoje")){
+			List<StoritevZaIzpis> seznamIzposojGradiva = storitevDAO.pridobiVseAktualneIzposoje();
+			List<Oseba> osebeKiImajoSposojenoGradivo=osebaDAO.pridobiOsebeKiImajoSposojenoGradivo();
+			request.setAttribute("seznamIzposoj", seznamIzposojGradiva);
+			request.setAttribute("osebe", osebeKiImajoSposojenoGradivo);
+			//nastavi osebe, ki imajo aktualne izposoje
+			
+			stran="/glavnaVsebina/Izposoje.jsp";
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
@@ -111,6 +118,7 @@ public class StoritevServlet extends HttpServlet {
 		
 		String stran="";
 		boolean redirect = false;
+		System.out.println(metoda);
 		
 		OsebaDAO osebaDAO = OsebaDAO.dobiInstanco(); //za preverjat ce obstaja uporabnik
 		GradivoDAO gradivoDAO = GradivoDAO.dobiInstanco();
@@ -204,6 +212,7 @@ public class StoritevServlet extends HttpServlet {
 				if(!inputPrviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
 					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
 				else {
+
 					List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 					for(int k=0;k<idGradiv.size();k++){
 						storitev = new Storitev(datumIzposoje, null, rokVrnitve, false, idOsebe, idGradiv.get(k), idKnjiznicarja);
@@ -231,22 +240,24 @@ public class StoritevServlet extends HttpServlet {
 				//podaljsa jih lahko vec hkrati, preverjanje ce so idji (clan, gradivo),
 
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
-				//hidden input za datume????
-				String[] gradivaDatumi = request.getParameterValues("gradivaDatumi");
-				
 				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
+				String id;
+				String datum;
+				
 				for(int j=0; j<gradivaSelect.length; j++){
-					if(!gradivaSelect[j].equals("-1")){
+					String[] razdeli=gradivaSelect[j].split("\\*");
+					id=razdeli[0];
+					datum=razdeli[1];
+					if(!id.equals("-1")){
 						try{
-							String date = gradivaDatumi[j]; 
-							SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");//nisem ziher kak v bazi?
+							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//nisem ziher kak v bazi?
 							Calendar c = Calendar.getInstance();
-							c.setTime(sdf.parse(date));
+							c.setTime(sdf.parse(datum));
 							c.add(Calendar.DATE, 28);  
 							Date rokVrnitve = c.getTime(); 
 							
 							storitev = new Storitev();
-							storitev.setId(Integer.parseInt(gradivaSelect[j]));
+							storitev.setId(Integer.parseInt(id));
 							storitev.setRokVrnitve(rokVrnitve);
 							seznamStoritev.add(storitev);
 						}catch(Exception e){}
@@ -277,6 +288,8 @@ public class StoritevServlet extends HttpServlet {
 				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 				
 				for(int j=0; j<gradivaSelect.length; j++){
+					System.out.println(gradivaSelect[j]);
+
 					if(!gradivaSelect[j].equals("-1")){
 						storitev = new Storitev();
 						storitev.setId(Integer.parseInt(gradivaSelect[j]));

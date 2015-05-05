@@ -102,7 +102,7 @@ public class StoritevDAO {
 			for(int i=0; i<storitve.size();i++)
 			{
 				s=storitve.get(i);
-				datum=new Date(s.getDatumVrnitve().getTime());
+				datum=new Date(s.getRokVrnitve().getTime());
 				st.setDate(1, datum);
 				st.setBoolean(2, true);
 				st.setInt(3, s.getId());

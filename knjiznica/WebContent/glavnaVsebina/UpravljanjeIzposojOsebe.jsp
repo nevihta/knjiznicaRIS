@@ -24,25 +24,42 @@
 				<h1 class="templatemo-header">Upravljanje izposoj osebe</h1>
 
 
-				<h4>Izposoje:</h4>
+				<h4>
+				<c:if test="${metoda eq 'vrni' }">Vrni:</c:if>
+				<c:if test="${metoda eq 'podaljsaj' }">Podaljšaj:</c:if>
+				</h4>
+				
+				<c:if test="${seznamIzposoj.size()==0}">
+					<br/>
+					Vsa gradiva izbranega uporabnika so že bila podaljšana.
+				</c:if>
+				
+				<c:if test="${seznamIzposoj.size()!=0}">
+
 				
 				<form action="${pageContext.request.contextPath}/StoritevServlet?metoda=<c:out value="${metoda}" />" method="post">
-					
+					<table>
+						<tr>
+						<th>x</th>
+						<th>Št. gradiva</th>
+						<th>Naslov </th>
+						<th>Rok vrnitve</th>
+						</tr>
 					<c:forEach var="izposoja" items="${seznamIzposoj}">
-						
-						<input type="checkbox" name="gradivaSelect" value="<c:out value="${izposoja.storitev.id}" />"><c:out value="${izposoja.storitev.datumIzposoje}" /><c:out value="${izposoja.gradivo.naslov}" /><br>
-							
+						<tr>
+						<td><input type="checkbox" name="gradivaSelect" value="<c:out value='${izposoja.storitev.id}'/><c:if test="${metoda eq 'podaljsaj'}">*<c:out value='${izposoja.storitev.rokVrnitve}'/></c:if>"></td>
+						<td><c:out value="${izposoja.gradivo.id + 1000 }"/></td>
+						<td><c:out value="${izposoja.gradivo.naslov}"/></td>
+						<td><c:out value="${izposoja.storitev.rokVrnitve}"/></td>
+						</tr>
 					</c:forEach>
-					
-					<!-- Treba je ob gradivu obklukat še datume -->		
-					
-					 <input	type="submit" value="Potrdi" name="submit" class="button" />							
+					<tr><td> <input	type="submit" value="Potrdi" name="submit" class="button" /></td></tr>
+
+					</table>
+											
 				</form>
 				
-				
-				
-
-
+				</c:if>
 			</div>
 		</div>
 </body>
