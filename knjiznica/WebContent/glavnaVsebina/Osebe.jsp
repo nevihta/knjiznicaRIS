@@ -34,7 +34,6 @@
 						</tr>
 					</table>
 					<br>
-					<hr>
 					<table id="izpisOseb">
 						<tr>
 							<th>Članska št.</th>

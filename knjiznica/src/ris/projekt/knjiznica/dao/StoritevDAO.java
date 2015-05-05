@@ -367,6 +367,40 @@ public class StoritevDAO {
 		}
 		return storitve;
 	}
+	
+	public List<StoritevZaIzpis> pridobiStoritveOsebePrekoRoka(int id) {
+		ArrayList<StoritevZaIzpis> storitve=new ArrayList<StoritevZaIzpis>();
+		StoritevZaIzpis szi;
+		Gradivo g;
+		Storitev s;
+		java.util.Date danasnjiDatum=new java.util.Date();
+		Date datum;
+		try{
+			povezava =  Povezava.getConnection();
+			
+			st = povezava.prepareStatement("select s.*, g.* from gradivo g, storitev s where s.tk_id_gradiva=g.ID_gradiva and s.datumVracila is null and s.rokVracila<? and s.tk_id_clana=?");
+			datum=new Date(danasnjiDatum.getTime());
+			st.setDate(1, datum);
+			st.setInt(2, id);
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+				s=new Storitev(rs.getInt("ID_storitve"), rs.getDate("datumIzposoje"), rs.getDate("datumVracila"), rs.getDate("rokVracila"), rs.getBoolean("zePodaljsano"), rs.getInt("tk_id_clana"), rs.getInt("tk_id_gradiva"), rs.getInt("tk_id_knjiznicarja"));
+				g=new Gradivo(rs.getInt("ID_gradiva"), rs.getString("naslov"), rs.getString("originalNaslov"), Jezik.valueOf(rs.getString("jezik")), rs.getInt("letoIzida"), rs.getString("ISBN"), rs.getString("opis"), rs.getInt("tk_id_podrocja"), rs.getInt("tk_id_vrste"), rs.getInt("tk_id_zalozbe"));
+				szi=new StoritevZaIzpis(s,g);
+				storitve.add(szi);
+			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return storitve;
+	}
+
 
 	public List<StoritevZaIzpis> pridobiVseIzposojeGledeNaStatus(String statusFilter) {
 		ArrayList<StoritevZaIzpis> storitve=new ArrayList<StoritevZaIzpis>();
