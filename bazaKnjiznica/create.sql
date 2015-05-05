@@ -29,7 +29,7 @@ CREATE TABLE `knjiznica`.`oseba` (
 CREATE TABLE `knjiznica`.`prijava` (
   `ID_prijave` INT NOT NULL AUTO_INCREMENT,
   `upIme` VARCHAR(45) NULL,
-  `geslo` VARCHAR (45)  NULL,
+  `geslo` VARCHAR (70)  NULL,
   `tk_id_osebe` INT NULL,
   PRIMARY KEY (`ID_prijave`));
 
