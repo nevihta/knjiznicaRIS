@@ -30,7 +30,7 @@ public class PodrocjeServlet extends HttpServlet {
 		String metoda="";
 		int idPodrocja=-1;
 		boolean redirect = false;
-
+		request.setAttribute("meni", "gradivo");
 		
 		try{
 			metoda = request.getParameter("metoda");
@@ -90,6 +90,7 @@ public class PodrocjeServlet extends HttpServlet {
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
 		boolean redirect = false;
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodaj")){
 			podrocjeDAO.dodajPodrocje(request.getParameter("naziv"));

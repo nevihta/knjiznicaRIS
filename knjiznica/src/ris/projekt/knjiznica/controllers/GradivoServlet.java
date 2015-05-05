@@ -46,6 +46,7 @@ public class GradivoServlet extends HttpServlet {
 		Gradivo gradivo = new Gradivo();
 		String urejanjeGr=null;
 		boolean redirect = false;
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodajGr")){
 			//? dodat neki default id=-1?
@@ -154,8 +155,10 @@ public class GradivoServlet extends HttpServlet {
 					
 					urejanjeGr = request.getParameter("urejanjeGr");
 				}
-				else
-					stran="/glavnaVsebina/Domov.jsp"; //placeholder
+				else{
+					redirect = true;
+					stran="/knjiznica/OsebaServlet?metoda=domov"; 
+				}
 				
 			}catch(NullPointerException e){e.getMessage();}
 			if(urejanjeGr!=null){
@@ -235,6 +238,7 @@ public class GradivoServlet extends HttpServlet {
 		String stran="";
 		Gradivo gradivo = new Gradivo();
 		boolean redirect = false;
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodajGradivo")){
 			//preverjanja ali je vnaprej doloceno ali ne? vec avtorjev?
@@ -413,8 +417,10 @@ public class GradivoServlet extends HttpServlet {
 			
 		}
 		
-		if(stran=="") // ce slo kje kaj narobe..
-			stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+		if(stran==""){
+			redirect = true;
+			stran="/knjiznica/OsebaServlet?metoda=domov"; 
+		}
 
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)

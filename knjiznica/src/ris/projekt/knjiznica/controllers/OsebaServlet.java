@@ -44,6 +44,7 @@ public class OsebaServlet extends HttpServlet {
 		String stran="";
 		boolean redirect = false;
 		HttpSession seja = request.getSession();
+		request.setAttribute("meni", "osebe");
 		
 		if(metoda.equals("dodajOs")){
 			request.setAttribute("metoda","dodajOsebo" );
@@ -124,7 +125,8 @@ public class OsebaServlet extends HttpServlet {
 		else if(metoda.equals("izbrisiOsebo")){
 			//v bazi niso povezani, zato je vrstni red brisanja nepomemben - drugace prvo zbrises prijavo! -nova metoda 
 			if(osebaDAO.izbrisiOsebo(idOsebe)){ //izbrise tudi naslov in prijavo
-				stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
 			}
 			else{ 
 				redirect = true;
@@ -133,12 +135,14 @@ public class OsebaServlet extends HttpServlet {
 		
 		}
 		else if(metoda.equals("domov")){
+			request.setAttribute("meni", "domov");
 			stran = "/glavnaVsebina/Domov.jsp"; 
 		}
 		else if(metoda.equals("odjava")){
 			seja.removeAttribute("Prijava");
 			seja.removeAttribute("ID");
-			stran="/glavnaVsebina/Domov.jsp";
+			redirect = true;
+			stran="/knjiznica/OsebaServlet?metoda=domov"; 
 		}
 		else if(metoda.equals("pridobiZgO")){
 			ArrayList<StoritevZaIzpis> szi=storitevDAO.pridobiVseIzposojeOsebe(idOsebe);
@@ -179,6 +183,7 @@ public class OsebaServlet extends HttpServlet {
 		OsebaDAO osebaDAO = OsebaDAO.dobiInstanco();
 		NaslovDAO naslovDAO = NaslovDAO.dobiInstanco();
 		HttpSession seja = request.getSession();
+		request.setAttribute("meni", "osebe");
 		
 		if(metoda.equals("prijava")){
 			Prijava prijava = new Prijava();
@@ -191,7 +196,8 @@ public class OsebaServlet extends HttpServlet {
 			{
 				seja.setAttribute("Prijava",true);
 				seja.setAttribute("ID", idUporabnika);
-				stran="/glavnaVsebina/Domov.jsp";
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
 			}
 			else{
 				seja.setAttribute("Prijava",false);
@@ -268,7 +274,8 @@ public class OsebaServlet extends HttpServlet {
 			
 			if(uspesno){
 				seja.setAttribute("Sprememba",true);
-				stran="/glavnaVsebina/Domov.jsp"; //placeholder
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
 			}
 			else{
 				seja.setAttribute("Sprememba",false);
@@ -284,8 +291,8 @@ public class OsebaServlet extends HttpServlet {
 			prijava.setTk_id_osebe(idOsebe);
 			
 			osebaDAO.dodajPrijavo(prijava);
-			
-			stran="/glavnaVsebina/Domov.jsp"; //placeholder
+			redirect = true;
+			stran="/knjiznica/OsebaServlet?metoda=domov"; 
 	
 		}
 	

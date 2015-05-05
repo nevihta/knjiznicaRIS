@@ -28,10 +28,14 @@
 					method="post">
 					<input type="hidden" value='<c:out value="${idOsebe}" />'
 						name="idOsebe" />
-
+					
+					<c:if test="${niIzbrano==true}">
+						<p>Opozorilo: izberite gradivo za izposojo!</p>
+					</c:if>	
+					
 					<div id="gradivaDIV">
 						<a href="javascript:dodajSeznam()" class="button">Dodaj prosto gradivo iz seznama</a> 
-						<a href="javascript:dodajNovo()"class="button">Vpiši novo gradivo</a>
+						<a href="javascript:dodajNovo()"class="button">Vpiši številko gradiva</a>
 						<br /> <br /> 
 						<select
 							name="gradivaSelect">

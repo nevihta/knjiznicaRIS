@@ -37,6 +37,7 @@ public class ZalozbaServlet extends HttpServlet {
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
 		boolean redirect = false;
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("pridobiVse")){
 			List<Zalozba> list = new ArrayList<Zalozba>();
@@ -88,6 +89,7 @@ public class ZalozbaServlet extends HttpServlet {
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
 		boolean redirect = false;
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodaj")){
 			zalozbaDAO.dodajZalozbo(request.getParameter("naziv"));

@@ -37,7 +37,7 @@ public class VrstaGradivaServlet extends HttpServlet {
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
 		boolean redirect=false;
-		
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("pridobiVse")){
 			List<VrstaGradiva> list = new ArrayList<VrstaGradiva>();
@@ -90,6 +90,7 @@ public class VrstaGradivaServlet extends HttpServlet {
 		catch(Exception e){e.printStackTrace();}
 		String stran="";
 		boolean redirect = false;
+		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodaj")){
 			vrstaGradivaDAO.dodajVrstoGradiva(request.getParameter("naziv"));

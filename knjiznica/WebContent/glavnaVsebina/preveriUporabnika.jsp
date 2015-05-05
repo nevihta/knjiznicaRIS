@@ -18,8 +18,11 @@
 					<b>Knjižnica</b>
 				</h1>
 				
-				<div class="tm-right-inner-container">
+				<div class="tm-right-inner-container">				
 					<h1 class="templatemo-header">Preveri uporabnika</h1>
+					<c:if test="${neObstaja==true}">
+						<p>Opozorilo: vnesite pravilen ID!</p>
+					</c:if>	
 					<form id="forma"
 						action="${pageContext.request.contextPath}/StoritevServlet?metoda=nastaviIzposojo"
 						method="post">

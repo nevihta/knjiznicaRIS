@@ -32,6 +32,7 @@ public class StoritevServlet extends HttpServlet {
 		
 		GradivoDAO gradivoDAO = GradivoDAO.dobiInstanco();
 		StoritevDAO storitevDAO = StoritevDAO.dobiInstanco();
+		CrnaListaDAO crnaDAO = CrnaListaDAO.dobiInstanco();
 		Storitev storitev = new Storitev();
 		
 		int idOsebe = -1;
@@ -45,6 +46,7 @@ public class StoritevServlet extends HttpServlet {
 		String stran="";
 		boolean redirect = false;
 		HttpSession seja = request.getSession();
+		request.setAttribute("meni", "izposoja");
 		
 		if (metoda.equals("pridobiIzposojeOsebe")){
 			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseAktualneIzposojeOsebe(idOsebe);
@@ -52,8 +54,13 @@ public class StoritevServlet extends HttpServlet {
 			stran="/glavnaVsebina/IzposojeOsebe.jsp"; 
 		}
 		else if(metoda.equals("vsiClani")){
+			String neObstaja = null;
 			List<Oseba> clani = osebaDAO.pridobiOsebe();
 			request.setAttribute("clani", clani);
+			neObstaja = request.getParameter("neObstaja");
+			if(neObstaja!=null)
+				request.setAttribute("neObstaja", true);
+			
 			stran="/glavnaVsebina/preveriUporabnika.jsp"; 
 		}
 		else if (metoda.equals("nastaviPodaljsanje")){
@@ -90,6 +97,18 @@ public class StoritevServlet extends HttpServlet {
 			//nastavi osebe, ki imajo aktualne izposoje
 			
 			stran="/glavnaVsebina/Izposoje.jsp";
+		}//zaradi redirecta
+		else if(metoda.equals("nastaviIzposojo")){
+			String niIzbrano = null;
+			List<Gradivo> seznamGradiv = gradivoDAO.pridobiGradivaGledeNaStanje("prosto");
+			request.setAttribute("prostaGradiva", seznamGradiv);
+			request.setAttribute("idOsebe", idOsebe);
+			//opozorilo
+			niIzbrano = request.getParameter("niIzbrano");
+			if(niIzbrano!=null)
+				request.setAttribute("niIzbrano", true);
+			stran="/glavnaVsebina/Izposoja.jsp"; 
+				
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
@@ -125,7 +144,8 @@ public class StoritevServlet extends HttpServlet {
 		CrnaListaDAO crnaDAO = CrnaListaDAO.dobiInstanco();
 		StoritevDAO storitevDAO = StoritevDAO.dobiInstanco();
 		HttpSession seja = request.getSession();
-
+		request.setAttribute("meni", "izposoja");
+		
 		if(metoda.equals("nastaviIzposojo")){
 			int idKnjiznicarja = -1;
 			try{
@@ -143,10 +163,8 @@ public class StoritevServlet extends HttpServlet {
 				if(osebaDAO.pridobiOsebo(idOsebe).getIme()!=null){
 					//preveri, ce ni na crni list
 					if(crnaDAO.preveriCeJeClanNaCl(idOsebe)){
-						//rabimo osebe!
-						List<ZapisNaCl> crnaLista = crnaDAO.pridobiSeznamClanovNaCl();
-						request.setAttribute("crnaLista", crnaLista);
-						stran="/glavnaVsebina/CrnaLista.jsp"; //placeholder
+						redirect = true;
+						stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
 					}
 					else{
 						List<Gradivo> seznamGradiv = gradivoDAO.pridobiGradivaGledeNaStanje("prosto");
@@ -156,13 +174,13 @@ public class StoritevServlet extends HttpServlet {
 					}
 				}
 				else{ //oseba ne obstaja
-					//nastavi v jsp obvestilo, preuredi vsiClani^^
 					redirect = true;
 					stran="/knjiznica/StoritevServlet?metoda=vsiClani&neObstaja=true";
 				}
 
 			}
 			else{
+				request.setAttribute("meni", "domov");
 				seja.setAttribute("Prijava",false);
 				stran="/glavnaVsebina/Login.jsp"; 
 			}
@@ -209,8 +227,10 @@ public class StoritevServlet extends HttpServlet {
 					}
 				}catch(NullPointerException e){}
 				
-				if(!inputPrviPoln && !selectPoln)//neko opozorilo  da nekaj ni blo vneseno
-					stran = "/glavnaVsebina/Domov.jsp"; //placeholder
+				if(!inputPrviPoln && !selectPoln){ //opozorilo
+					redirect = true;
+					stran = "/knjiznica/StoritevServlet?metoda=nastaviIzposojo&niIzbrano=true&idOsebe="+idOsebe; //placeholder
+				}
 				else {
 
 					List<Storitev> seznamStoritev = new ArrayList<Storitev>();
@@ -225,6 +245,7 @@ public class StoritevServlet extends HttpServlet {
 				
 			}
 			else{
+				request.setAttribute("meni", "domov");
 				seja.setAttribute("Prijava",false);
 				stran="/glavnaVsebina/Login.jsp"; 
 			}
@@ -269,6 +290,7 @@ public class StoritevServlet extends HttpServlet {
 				
 			}
 			else{
+				request.setAttribute("meni", "domov");
 				seja.setAttribute("Prijava",false);
 				stran="/glavnaVsebina/Login.jsp"; 
 			}
@@ -302,6 +324,7 @@ public class StoritevServlet extends HttpServlet {
 				stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;	
 			}
 			else{
+				request.setAttribute("meni", "domov");
 				seja.setAttribute("Prijava",false);
 				stran="/glavnaVsebina/Login.jsp"; 
 			}

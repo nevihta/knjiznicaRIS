@@ -41,6 +41,7 @@ public class CrnaListaServlet extends HttpServlet {
 		String stran="";
 		boolean redirect = false;
 		HttpSession seja = request.getSession();
+		request.setAttribute("meni", "lista");
 		
 		if(metoda.equals("dodajOsnaCL")){
 			if(idOsebe!=-1){
@@ -48,8 +49,11 @@ public class CrnaListaServlet extends HttpServlet {
 				request.setAttribute("metoda","dodajOSnaCL" );
 				stran="/glavnaVsebina/novZapisCL.jsp"; //placeholder
 			}
-			else
-				stran="/glavnaVsebina/Domov.jsp"; //placeholder
+			else{
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
+			}
+				
 		}
 		else if(metoda.equals("pridobiVse")){
 			//+ filter za stare zapise?
@@ -71,7 +75,8 @@ public class CrnaListaServlet extends HttpServlet {
 				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
 			}
 			else {
-				stran="/glavnaVsebina/Domov.jsp"; //placeholder
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
 			}
 		
 		}
@@ -100,7 +105,8 @@ public class CrnaListaServlet extends HttpServlet {
 		
 		String stran="";
 		boolean redirect = false;
-
+		request.setAttribute("meni", "lista");
+		
 		if(metoda.equals("dodajOSnaCL")){
 			if(idOsebe!=-1){
 				zapis.setTk_id_osebe(idOsebe);
@@ -110,8 +116,10 @@ public class CrnaListaServlet extends HttpServlet {
 				redirect = true;
 				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
 			}
-			else
-				stran="/glavnaVsebina/Domov.jsp"; //placeholder
+			else{
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
+			}
 		}
 		else if(metoda.equals("dodajNovoZamujanje")){
 			//direktno iz seznama zamudnin gumbek? naredimo seznam zamudnikov?
@@ -125,8 +133,10 @@ public class CrnaListaServlet extends HttpServlet {
 				redirect = true;
 				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
 			}
-			else
-				stran="/glavnaVsebina/Domov.jsp"; //placeholder
+			else{
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=domov"; 
+			}
 		}
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
