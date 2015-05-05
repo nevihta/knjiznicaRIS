@@ -265,29 +265,34 @@ public class StoritevServlet extends HttpServlet {
 				String id;
 				String datum;
 				
-				for(int j=0; j<gradivaSelect.length; j++){
-					String[] razdeli=gradivaSelect[j].split("\\*");
-					id=razdeli[0];
-					datum=razdeli[1];
-					if(!id.equals("-1")){
-						try{
-							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//nisem ziher kak v bazi?
-							Calendar c = Calendar.getInstance();
-							c.setTime(sdf.parse(datum));
-							c.add(Calendar.DATE, 28);  
-							Date rokVrnitve = c.getTime(); 
-							
-							storitev = new Storitev();
-							storitev.setId(Integer.parseInt(id));
-							storitev.setRokVrnitve(rokVrnitve);
-							seznamStoritev.add(storitev);
-						}catch(Exception e){}
+				if(gradivaSelect!=null){
+					for(int j=0; j<gradivaSelect.length; j++){
+						String[] razdeli=gradivaSelect[j].split("\\*");
+						id=razdeli[0];
+						datum=razdeli[1];
+						if(!id.equals("-1")){
+							try{
+								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//nisem ziher kak v bazi?
+								Calendar c = Calendar.getInstance();
+								c.setTime(sdf.parse(datum));
+								c.add(Calendar.DATE, 28);  
+								Date rokVrnitve = c.getTime(); 
+								
+								storitev = new Storitev();
+								storitev.setId(Integer.parseInt(id));
+								storitev.setRokVrnitve(rokVrnitve);
+								seznamStoritev.add(storitev);
+							}catch(Exception e){}
+						}
 					}
+					storitevDAO.podaljsaj(seznamStoritev);
+					redirect = true;
+					stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;
 				}
-				storitevDAO.podaljsaj(seznamStoritev);
-				redirect = true;
-				stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;
-				
+				else {
+					redirect = true;
+					stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje";	
+				}
 			}
 			else{
 				request.setAttribute("meni", "domov");
@@ -308,20 +313,25 @@ public class StoritevServlet extends HttpServlet {
 
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
 				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
-				
-				for(int j=0; j<gradivaSelect.length; j++){
-					System.out.println(gradivaSelect[j]);
-
-					if(!gradivaSelect[j].equals("-1")){
-						storitev = new Storitev();
-						storitev.setId(Integer.parseInt(gradivaSelect[j]));
-						storitev.setDatumVrnitve(new Date());
-						seznamStoritev.add(storitev);
+				if(gradivaSelect!=null){
+					for(int j=0; j<gradivaSelect.length; j++){
+						System.out.println(gradivaSelect[j]);
+	
+						if(!gradivaSelect[j].equals("-1")){
+							storitev = new Storitev();
+							storitev.setId(Integer.parseInt(gradivaSelect[j]));
+							storitev.setDatumVrnitve(new Date());
+							seznamStoritev.add(storitev);
+						}
 					}
+					storitevDAO.vrni(seznamStoritev);
+					redirect = true;
+					stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;	
 				}
-				storitevDAO.vrni(seznamStoritev);
-				redirect = true;
-				stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;	
+				else {
+					redirect = true;
+					stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje";	
+				}
 			}
 			else{
 				request.setAttribute("meni", "domov");

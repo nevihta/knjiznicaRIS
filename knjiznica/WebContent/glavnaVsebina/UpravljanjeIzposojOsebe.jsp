@@ -45,18 +45,18 @@
 						<th>Naslov </th>
 						<th>Rok vrnitve</th>
 						</tr>
-					<c:forEach var="izposoja" items="${seznamIzposoj}">
-						<tr>
-						<td><input type="checkbox" name="gradivaSelect" value="<c:out value='${izposoja.storitev.id}'/><c:if test="${metoda eq 'podaljsaj'}">*<c:out value='${izposoja.storitev.rokVrnitve}'/></c:if>"></td>
-						<td><c:out value="${izposoja.gradivo.id + 1000 }"/></td>
-						<td><c:out value="${izposoja.gradivo.naslov}"/></td>
-						<td><c:out value="${izposoja.storitev.rokVrnitve}"/></td>
-						</tr>
-					</c:forEach>
-					<tr><td> <input	type="submit" value="Potrdi" name="submit" class="button" /></td></tr>
-
+						<c:forEach var="izposoja" items="${seznamIzposoj}">
+							<tr>
+							<td><input type="checkbox" name="gradivaSelect" value="<c:out value='${izposoja.storitev.id}'/><c:if test="${metoda eq 'podaljsaj'}">*<c:out value='${izposoja.storitev.rokVrnitve}'/></c:if>"></td>
+							<td><c:out value="${izposoja.gradivo.id + 1000 }"/></td>
+							<td><c:out value="${izposoja.gradivo.naslov}"/></td>
+							<td><c:out value="${izposoja.storitev.rokVrnitve}"/></td>
+							</tr>
+						</c:forEach>
 					</table>
-											
+					
+					<input type="button" value="Prekliči" onClick="history.go(-1);return true;" class="button"/>
+					<input	type="submit" value="Potrdi" name="submit" class="button" />						
 				</form>
 				
 				</c:if>
