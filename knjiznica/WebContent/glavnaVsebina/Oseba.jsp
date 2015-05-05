@@ -23,6 +23,7 @@
 						| 
 						<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=izbrisiOsebo&idOsebe=<c:out value='${uporabnik.id}' />">Izbriši</a>
 						| <a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiZgO&idOsebe=<c:out value='${uporabnik.id}' />">Poglej zgodovino izposoj</a>
+						| <a href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=dodajOsnaCL&idOsebe=<c:out value='${uporabnik.id}' />">Dodaj na črno listo</a>
 						
 						<c:if test="${uporabnik.id == sessionScope.ID}">
 						| <a href="${pageContext.request.contextPath}/OsebaServlet?metoda=urediKnjiznicar">Uredi uporabniško ime in geslo</a>
