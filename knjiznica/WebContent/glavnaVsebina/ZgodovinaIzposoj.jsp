@@ -36,10 +36,10 @@
 				</c:if>
 					
 				<c:if test="${zgo eq 'gradivo'}">
-					<table>
+				<table>
 						<tr><th>Članska št.</th><th>Oseba</th><th>Od</th><th>Do</th></tr>
 					<c:forEach var="izposoja" items="${zgodovinaG}">        
-						<tr><td><c:out value="${izposoja.gradivo.id+1000}"/></td>
+						<tr><td><c:out value="${izposoja.oseba.id+1000}"/></td>
 						<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${izposoja.oseba.id}"/>"><c:out value="${izposoja.oseba.ime}"/> <c:out value="${izposoja.oseba.priimek}"/></a></td>
 						<td><c:out value="${izposoja.storitev.datumIzposoje}"/></td>
 						<td><c:out value="${izposoja.storitev.datumVrnitve}"/></td>

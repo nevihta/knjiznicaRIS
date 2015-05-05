@@ -79,6 +79,7 @@ public class OsebaServlet extends HttpServlet {
 			
 		}
 		else if(metoda.equals("pridobiVse")){
+			boolean filt = false;
 			List<Oseba> list = new ArrayList<Oseba>();
 			String filter = request.getParameter("filter");
 			try{
@@ -88,6 +89,12 @@ public class OsebaServlet extends HttpServlet {
 					list = osebaDAO.pridobiPoTipu("èlan");
 				else if(filter.equals("knjiznicar"))
 					list = osebaDAO.pridobiPoTipu("knjižnièar");
+				else if(filter.equals("zamudnik"))
+				{
+					filt=true;
+					list=osebaDAO.pridobiZamudnike();
+				}
+				request.setAttribute("filt", filt);
 				request.setAttribute("osebe", list);
 			}
 			catch(NullPointerException e){	}

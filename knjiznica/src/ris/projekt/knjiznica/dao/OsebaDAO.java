@@ -1,6 +1,7 @@
 package ris.projekt.knjiznica.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -454,5 +455,33 @@ public class OsebaDAO {
 		
 		return osebe;
 		
+	}
+	
+	public ArrayList<Oseba> pridobiZamudnike() {
+		Date datum;
+		java.util.Date danasnjiDatum=new java.util.Date();
+		ArrayList<Oseba> osebe = new ArrayList<Oseba>();
+		Oseba o;
+		try{
+			povezava =  Povezava.getConnection();
+
+			st = povezava.prepareStatement("select distinct  o.* from storitev s,  oseba o where o.ID_osebe=s.tk_id_clana and rokVracila<?");
+			datum=new Date(danasnjiDatum.getTime());
+			st.setDate(1, datum);
+			rs=st.executeQuery();
+			while (rs.next())
+			{
+				o=new Oseba(rs.getInt("ID_osebe"), rs.getString("ime"), rs.getString("priimek"), TipOsebe.valueOf(rs.getString("tipOsebe")), rs.getString("email"), rs.getString("telefon"), rs.getInt("tk_id_naslova"));
+				osebe.add(o);
+			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		
+		return osebe;
 	}
 }

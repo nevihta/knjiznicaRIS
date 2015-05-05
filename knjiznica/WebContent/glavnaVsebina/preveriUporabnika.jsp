@@ -19,9 +19,9 @@
 				</h1>
 				
 				<div class="tm-right-inner-container">				
-					<h1 class="templatemo-header">Preveri uporabnika</h1>
+					<h1 class="templatemo-header">Izberi uporabnika</h1>
 					<c:if test="${neObstaja==true}">
-						<p>Opozorilo: vnesite pravilen ID!</p>
+						<p>Opozorilo: vnesite pravileno člansko številko!</p>
 					</c:if>	
 					<form id="forma"
 						action="${pageContext.request.contextPath}/StoritevServlet?metoda=nastaviIzposojo"
@@ -29,7 +29,7 @@
 												
 						<h4>Član:</h4>
 						<a href="javascript:unhide('osebaS', 'osebaI')" class="button">Izberi iz seznama</a>
-    					<a href="javascript:unhide('osebaI', 'osebaS')" class="button">Vnesi ID</a><br /> <br /> 
+    					<a href="javascript:unhide('osebaI', 'osebaS')" class="button">Vnesi člansko številko</a><br /> <br /> 
 						
 						<div id="osebaI"  class="hidden">
 							<input type="number" name="osebaInput" class="textbox" />

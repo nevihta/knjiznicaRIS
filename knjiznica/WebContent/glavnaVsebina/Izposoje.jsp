@@ -73,7 +73,6 @@
 		 			<tr><td><h4></h4></td></tr>
 		 			<tr><td><input type="submit" value="Prikaži rezultate" name="submit" class="button" />	</td></tr>
 					</table>
-		 		
 					</form>
 					<br/>
 				</div>	
@@ -157,7 +156,7 @@
 					<td><c:out value="${i.storitev.datumIzposoje}"/></td>
 					<td><c:out value="${i.storitev.rokVrnitve}"/></td>
 					<c:if test="${pretekle}">
-					<<td><c:out value="${i.storitev.datumVrnitve}"/></td>
+					<td><c:out value="${i.storitev.datumVrnitve}"/></td>
 					</c:if>	
 				</tr>
 				</c:forEach>

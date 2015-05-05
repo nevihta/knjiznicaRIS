@@ -127,7 +127,7 @@ public class StoritevDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select s.*, g.naslov from storitev s, gradivo g where tk_id_clana=? and s.tk_id_gradiva=g.ID_gradiva");
+			st = povezava.prepareStatement("select s.*, g.naslov from storitev s, gradivo g where tk_id_clana=? and s.tk_id_gradiva=g.ID_gradiva and s.datumVracila is not null");
 			st.setInt(1, idOsebe);
 			rs=st.executeQuery();
 			while (rs.next())
@@ -158,7 +158,7 @@ public class StoritevDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select s.*, o.ime, o.priimek from storitev s, oseba o where tk_id_gradiva=? and o.ID_osebe=s.tk_id_clana");
+			st = povezava.prepareStatement("select s.*, o.ime, o.priimek from storitev s, oseba o where tk_id_gradiva=? and o.ID_osebe=s.tk_id_clana and s.datumVracila is not null");
 			st.setInt(1, idGradiva);
 			rs=st.executeQuery();
 			while (rs.next())

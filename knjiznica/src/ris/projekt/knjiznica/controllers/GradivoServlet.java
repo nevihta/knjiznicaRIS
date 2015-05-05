@@ -202,8 +202,9 @@ public class GradivoServlet extends HttpServlet {
 		}
 		else if(metoda.equals("pridobiZgG")){
 			ArrayList<StoritevZaIzpis> szi=storitevDAO.pridobiVseIzposojeGradiva(idGradiva);
+			System.out.println(szi.size());
 			Gradivo g=gradivoDAO.pridobiGradivo(idGradiva);
-			request.setAttribute("zgodovinag", szi);
+			request.setAttribute("zgodovinaG", szi);
 			request.setAttribute("zgo", "gradivo");
 			request.setAttribute("g", g);
 		

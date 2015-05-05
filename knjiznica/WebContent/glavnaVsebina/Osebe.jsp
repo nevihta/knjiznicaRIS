@@ -27,6 +27,7 @@
 							<td>	
 							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=clan">Člani</a> | 
 							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=knjiznicar"> Knjižničarji </a> | 
+							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=zamudnik"> Zamudniki</a>|
 							<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiVse&filter=vse"> Vsi</a>
 							</td>
 							
@@ -47,6 +48,9 @@
 								<td><c:out value="${1000+oseba.id}" /></td>
 								<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${oseba.id}" />"><c:out value="${oseba.ime}" /> <c:out value="${oseba.priimek}" /></a></td>
 								<td><c:out value="${oseba.email }" /></td>
+								<c:if test="${filt}">
+								<td><a>Obvesti</a></td>
+								</c:if>
 						
 							</tr>
 						</c:forEach>
