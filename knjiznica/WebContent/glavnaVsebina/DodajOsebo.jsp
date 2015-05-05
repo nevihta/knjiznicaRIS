@@ -74,7 +74,7 @@
 						<input type="text" name="mesto" class="textbox" value='<c:out value="${naslov.mesto}" />' required/>
 	
 						<h4>Poštna številka:</h4>
-						<input type="text" name="posta" class="textbox" value='<c:out value="${naslov.postnaSt}" />' required/>
+						<input type="number" name="posta" class="textbox" value='<c:out value="${naslov.postnaSt}" />' required/>
 	
 						<h4>Država:</h4>
 						<input type="text" name="drzava" class="textbox" value='<c:out value="${naslov.drzava}" />' required/> 
@@ -82,7 +82,7 @@
 						
 						<h3>Kontakt: </h3>
 						<h4>Email:</h4>
-						<input type="text" name="email" class="textbox" value='<c:out value="${uporabnik.email}" />' required/>
+						<input type="email" name="email" class="textbox" value='<c:out value="${uporabnik.email}" />' required/>
 	
 						<h4>Telefon:</h4>
 						<input type="text" name="tel" class="textbox" value='<c:out value="${uporabnik.telefon}" />' required/>

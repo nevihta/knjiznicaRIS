@@ -319,11 +319,13 @@ public class OsebaDAO {
 			rs = st.executeQuery();
 			
 			while(rs.next()){
-				if (BCrypt.checkpw(p.getGeslo(), rs.getString("geslo")))
+				if (BCrypt.checkpw(p.getGeslo(), rs.getString("geslo"))){
+					idKnjiznicarja=rs.getInt("tk_id_osebe");
 					System.out.println("It matches");
+				}	
 				else
 					System.out.println("It does not match");
-				idKnjiznicarja=rs.getInt("tk_id_osebe");
+			
 			}
 		}
 		catch(SQLException e){e.printStackTrace();} 
@@ -352,15 +354,15 @@ public class OsebaDAO {
 			rs.close();
 			st.close();
 			
-			if(staroGeslo.equals(p.getGeslo())){
-			
-			st = povezava.prepareStatement("update prijava set upIme=?, geslo=? where ID_prijave=?");
-			st.setString(1, p.getUpIme());
-			st.setString(2, novoGeslo);
-	        st.setInt(3, p.getId());
-	        st.executeUpdate();
-	        
-	        uspesnaPrijava=true;
+			if (BCrypt.checkpw(p.getGeslo(), staroGeslo)){
+				String hashed = BCrypt.hashpw(novoGeslo, BCrypt.gensalt());
+				st = povezava.prepareStatement("update prijava set upIme=?, geslo=? where ID_prijave=?");
+				st.setString(1, p.getUpIme());
+				st.setString(2, hashed);
+		        st.setInt(3, p.getId());
+		        st.executeUpdate();
+		        
+		        uspesnaPrijava=true;
 			}
 		}
 	     catch(SQLException e){

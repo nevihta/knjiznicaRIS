@@ -44,7 +44,7 @@
 							<select name="avtorjiSelect">
 								<option value="-1"> ----- </option>
 								<c:forEach var="avt" items="${vsiAvtorji}" >
-									<option value='<c:out value="${avt.id}" />' ${avt.id == avtorji[0].id ? 'selected' : ''}><c:out value="${avt.ime}" /><c:out value="${avt.priimek}" /></option>
+									<option value='<c:out value="${avt.id}" />' ${avt.id == avtorji[0].id ? 'selected' : ''}><c:out value="${avt.ime}" /> <c:out value="${avt.priimek}" /></option>
 								</c:forEach>
 							</select>
 							<br />
@@ -54,7 +54,7 @@
 										<select name="avtorjiSelect">
 											<option value="-1"> ----- </option>
 											<c:forEach var="avt" items="${vsiAvtorji}" >
-												<option value='<c:out value="${avt.id}" />' ${avt.id == avtor.id ? 'selected' : ''}><c:out value="${avt.ime}" /><c:out value="${avt.priimek}" /></option>
+												<option value='<c:out value="${avt.id}" />' ${avt.id == avtor.id ? 'selected' : ''}><c:out value="${avt.ime}" /> <c:out value="${avt.priimek}" /></option>
 											</c:forEach>
 										</select>
 										<a href="javascript:izbrisi('${i.index }urejanje')">Izbriši</a><br /><br />
@@ -70,7 +70,7 @@
 						<input type="text" name="isbn" class="textbox" value='<c:out value="${gradivo.ISBN}" />' required/>
 	
 						<h4>Opis:</h4>
-						<input type="text" name="opis" class="textbox" value='<c:out value="${gradivo.opis}" />' required/>
+						<textarea rows="10" cols="50" maxlength="200" name="opis" required><c:out value="${gradivo.opis}" /></textarea>
 	
 						<h4>Jezik:</h4>
 						<select name="jezik">
