@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import ris.projekt.knjiznica.baza.Povezava;
+import ris.projekt.knjiznica.beans.Oseba;
 import ris.projekt.knjiznica.beans.ZapisNaCl;
 
 public class CrnaListaDAO {
@@ -74,19 +75,24 @@ public class CrnaListaDAO {
 		}
 	}
 	
-	//pazi, vraèa zapisNaCl, ne pa Osebe! Po klicu tega bo potrebno še za vsak zapis pridobiti osebo!
 	public ArrayList<ZapisNaCl> pridobiSeznamClanovNaCl(){
 		
 		ArrayList<ZapisNaCl> zapisi=new ArrayList<ZapisNaCl>();
 		ZapisNaCl z;
+		Oseba o;
 		try{
 			povezava =  Povezava.getConnection();
-			st = povezava.prepareStatement("select * from zapisnacl where datumIzbrisa=null");
+			st = povezava.prepareStatement("select * from zapisnacl z, oseba o where o.ID_osebe=z.tk_id_osebe and datumIzbrisa is null");
 	
 			   rs = st.executeQuery();
 	           while (rs.next())
 	            {
 	            	z=new ZapisNaCl(rs.getInt("ID_Zapisa"), rs.getDate("datumZapisa"), rs.getDate("datumIzbrisa"), rs.getString("razlog"), rs.getInt("tk_id_osebe"));
+	            	o=new Oseba();
+	            	o.setId(z.getTk_id_osebe());
+	            	o.setIme(rs.getString("ime"));
+	            	o.setPriimek(rs.getString("priimek"));
+	            	z.setOseba(o);
 	            	zapisi.add(z);		
 	            }
            

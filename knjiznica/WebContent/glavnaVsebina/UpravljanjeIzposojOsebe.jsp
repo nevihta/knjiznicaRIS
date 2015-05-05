@@ -37,7 +37,7 @@
 				<c:if test="${seznamIzposoj.size()!=0}">
 
 				
-				<form action="${pageContext.request.contextPath}/StoritevServlet?metoda=<c:out value="${metoda}" />" method="post">
+				<form action="${pageContext.request.contextPath}/StoritevServlet?metoda=<c:out value="${metoda}" />&idOsebe=<c:out value="${idO}"/>" method="post">
 					<table>
 						<tr>
 						<th>x</th>

@@ -25,15 +25,18 @@
 
 
 				<table>
-					<th>Razlog</th>
-					<th>Id osebe</th>
+				<tr>
+					<th>Št. zapisa</th>
+					<th>Oseba</th>
 					<th>Datum zapisa</th>
-
+					<th>Razlog</th>
+				</tr>
 					<c:forEach var="zapis" items="${crnaLista}">
 						<tr>
 
-							<td><c:out value="${zapis.tk_id_osebe}" /></td>
-							<td><c:out value="${zapis.datum}" /></td>
+							<td><c:out value="${zapis.id}" /></td>
+							<td><c:out value="${zapis.oseba.ime}" /><c:out value="${zapis.oseba.priimek}" /></td>
+							<td><c:out value="${zapis.datumZapisa}" /></td>
 							<td><c:out value="${zapis.razlog}" /></td>
 							<td><a
 								href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=odstrani&idZapisa=<c:out value='${zapis.id}' />">Izbriši</a>

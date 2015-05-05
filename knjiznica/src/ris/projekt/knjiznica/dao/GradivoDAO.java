@@ -553,18 +553,35 @@ public class GradivoDAO {
 		GradivoZaIzpis g;
 		try{
 			povezava =  Povezava.getConnection();
-
-			if(statusFilter.equals("izposojeno"))
-				st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z, storitev s where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and s.tk_id_gradiva=g.ID_gradiva and s.datumVracila=null");
-			else
-				st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z, storitev s where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and s.tk_id_gradiva=g.ID_gradiva and s.datumVracila!=null");
-
-			rs = st.executeQuery();
 			
-			while (rs.next())
-			{
+			if(statusFilter.equals("izposojeno")){
+				st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, vrstagradiva vg, podrocje p, zalozba z, storitev s  where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and p.ID_podrocja=g.tk_id_podrocja and s.tk_id_gradiva=g.ID_gradiva and s.datumVracila is null");
+			
+				rs = st.executeQuery();
+			
+				while (rs.next())
+				{
+						g=new GradivoZaIzpis();
+						g.setId(rs.getInt("ID_Gradiva"));
+						g.setNaslov(rs.getString("naslov"));
+						g.setOriginalNaslov(rs.getString("originalNaslov"));
+						g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
+						g.setLetoIzida(rs.getInt("letoIzida"));
+						g.setISBN(rs.getString("ISBN"));
+						g.setOpis(rs.getString("opis"));
+						g.setPodrocje(rs.getString("podrocje"));
+						g.setVrsta(rs.getString("vrsta"));
+						g.setZalozba(rs.getString("zalozba"));
+						gradiva.add(g);
+				}
+			}
+			else{
+				st = povezava.prepareStatement("select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste");
+				rs = st.executeQuery();
+				while (rs.next())
+				{
 					g=new GradivoZaIzpis();
-					g.setId(rs.getInt("ID_gradiva"));
+					g.setId(rs.getInt("ID_Gradiva"));
 					g.setNaslov(rs.getString("naslov"));
 					g.setOriginalNaslov(rs.getString("originalNaslov"));
 					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); 
@@ -575,10 +592,31 @@ public class GradivoDAO {
 					g.setVrsta(rs.getString("vrsta"));
 					g.setZalozba(rs.getString("zalozba"));
 					gradiva.add(g);
-			}
+				}
+				rs.close();
+				st.close();
+				
+				System.out.println(gradiva.size());
+
+				
+				st=povezava.prepareStatement("select count(*) as st from storitev where tk_id_gradiva=? and datumVracila is null");
 			
-			rs.close();
-			st.close();
+				for (int i=0; i<gradiva.size(); i++)
+				{
+					st.setInt(1, gradiva.get(i).getId());
+					rs=st.executeQuery();
+					if(rs.next())
+					{
+						System.out.println(rs.getInt("st"));
+						if(rs.getInt("st")!=0)
+						{
+							gradiva.remove(i);
+							i--;
+						}
+					}
+					
+				}
+			}						
 				
 			ArrayList<Avtor> avtorjiGradiva;
 			Avtor a;

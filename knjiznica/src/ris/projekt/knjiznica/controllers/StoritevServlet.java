@@ -68,6 +68,8 @@ public class StoritevServlet extends HttpServlet {
 				List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseIzposojeOsebeNepodaljsane(idOsebe);
 				request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 				request.setAttribute("metoda", "podaljsaj");
+				request.setAttribute("idO", idOsebe);
+
 				stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
 			}
 			else{
@@ -81,6 +83,7 @@ public class StoritevServlet extends HttpServlet {
 			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseAktualneIzposojeOsebe(idOsebe);
 			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 			request.setAttribute("metoda", "vrni");
+			request.setAttribute("idO", idOsebe);
 			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
 			}
 			else{
@@ -90,7 +93,54 @@ public class StoritevServlet extends HttpServlet {
 
 		}
 		else if (metoda.equals("pridobiVseAktualneIzposoje")){
-			List<StoritevZaIzpis> seznamIzposojGradiva = storitevDAO.pridobiVseAktualneIzposoje();
+			String filter="false";
+			List<StoritevZaIzpis> seznamIzposojGradiva=null ;
+			boolean pretekle=false;
+			boolean fil=false;
+
+		
+			try{
+				 filter=request.getParameter("filter");
+			}
+			catch(Exception e){e.printStackTrace();}
+					
+			try{
+
+				if(filter==null){
+					seznamIzposojGradiva= storitevDAO.pridobiVseAktualneIzposoje();
+				}
+				else if(filter.equals("o")){
+					String osebaImeFilter=request.getParameter("imeOsebeFilter");
+					String osebaPriimekFilter=request.getParameter("priimekOsebeFilter");
+					seznamIzposojGradiva=storitevDAO.pridobiFiltriraneIzposojeO(osebaImeFilter, osebaPriimekFilter);
+				}
+				else if(filter.equals("i"))
+				{
+					String idfilter=request.getParameter("id");
+					seznamIzposojGradiva=storitevDAO.pridobiVseAktualneIzposojeOsebe(Integer.parseInt(idfilter));
+					fil=true;
+				}
+				else if(filter.equals("s")){
+					String statusFilter=request.getParameter("statusFilter");
+					if(statusFilter.equals("rok"))
+						seznamIzposojGradiva=storitevDAO.pridobiStoritvePrekoRoka();
+					else if ((statusFilter.equals("akt"))||(statusFilter.equals("pret")))	
+						seznamIzposojGradiva=storitevDAO.pridobiVseIzposojeGledeNaStatus(statusFilter);
+					else
+						seznamIzposojGradiva= storitevDAO.pridobiVseAktualneIzposoje(); //èe se najde šaljivec, pa bo v get šel vrednost filtra spreminjat
+				if(statusFilter.equals("pret"))
+					pretekle= true;
+				}
+				
+				else
+					seznamIzposojGradiva= storitevDAO.pridobiVseAktualneIzposoje(); //èe se najde šaljivec, pa bo v get šel vrednost filtra spreminjat
+
+				request.setAttribute("filter", fil);
+				request.setAttribute("pretekle", pretekle);
+				request.setAttribute("gradiva", seznamIzposojGradiva);
+			}
+			catch(NullPointerException e){
+			}
 			List<Oseba> osebeKiImajoSposojenoGradivo=osebaDAO.pridobiOsebeKiImajoSposojenoGradivo();
 			request.setAttribute("seznamIzposoj", seznamIzposojGradiva);
 			request.setAttribute("osebe", osebeKiImajoSposojenoGradivo);
@@ -240,7 +290,7 @@ public class StoritevServlet extends HttpServlet {
 					}
 					storitevDAO.izposodi(seznamStoritev);
 					redirect = true;
-					stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;
+					stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje&filter=i&id="+idOsebe;
 				}
 				
 			}
@@ -287,7 +337,7 @@ public class StoritevServlet extends HttpServlet {
 					}
 					storitevDAO.podaljsaj(seznamStoritev);
 					redirect = true;
-					stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;
+					stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje&filter=i&id="+idOsebe;
 				}
 				else {
 					redirect = true;
@@ -315,7 +365,6 @@ public class StoritevServlet extends HttpServlet {
 				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 				if(gradivaSelect!=null){
 					for(int j=0; j<gradivaSelect.length; j++){
-						System.out.println(gradivaSelect[j]);
 	
 						if(!gradivaSelect[j].equals("-1")){
 							storitev = new Storitev();
@@ -326,7 +375,7 @@ public class StoritevServlet extends HttpServlet {
 					}
 					storitevDAO.vrni(seznamStoritev);
 					redirect = true;
-					stran="/knjiznica/StoritevServlet?metoda=pridobiIzposojeOsebe&idOsebe="+idOsebe;	
+					stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje&filter=i&id="+idOsebe;
 				}
 				else {
 					redirect = true;

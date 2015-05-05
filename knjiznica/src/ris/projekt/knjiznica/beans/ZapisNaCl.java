@@ -9,7 +9,7 @@ public class ZapisNaCl {
 	private Date datumIzbrisa;
 	private String razlog;
 	private int tk_id_osebe;
-	
+	private Oseba oseba;
 	
 	public ZapisNaCl(){
 		
@@ -61,6 +61,14 @@ public class ZapisNaCl {
 
 	public void setTk_id_osebe(int tk_id_osebe) {
 		this.tk_id_osebe = tk_id_osebe;
+	}
+
+	public Oseba getOseba() {
+		return oseba;
+	}
+
+	public void setOseba(Oseba oseba) {
+		this.oseba = oseba;
 	}
 
 	
