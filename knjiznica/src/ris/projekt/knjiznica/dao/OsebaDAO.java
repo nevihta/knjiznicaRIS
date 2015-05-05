@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import ris.projekt.knjiznica.baza.Povezava;
 import ris.projekt.knjiznica.beans.Gradivo;
 import ris.projekt.knjiznica.beans.Jezik;
@@ -311,14 +313,18 @@ public class OsebaDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from prijava where upIme=? and geslo=?");
+			st = povezava.prepareStatement("select * from prijava where upIme=?");
 			st.setString(1, p.getUpIme());
-			st.setString(2, p.getGeslo());
 
 			rs = st.executeQuery();
 			
-			if(rs.next())
+			while(rs.next()){
+				if (BCrypt.checkpw(p.getGeslo(), rs.getString("geslo")))
+					System.out.println("It matches");
+				else
+					System.out.println("It does not match");
 				idKnjiznicarja=rs.getInt("tk_id_osebe");
+			}
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{
@@ -371,12 +377,12 @@ public class OsebaDAO {
 	
 	public void dodajPrijavo(Prijava p)
 	{
-
+		String hashed = BCrypt.hashpw(p.getGeslo(), BCrypt.gensalt());
 		povezava = Povezava.getConnection();
 		try {
 			st = povezava.prepareStatement("insert into prijava (upIme, geslo, tk_id_osebe) values (?, ?, ?)");
 			st.setString(1, p.getUpIme());
-			st.setString(2, p.getGeslo());
+			st.setString(2, hashed);
 	        st.setInt(3, p.getTk_id_osebe());
 	        st.executeUpdate();
 		}
