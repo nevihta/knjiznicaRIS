@@ -271,30 +271,68 @@ public class GradivoDAO {
 			povezava =  Povezava.getConnection();
 			
 			if(stanje.equals("izposojeno")){
-				st = povezava.prepareStatement("select g.* from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.datumVracila=null");
-			}
-			else{ //èe je prosto
-				//bo potrebno preverit èe logika štima ... ko pridemo tak daleè :D
-				st = povezava.prepareStatement("select * from gradivo g, gradivo_storitev gs, storitev s where gs.tk_id_gradiva=g.ID_gradiva and gs.tk_id_storitve=s.ID_storitve and s.datumVracila!=null");
-			}
-			st.setDate(1, (Date) danasnjiDatum);
-			rs = st.executeQuery();
+				st = povezava.prepareStatement("select g.* from gradivo g,  storitev s where s.tk_id_gradiva=g.ID_gradiva and s.datumVracila is null");
 			
-			if (rs.next())
-			{
-					g=new Gradivo();
-					g.setId(rs.getInt("ID_Gradiva"));
-					g.setNaslov(rs.getString("naslov"));
-					g.setOriginalNaslov(rs.getString("originalNaslov"));
-					g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
-					g.setLetoIzida(rs.getInt("letoIzida"));
-					g.setISBN(rs.getString("ISBN"));
-					g.setOpis(rs.getString("opis"));
-					g.setTk_id_podrocja(rs.getInt("tk_id_podrocja"));
-					g.setTk_id_vrste(rs.getInt("tk_id_vrste"));
-					g.setTk_id_zalozbe(rs.getInt("tk_id_zalozbe"));
-					gradiva.add(g);
+				rs = st.executeQuery();
+			
+				while (rs.next())
+				{
+						g=new Gradivo();
+						g.setId(rs.getInt("ID_Gradiva"));
+						g.setNaslov(rs.getString("naslov"));
+						g.setOriginalNaslov(rs.getString("originalNaslov"));
+						g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
+						g.setLetoIzida(rs.getInt("letoIzida"));
+						g.setISBN(rs.getString("ISBN"));
+						g.setOpis(rs.getString("opis"));
+						g.setTk_id_podrocja(rs.getInt("tk_id_podrocja"));
+						g.setTk_id_vrste(rs.getInt("tk_id_vrste"));
+						g.setTk_id_zalozbe(rs.getInt("tk_id_zalozbe"));
+						gradiva.add(g);
+				}
 			}
+			else{
+				st = povezava.prepareStatement("select * from gradivo");
+				rs = st.executeQuery();
+				while (rs.next())
+				{
+						g=new Gradivo();
+						g.setId(rs.getInt("ID_Gradiva"));
+						g.setNaslov(rs.getString("naslov"));
+						g.setOriginalNaslov(rs.getString("originalNaslov"));
+						g.setJezik(Jezik.valueOf(rs.getString("jezik"))); //problem, èe da jezik pod drugo pa ga ni med enumi... preverjanje z if-else prej kak shraniš?
+						g.setLetoIzida(rs.getInt("letoIzida"));
+						g.setISBN(rs.getString("ISBN"));
+						g.setOpis(rs.getString("opis"));
+						g.setTk_id_podrocja(rs.getInt("tk_id_podrocja"));
+						g.setTk_id_vrste(rs.getInt("tk_id_vrste"));
+						g.setTk_id_zalozbe(rs.getInt("tk_id_zalozbe"));
+						gradiva.add(g);
+				}
+				rs.close();
+				st.close();
+				
+				System.out.println(gradiva.size());
+
+				
+				st=povezava.prepareStatement("select count(*) as st from storitev where tk_id_gradiva=? and datumVracila is null");
+			
+				for (int i=0; i<gradiva.size(); i++)
+				{
+					st.setInt(1, gradiva.get(i).getId());
+					rs=st.executeQuery();
+					if(rs.next())
+					{
+						System.out.println(rs.getInt("st"));
+						if(rs.getInt("st")!=0)
+						{
+							gradiva.remove(i);
+							i--;
+						}
+					}
+					
+				}
+			}						
 		}
 		catch(SQLException e){e.printStackTrace();} 
 		finally{

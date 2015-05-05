@@ -31,11 +31,13 @@ public class CrnaListaDAO {
 	
 	public void dodajClanaNaListo(ZapisNaCl z)
 	{
+		Date datum;
 		try{
 			povezava =  Povezava.getConnection();
 
 			st = povezava.prepareStatement("insert into zapisnacl (datumZapisa, datumIzbrisa, razlog, tk_id_osebe) values (?,?,?,?)");
-			st.setDate(1, (Date) z.getDatumZapisa());
+			datum=new Date(z.getDatumZapisa().getTime());
+			st.setDate(1, datum);
 			st.setDate(2, null);
 			st.setString(3, z.getRazlog());
 			st.setInt(4, z.getTk_id_osebe());
@@ -52,12 +54,14 @@ public class CrnaListaDAO {
 	
 	public void izbrisiClanaZListe(int id)
 	{
+		Date datum;
 		java.util.Date danasnjiDatum=new java.util.Date();
 		try{
 			povezava =  Povezava.getConnection();
 
 			st = povezava.prepareStatement("update zapisnacl set datumIzbrisa=? where ID_zapisa=?");
-			st.setDate(1, (Date) danasnjiDatum );
+			datum=new Date(danasnjiDatum.getTime());
+			st.setDate(1, datum);
 			st.setInt(2, id);
 			
 			st.executeUpdate();

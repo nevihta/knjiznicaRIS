@@ -18,8 +18,8 @@
 				
 				<div class="tm-right-inner-container">
 					<h1 class="templatemo-header">Pregled zgodovine 
-					<c:if test="${zgo eq 'oseba'}"> osebe <c:out value="${o.ime}"/> <c:out value="${o.priimek}"/></c:if>
-					<c:if test="${zgo eq 'gradivo'}"> gradiva <c:out value="${g.naslov}"/>	</c:if>
+					<c:if test="${zgo eq 'oseba'}"> osebe <a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${o.id}"/>"><c:out value="${o.ime}"/> <c:out value="${o.priimek}"/></a></c:if>
+					<c:if test="${zgo eq 'gradivo'}"> gradiva <a  href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiGradivo&idGradiva=<c:out value="${g.id}"/>"><c:out value="${g.naslov}"/>	</a></c:if>
 					</h1>
 					
 				<br/>

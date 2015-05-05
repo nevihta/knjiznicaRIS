@@ -188,10 +188,9 @@ public class StoritevDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from storitev s, gradivo g where g.ID_gradiva=s.tk_id_gradiva and zePodaljsano=? and datumVracila=? and tk_id_clana=?"); //odrer by datum izposoje mogoèe? :D
+			st = povezava.prepareStatement("select * from storitev s, gradivo g where g.ID_gradiva=s.tk_id_gradiva and zePodaljsano=? and datumVracila is null and tk_id_clana=?"); //odrer by datum izposoje mogoèe? :D
 			st.setBoolean(1, false);
-			st.setDate(2, null);
-			st.setInt(3, idOsebe);
+			st.setInt(2, idOsebe);
 			rs=st.executeQuery();
 			while (rs.next())
 			{
@@ -215,18 +214,23 @@ public class StoritevDAO {
 		ArrayList<StoritevZaIzpis> storitve= new ArrayList<StoritevZaIzpis>();
 		StoritevZaIzpis szi;
 		Storitev s;
+		Oseba o;
 		Gradivo g;
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from storitev s, gradivo g where g.ID_gradiva=s.tk_id_gradiva and datumVracila=?");
-			st.setDate(1, null);;
+			st = povezava.prepareStatement("select s.*, g.*, o.ime, o.priimek, o.ID_osebe from storitev s, gradivo g, oseba o where g.ID_gradiva=s.tk_id_gradiva and o.ID_osebe=s.tk_id_clana and datumVracila is null");
 			rs=st.executeQuery();
 			while (rs.next())
 			{
-				s=new Storitev(rs.getInt("ID_storitve"), rs.getDate("datumIzposoje"), rs.getDate("datumVracila"), rs.getDate("rokVracila"), rs.getBoolean("zePodaljsano"), rs.getInt("tk_id_osebe"), rs.getInt("tk_id_gradiva"), rs.getInt("tk_id_knjiznicarja"));
+				s=new Storitev(rs.getInt("ID_storitve"), rs.getDate("datumIzposoje"), rs.getDate("datumVracila"), rs.getDate("rokVracila"), rs.getBoolean("zePodaljsano"), rs.getInt("tk_id_clana"), rs.getInt("tk_id_gradiva"), rs.getInt("tk_id_knjiznicarja"));
 				g=new Gradivo(rs.getInt("ID_gradiva"), rs.getString("naslov"), rs.getString("originalNaslov"), Jezik.valueOf(rs.getString("jezik")), rs.getInt("letoIzida"), rs.getString("ISBN"), rs.getString("opis"), rs.getInt("tk_id_podrocja"), rs.getInt("tk_id_vrste"), rs.getInt("tk_id_zalozbe"));
+				o=new Oseba();
+				o.setId(s.getTk_id_clana());
+				o.setIme(rs.getString("ime"));
+				o.setPriimek(rs.getString("priimek"));
 				szi=new StoritevZaIzpis(s,g);
+				szi.setOseba(o);
 				storitve.add(szi);
 			}
 
@@ -248,9 +252,8 @@ public class StoritevDAO {
 		try{
 			povezava =  Povezava.getConnection();
 
-			st = povezava.prepareStatement("select * from storitev s, gradivo g where g.ID_gradiva=s.tk_id_gradiva and datumVracila=? and tk_id_clana=?"); 
-			st.setDate(1, null);
-			st.setInt(2, idOsebe);
+			st = povezava.prepareStatement("select * from storitev s, gradivo g where g.ID_gradiva=s.tk_id_gradiva and datumVracila is null and tk_id_clana=?"); 
+			st.setInt(1, idOsebe);
 			rs=st.executeQuery();
 			while (rs.next())
 			{
@@ -269,4 +272,37 @@ public class StoritevDAO {
 		
 		return storitve;
 	}
+	
+	public ArrayList<StoritevZaIzpis> pridobiStoritveOsebePrekoRoka(int idOsebe){
+		ArrayList<StoritevZaIzpis> storitve=new ArrayList<StoritevZaIzpis>();
+		StoritevZaIzpis szi;
+		Gradivo g;
+		Storitev s;
+		java.util.Date danasnjiDatum=new java.util.Date();
+
+		try{
+			povezava =  Povezava.getConnection();
+			
+			st = povezava.prepareStatement("select s.*, g.* from gradivo g, storitev s where s.tk_id_gradiva=g.ID_gradiva and s.datumVracila is null and s.rokVracila<");
+			
+			st.setDate(1, (Date) danasnjiDatum);
+			rs = st.executeQuery();
+			
+			while (rs.next())
+			{
+				s=new Storitev(rs.getInt("ID_storitve"), rs.getDate("datumIzposoje"), rs.getDate("datumVracila"), rs.getDate("rokVracila"), rs.getBoolean("zePodaljsano"), idOsebe, rs.getInt("tk_id_gradiva"), rs.getInt("tk_id_knjiznicarja"));
+				g=new Gradivo(rs.getInt("ID_gradiva"), rs.getString("naslov"), rs.getString("originalNaslov"), Jezik.valueOf(rs.getString("jezik")), rs.getInt("letoIzida"), rs.getString("ISBN"), rs.getString("opis"), rs.getInt("tk_id_podrocja"), rs.getInt("tk_id_vrste"), rs.getInt("tk_id_zalozbe"));
+				szi=new StoritevZaIzpis(s,g);
+				storitve.add(szi);
+			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		return storitve;
+	}
+
 }

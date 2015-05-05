@@ -7,8 +7,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import ris.projekt.knjiznica.baza.Povezava;
+import ris.projekt.knjiznica.beans.Gradivo;
+import ris.projekt.knjiznica.beans.Jezik;
 import ris.projekt.knjiznica.beans.Oseba;
 import ris.projekt.knjiznica.beans.Prijava;
+import ris.projekt.knjiznica.beans.Storitev;
+import ris.projekt.knjiznica.beans.StoritevZaIzpis;
 import ris.projekt.knjiznica.beans.TipOsebe;
 
 public class OsebaDAO {
@@ -414,5 +418,33 @@ public class OsebaDAO {
 		}		
 		
 		return prijava;
+	}
+
+	public ArrayList<Oseba> pridobiOsebeKiImajoSposojenoGradivo() {
+		ArrayList<Oseba> osebe = new ArrayList<Oseba>();
+		Oseba o;
+		try{
+			povezava =  Povezava.getConnection();
+
+			st = povezava.prepareStatement("select distinct  o.* from storitev s,  oseba o where o.ID_osebe=s.tk_id_clana and datumVracila is null");
+			rs=st.executeQuery();
+			while (rs.next())
+			{
+				o=new Oseba();
+				o.setId(rs.getInt("ID_osebe"));
+				o.setIme(rs.getString("ime"));
+				o.setPriimek(rs.getString("priimek"));
+				osebe.add(o);
+			}
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		
+		return osebe;
+		
 	}
 }

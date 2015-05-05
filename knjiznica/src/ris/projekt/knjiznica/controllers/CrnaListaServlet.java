@@ -62,7 +62,7 @@ public class CrnaListaServlet extends HttpServlet {
 			//ne izbrise iz baze, ampak samo iz crne liste - "odstrani"
 			int idZapisa = -1;
 			try{
-				request.getParameter("idZapisa");
+				 idZapisa=Integer.parseInt(request.getParameter("idZapisa"));
 			}catch(Exception e){e.getMessage();}
 			
 			if(idZapisa!=-1){
