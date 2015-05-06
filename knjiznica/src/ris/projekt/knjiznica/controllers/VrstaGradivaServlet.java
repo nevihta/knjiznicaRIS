@@ -52,7 +52,7 @@ public class VrstaGradivaServlet extends HttpServlet {
 			catch(NullPointerException e){
 			}
 			
-			stran="/glavnaVsebina/VrsteGradiva.jsp"; //placeholder
+			stran="/glavnaVsebina/VrsteGradiva.jsp"; 
 		}
 		
 		else if(metoda.equals("izbrisi")){
@@ -101,7 +101,7 @@ public class VrstaGradivaServlet extends HttpServlet {
 		else if(metoda.equals("urediVrstoGradiva")){
 			vrstaGradiva = new VrstaGradiva();
 			vrstaGradiva.setNaziv(request.getParameter("naziv"));
-			vrstaGradiva.setId(idVrsteGradiva); // try catch =)	
+			vrstaGradiva.setId(idVrsteGradiva); 
 			vrstaGradivaDAO.spremeniVrstoGradiva(vrstaGradiva);
 
 			redirect = true;

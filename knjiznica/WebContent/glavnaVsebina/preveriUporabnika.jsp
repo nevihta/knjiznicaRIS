@@ -22,7 +22,7 @@
 					<h1 class="templatemo-header">Izberi uporabnika</h1>
 					<c:if test="${sessionScope.Prijava==true}">
 					<c:if test="${neObstaja==true}">
-						<p>Opozorilo: vnesite pravileno člansko številko!</p>
+						<p>Opozorilo: vnesite pravilno člansko številko!</p>
 					</c:if>	
 					<form id="forma"
 						action="${pageContext.request.contextPath}/StoritevServlet?metoda=nastaviIzposojo"

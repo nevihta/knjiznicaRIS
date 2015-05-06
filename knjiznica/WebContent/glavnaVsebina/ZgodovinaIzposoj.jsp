@@ -26,7 +26,7 @@
 				<c:if test="${sessionScope.Prijava==true}">	
 					<br/>
 					<c:if test="${zgo eq 'oseba'}">
-						<table>
+						<table class="razmaki">
 							<tr><th>Št. gradiva</th><th>Naslov</th><th>Od</th><th>Do</th></tr>
 						<c:forEach var="izposoja" items="${zgodovinaO}">        
 							<tr><td><c:out value="${izposoja.gradivo.id+1000}"/></td>
@@ -39,7 +39,7 @@
 					</c:if>
 						
 					<c:if test="${zgo eq 'gradivo'}">
-					<table>
+					<table class="razmaki">
 							<tr><th>Članska št.</th><th>Oseba</th><th>Od</th><th>Do</th></tr>
 						<c:forEach var="izposoja" items="${zgodovinaG}">        
 							<tr><td><c:out value="${izposoja.oseba.id+1000}"/></td>

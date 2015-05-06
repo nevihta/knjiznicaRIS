@@ -279,6 +279,7 @@ td#dodajUp {
 }
 
 div#meni_prijava{
+	-webkit-padding-start: 40px;
 	width: 100%;
 	text-align: right;
 }

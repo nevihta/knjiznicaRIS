@@ -1,7 +1,6 @@
 package ris.projekt.knjiznica.controllers;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import ris.projekt.knjiznica.Email;
 import ris.projekt.knjiznica.beans.*;
@@ -41,14 +39,13 @@ public class CrnaListaServlet extends HttpServlet {
 		
 		String stran="";
 		boolean redirect = false;
-		HttpSession seja = request.getSession();
 		request.setAttribute("meni", "lista");
 		
 		if(metoda.equals("dodajOsnaCL")){
 			if(idOsebe!=-1){
 				request.setAttribute("idOsebe", idOsebe);
 				request.setAttribute("metoda","dodajOSnaCL" );
-				stran="/glavnaVsebina/novZapisCL.jsp"; //placeholder
+				stran="/glavnaVsebina/novZapisCL.jsp"; 
 			}
 			else{
 				redirect = true;
@@ -57,8 +54,6 @@ public class CrnaListaServlet extends HttpServlet {
 				
 		}
 		else if(metoda.equals("pridobiVse")){
-			//+ filter za stare zapise?
-			//rabimo osebe!
 			boolean pretekle=false;
 			String filter=request.getParameter("filter");
 			List<ZapisNaCl> crnaLista;
@@ -72,7 +67,7 @@ public class CrnaListaServlet extends HttpServlet {
 
 			request.setAttribute("pretekle", pretekle);
 			request.setAttribute("crnaLista", crnaLista);
-			stran="/glavnaVsebina/CrnaLista.jsp"; //placeholder
+			stran="/glavnaVsebina/CrnaLista.jsp"; 
 		}
 		else if(metoda.equals("email")){
 			OsebaDAO os = OsebaDAO.dobiInstanco();

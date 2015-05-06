@@ -49,11 +49,11 @@ public class OsebaServlet extends HttpServlet {
 		
 		if(metoda.equals("dodajOs")){
 			request.setAttribute("metoda","dodajOsebo" );
-			stran="/glavnaVsebina/DodajOsebo.jsp"; //placeholder
+			stran="/glavnaVsebina/DodajOsebo.jsp"; 
 		}
 		else if(metoda.equals("pridobiPrijavo")){
 			seja.removeAttribute("Prijava");
-			stran="/glavnaVsebina/Login.jsp"; //placeholder
+			stran="/glavnaVsebina/Login.jsp"; 
 		}
 		else if(metoda.equals("pridobiOsebo")){
 			String urejanjeOs=null;
@@ -78,10 +78,10 @@ public class OsebaServlet extends HttpServlet {
 			}catch(NullPointerException e){e.getMessage();}
 			if(urejanjeOs!=null){
 				request.setAttribute("metoda", "urediOsebo");
-				stran="/glavnaVsebina/DodajOsebo.jsp"; //placeholder
+				stran="/glavnaVsebina/DodajOsebo.jsp";
 			}
 			else{
-				stran="/glavnaVsebina/Oseba.jsp"; //placeholder
+				stran="/glavnaVsebina/Oseba.jsp"; 
 			}
 			
 		}
@@ -116,7 +116,7 @@ public class OsebaServlet extends HttpServlet {
 					request.setAttribute("poslano", false);
 			}
 			
-			stran="/glavnaVsebina/Osebe.jsp"; //placeholder
+			stran="/glavnaVsebina/Osebe.jsp"; 
 		}
 		else if(metoda.equals("urediKnjiznicar")){
 			request.setAttribute("metoda","spremeniPrijavo" );
@@ -125,7 +125,7 @@ public class OsebaServlet extends HttpServlet {
 			Prijava prijava = osebaDAO.pridobiPrijavo(idOsebe);
 			request.setAttribute("ime", prijava.getUpIme()); 
 			
-			stran="/glavnaVsebina/novaPrijava.jsp"; //placeholder
+			stran="/glavnaVsebina/novaPrijava.jsp"; 
 		}
 		else if(metoda.equals("urediTip")){
 			String tip = request.getParameter("tip"); //stari tip!
@@ -143,7 +143,7 @@ public class OsebaServlet extends HttpServlet {
 			osebaDAO.spremeniTipOsebe(idOsebe, tip);
 			request.setAttribute("idOsebe", idOsebe);
 			request.setAttribute("metoda", "dodajPrijavo");
-			stran = "/glavnaVsebina/novaPrijava.jsp"; //placeholder
+			stran = "/glavnaVsebina/novaPrijava.jsp"; 
 			}
 		}
 		else if(metoda.equals("izbrisiOsebo")){
@@ -229,13 +229,10 @@ public class OsebaServlet extends HttpServlet {
 			}
 		}
 		else if(metoda.equals("dodajOsebo")){
-			//preverjanje, ce so vsi podatki vneseni? v jsp, + tukaj?
 			//najprej naslov - za tk v osebo
-			
 			naslov.setUlica(request.getParameter("ulica"));
 			naslov.setHisnaSt(request.getParameter("hisna"));
 			naslov.setMesto(request.getParameter("mesto"));
-			//try catch ali v jsp preverjanje?
 			naslov.setPostnaSt(Integer.parseInt(request.getParameter("posta")));
 			naslov.setDrzava(request.getParameter("drzava"));
 			naslov = naslovDAO.dodajNaslov(naslov);
@@ -257,7 +254,6 @@ public class OsebaServlet extends HttpServlet {
 				upRacun.setTk_id_osebe(uporabnik.getId());
 				osebaDAO.dodajPrijavo(upRacun);
 			}
-			//ce je blo uspesno dodano.. kaj pa ce ni blo?
 			redirect = true;
 			stran="/knjiznica/OsebaServlet?metoda=pridobiOsebo&idOsebe="+uporabnik.getId();
 		}
@@ -267,10 +263,9 @@ public class OsebaServlet extends HttpServlet {
 			naslov.setUlica(request.getParameter("ulica"));
 			naslov.setHisnaSt(request.getParameter("hisna"));
 			naslov.setMesto(request.getParameter("mesto"));
-			//try catch ali v jsp preverjanje?
 			naslov.setPostnaSt(Integer.parseInt(request.getParameter("posta")));
 			naslov.setDrzava(request.getParameter("drzava"));
-			naslov.setId(Integer.parseInt(request.getParameter("idNaslov"))); // try catch =)	
+			naslov.setId(Integer.parseInt(request.getParameter("idNaslov"))); 	
 			int idNaslova = naslovDAO.urediNaslov(naslov);
 			
 			//ostalo oseba
@@ -304,7 +299,7 @@ public class OsebaServlet extends HttpServlet {
 			else{
 				seja.setAttribute("Sprememba",false);
 				redirect = true;
-				stran="/knjiznica/OsebaServlet?metoda=urediKnjiznicar"; //placeholder
+				stran="/knjiznica/OsebaServlet?metoda=urediKnjiznicar"; 
 			}		
 			
 		}

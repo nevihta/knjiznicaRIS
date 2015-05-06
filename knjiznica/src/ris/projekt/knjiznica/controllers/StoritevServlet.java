@@ -62,11 +62,11 @@ public class StoritevServlet extends HttpServlet {
 				request.setAttribute("metoda", "podaljsaj");
 				request.setAttribute("idO", idOsebe);
 
-				stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
+				stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp";
 			}
 			else{
 				redirect=true;
-				stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje"; //placeholder ^
+				stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje"; 
 			}
 
 		}
@@ -76,11 +76,11 @@ public class StoritevServlet extends HttpServlet {
 			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
 			request.setAttribute("metoda", "vrni");
 			request.setAttribute("idO", idOsebe);
-			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; //placeholder ^^
+			stran="/glavnaVsebina/UpravljanjeIzposojOsebe.jsp"; 
 			}
 			else{
 				redirect=true;
-				stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje"; //placeholder ^
+				stran="/knjiznica/StoritevServlet?metoda=pridobiVseAktualneIzposoje";
 			}
 
 		}
@@ -136,7 +136,6 @@ public class StoritevServlet extends HttpServlet {
 			List<Oseba> osebeKiImajoSposojenoGradivo=osebaDAO.pridobiOsebeKiImajoSposojenoGradivo();
 			request.setAttribute("seznamIzposoj", seznamIzposojGradiva);
 			request.setAttribute("osebe", osebeKiImajoSposojenoGradivo);
-			//nastavi osebe, ki imajo aktualne izposoje
 			
 			stran="/glavnaVsebina/Izposoje.jsp";
 		}//zaradi redirecta
@@ -202,7 +201,7 @@ public class StoritevServlet extends HttpServlet {
 			
 			if(idKnjiznicarja!=-1){
 				String osebaInput = request.getParameter("osebaInput");
-				if(osebaInput!=null && !osebaInput.isEmpty() && !osebaInput.trim().isEmpty()) //? prazn?
+				if(osebaInput!=null && !osebaInput.isEmpty() && !osebaInput.trim().isEmpty())
 					idOsebe = Integer.parseInt(osebaInput)-1000;
 				else if (!request.getParameter("osebaSelect").equals("nic"))
 					idOsebe = Integer.parseInt(request.getParameter("osebaSelect"));
@@ -240,7 +239,7 @@ public class StoritevServlet extends HttpServlet {
 			}catch(Exception e){}
 			
 			if(idKnjiznicarja!=-1){
-				Date datumIzposoje = new Date(); //preveri kako je s time zone
+				Date datumIzposoje = new Date(); 
 				Calendar cal = Calendar.getInstance();
 				cal.setTime(new Date());
 				cal.add(Calendar.DATE, 28); 
@@ -266,7 +265,7 @@ public class StoritevServlet extends HttpServlet {
 					String testWhiteSpace = gradivaInput[0].replaceAll("\\s+","");
 					inputPrviPoln = testWhiteSpace!= "";
 					if(inputPrviPoln){
-						//??preverjanje, da gradiva obstajajo +  da niso izposojena
+						//preverjanje, da gradiva obstajajo +  da niso izposojena
 						for(int i=0;i<gradivaInput.length;i++){
 							testWhiteSpace = gradivaInput[i].replaceAll("\\s+","");
 							if(testWhiteSpace!=""){
@@ -291,7 +290,7 @@ public class StoritevServlet extends HttpServlet {
 				else if(niProsto!=-1){
 					//opozorilo da vnesenega gradiva ni mogoce izposoditi
 					redirect = true;
-					stran = "/knjiznica/StoritevServlet?metoda=nastaviIzposojo&niProsto=true&idOsebe="+idOsebe+"&idGradiva="+(niProsto+1000); //placeholder
+					stran = "/knjiznica/StoritevServlet?metoda=nastaviIzposojo&niProsto=true&idOsebe="+idOsebe+"&idGradiva="+(niProsto+1000); 
 				
 				}
 				else {
@@ -321,8 +320,7 @@ public class StoritevServlet extends HttpServlet {
 			}catch(Exception e){}
 			
 			if(idKnjiznicarja!=-1){
-				//podaljsa jih lahko vec hkrati, preverjanje ce so idji (clan, gradivo),
-
+				//podaljsa jih lahko vec hkrati
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
 				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 				String id;
@@ -335,7 +333,7 @@ public class StoritevServlet extends HttpServlet {
 						datum=razdeli[1];
 						if(!id.equals("-1")){
 							try{
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");//nisem ziher kak v bazi?
+								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 								Calendar c = Calendar.getInstance();
 								c.setTime(sdf.parse(datum));
 								c.add(Calendar.DATE, 28);  
@@ -365,15 +363,13 @@ public class StoritevServlet extends HttpServlet {
 			
 		}
 		else if(metoda.equals("vrni")){
-			//tu tut preverjanje, ce je na crni listi? al to rocno izbrisi?
 			int idKnjiznicarja = -1;
 			try{
 				idKnjiznicarja = (Integer)seja.getAttribute("ID");
 			}catch(Exception e){}
 			
 			if(idKnjiznicarja!=-1){
-				//vrne jih lahko vec hkrati, preverjanje ce so idji (clan, gradivo),
-
+				//vrne jih lahko vec hkrati
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
 				List<Storitev> seznamStoritev = new ArrayList<Storitev>();
 				if(gradivaSelect!=null){

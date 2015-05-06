@@ -49,7 +49,6 @@ public class GradivoServlet extends HttpServlet {
 		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodajGr")){
-			//? dodat neki default id=-1?
 			List<Avtor> avtorji = avtorDAO.pridobiVseAvtorje();
 			request.setAttribute("vsiAvtorji", avtorji);
 			List<Podrocje> podrocja= podrocjeDAO.pridobiVsaPodrocja();
@@ -71,7 +70,7 @@ public class GradivoServlet extends HttpServlet {
 				request.setAttribute("niOstalo", true);
 			
 			request.setAttribute("metoda","dodajGradivo" );
-			stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
+			stran="/glavnaVsebina/DodajGradivo.jsp"; 
 		}
 		else if(metoda.equals("pridobiVse")){
 
@@ -124,7 +123,7 @@ public class GradivoServlet extends HttpServlet {
 			catch(NullPointerException e){
 			}
 			
-			stran="/glavnaVsebina/Gradiva.jsp"; //placeholder
+			stran="/glavnaVsebina/Gradiva.jsp"; 
 		}
 		else if(metoda.equals("pridobiGradivo")){
 			String neizbrisan=null;
@@ -133,7 +132,6 @@ public class GradivoServlet extends HttpServlet {
 				gradivo = gradivoDAO.pridobiGradivo(idGradiva); 
 				request.setAttribute("gradivo", gradivo);
 				
-				//?? vse za avtorje, itd.?
 				if(gradivo!=null){
 					Podrocje podrocje = podrocjeDAO.pridobiPodrocje(gradivo.getTk_id_podrocja());
 					request.setAttribute("podrocje", podrocje);
@@ -183,10 +181,10 @@ public class GradivoServlet extends HttpServlet {
 					request.setAttribute("niOstalo", true);
 				
 				request.setAttribute("metoda", "urediGradivo");
-				stran="/glavnaVsebina/DodajGradivo.jsp"; //placeholder
+				stran="/glavnaVsebina/DodajGradivo.jsp"; 
 			}
 			else{
-				stran="/glavnaVsebina/Gradivo.jsp"; //placeholder
+				stran="/glavnaVsebina/Gradivo.jsp"; 
 			}
 			
 		}
@@ -242,8 +240,6 @@ public class GradivoServlet extends HttpServlet {
 		request.setAttribute("meni", "gradivo");
 		
 		if(metoda.equals("dodajGradivo")){
-			//preverjanja ali je vnaprej doloceno ali ne? vec avtorjev?
-			
 			gradivo = new Gradivo();
 			gradivo.setNaslov(request.getParameter("naslov"));
 			gradivo.setOriginalNaslov(request.getParameter("originalNaslov"));
@@ -254,7 +250,7 @@ public class GradivoServlet extends HttpServlet {
 			
 			String podrocjeInput = request.getParameter("podrocjeInput");
 			int idPodrocja = -1;
-			if(podrocjeInput!=null && !podrocjeInput.isEmpty() && !podrocjeInput.trim().isEmpty()) //? prazn?
+			if(podrocjeInput!=null && !podrocjeInput.isEmpty() && !podrocjeInput.trim().isEmpty()) 
 				idPodrocja = podrocjeDAO.dodajPodrocje(podrocjeInput);
 			else if (!request.getParameter("podrocjeSelect").equals("nic"))
 				idPodrocja = Integer.parseInt(request.getParameter("podrocjeSelect"));
@@ -262,7 +258,7 @@ public class GradivoServlet extends HttpServlet {
 			
 			String vrstaInput = request.getParameter("vrstaInput");
 			int idVrste = -1;
-			if(vrstaInput!=null && !vrstaInput.isEmpty() && !vrstaInput.trim().isEmpty()) //? prazn?
+			if(vrstaInput!=null && !vrstaInput.isEmpty() && !vrstaInput.trim().isEmpty()) 
 				idVrste = vrstaDAO.dodajVrstoGradiva(vrstaInput);
 			else if (!request.getParameter("vrstaSelect").equals("nic"))
 				idVrste = Integer.parseInt(request.getParameter("vrstaSelect"));
@@ -270,7 +266,7 @@ public class GradivoServlet extends HttpServlet {
 
 			String zalozbaInput = request.getParameter("zalozbaInput");
 			int idZalozbe = -1;
-			if(zalozbaInput!=null && !zalozbaInput.isEmpty() && !zalozbaInput.trim().isEmpty()) //? prazn?
+			if(zalozbaInput!=null && !zalozbaInput.isEmpty() && !zalozbaInput.trim().isEmpty()) 
 				idZalozbe = zalozbaDAO.dodajZalozbo(zalozbaInput);
 			else if (!request.getParameter("zalozbaSelect").equals("nic"))
 				idZalozbe = Integer.parseInt(request.getParameter("zalozbaSelect"));
@@ -340,7 +336,7 @@ public class GradivoServlet extends HttpServlet {
 			
 			String podrocjeInput = request.getParameter("podrocjeInput");
 			int idPodrocja = -1;
-			if(podrocjeInput!=null && !podrocjeInput.isEmpty()) //? prazn?
+			if(podrocjeInput!=null && !podrocjeInput.isEmpty()) 
 				idPodrocja = podrocjeDAO.dodajPodrocje(podrocjeInput);
 			else if (!request.getParameter("podrocjeSelect").equals("nic"))
 				idPodrocja = Integer.parseInt(request.getParameter("podrocjeSelect"));
@@ -348,7 +344,7 @@ public class GradivoServlet extends HttpServlet {
 			
 			String vrstaInput = request.getParameter("vrstaInput");
 			int idVrste = -1;
-			if(vrstaInput!=null && !vrstaInput.isEmpty()) //? prazn?
+			if(vrstaInput!=null && !vrstaInput.isEmpty()) 
 				idVrste = vrstaDAO.dodajVrstoGradiva(vrstaInput);
 			else if (!request.getParameter("vrstaSelect").equals("nic"))
 				idVrste = Integer.parseInt(request.getParameter("vrstaSelect"));
@@ -356,7 +352,7 @@ public class GradivoServlet extends HttpServlet {
 
 			String zalozbaInput = request.getParameter("zalozbaInput");
 			int idZalozbe = -1;
-			if(zalozbaInput!=null && !zalozbaInput.isEmpty()) //? prazn?
+			if(zalozbaInput!=null && !zalozbaInput.isEmpty())
 				idZalozbe = zalozbaDAO.dodajZalozbo(zalozbaInput);
 			else if (!request.getParameter("zalozbaSelect").equals("nic"))
 				idZalozbe = Integer.parseInt(request.getParameter("zalozbaSelect"));

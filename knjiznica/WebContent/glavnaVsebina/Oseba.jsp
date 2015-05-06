@@ -37,10 +37,11 @@
 					<c:if test="${neizbrisan==true}">
 						<p>Opozorilo: osebe ni mogoče izbrisati, saj je že uporabila storitve knjižnice.</p>
 					</c:if>
+					<br />
 					<table>
 						<tr>
-							<td><c:out value="${uporabnik.tipOsebe}" /></td>
-							<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=urediTip&idOsebe=<c:out value='${uporabnik.id}' />&tip=<c:out value='${uporabnik.tipOsebe}' />">Spremeni tip</a></td>
+							<td>Tip:</td>
+							<td> <c:out value="${uporabnik.tipOsebe}" /> <small>(<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=urediTip&idOsebe=<c:out value='${uporabnik.id}' />&tip=<c:out value='${uporabnik.tipOsebe}' />">Spremeni tip</a>) </small></td>
 						</tr>
 						<tr>
 							<td></td>

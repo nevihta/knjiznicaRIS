@@ -52,7 +52,7 @@ public class ZalozbaServlet extends HttpServlet {
 			catch(NullPointerException e){
 			}
 			
-			stran="/glavnaVsebina/Zalozbe.jsp"; //placeholder
+			stran="/glavnaVsebina/Zalozbe.jsp"; 
 		}
 		
 		else if(metoda.equals("izbrisi")){

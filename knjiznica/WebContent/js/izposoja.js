@@ -41,7 +41,7 @@ function dodajNovo(){
 	var noviDiv = document.createElement("DIV"); 
 	noviDiv.id = "id"+n;
 	
-	noviDiv.innerHTML='Gradivo <input type="text" name="gradivaInput" class="textbox"  />';
+	noviDiv.innerHTML='Gradivo <input type="number" name="gradivaInput" class="textbox"  />';
 	
 	var brisanje =  document.createElement('a');
 	brisanje.innerHTML = "Izbriši";

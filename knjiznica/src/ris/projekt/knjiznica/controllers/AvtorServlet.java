@@ -52,7 +52,7 @@ public class AvtorServlet extends HttpServlet {
 			catch(NullPointerException e){
 			}
 			
-			stran="/glavnaVsebina/Avtorji.jsp"; //placeholder
+			stran="/glavnaVsebina/Avtorji.jsp"; 
 		}
 		else if(metoda.equals("izbrisi")){
 			if(avtorDAO.izbrisi(idAvtorja)){

@@ -54,7 +54,7 @@ public class PodrocjeServlet extends HttpServlet {
 			catch(NullPointerException e){
 			}
 			
-			stran="/glavnaVsebina/Podrocja.jsp"; //placeholder
+			stran="/glavnaVsebina/Podrocja.jsp"; 
 		}
 		else if(metoda.equals("izbrisi")){
 			if(podrocjeDAO.izbrisiPodrocje(idPodrocja)){
