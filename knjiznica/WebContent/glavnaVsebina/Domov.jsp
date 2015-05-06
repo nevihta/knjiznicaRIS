@@ -20,15 +20,14 @@
 					src="${pageContext.request.contextPath}/images/napis" /> <img
 					class="slikaPolica"
 					src="${pageContext.request.contextPath}/images/polica.jpg" />
-				<article>Aplikacija je namenjena knijžničarjem. Omogoča
-					dodajanje članov in knjižničarjev knjižnice, urejanje podatkov o
-					njih ter odstranjevanje izpisanih članov. Projekt prav tako omogoča
-					dodajanje in brisanje gradiv ter urejanje njihovih in
-					vodenje informacij o izposojah za člane, ter vodenje črne liste članov.</article>
-					<br/>
-					<br/>
-					<br/>
-					<p style="font-size:15px">Avtorji: <i><b>Anja Špindler, Monika Malok, Klemen Kunstek</b></i></p>
+				<article>Spletna aplikacija je namenjena knijžničarjem.
+					Omogoča upravljanje s člani, knjižničarji in gradivi, ter vodenje črne liste
+					članov. Na voljo so tudi naslednje storitve: izposoja gradiva, vrnitev,
+					podaljšanje roka izposoje, pregled zgodovine izposoj in pošiljanje e-maila zamudnikom.</article>
+				<br /> <br /> <br />
+				<p style="font-size: 15px">
+					Avtorji: <i><b>Anja Špindler, Monika Malok, Klemen Kunstek</b></i>
+				</p>
 
 
 			</div>
