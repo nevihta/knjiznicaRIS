@@ -649,18 +649,20 @@ public class GradivoDAO {
 	public boolean preveriZaIzposojo(int idGradiva)
 	{
 		boolean izposoja=true;
-		
+
 		try{
 			povezava =  Povezava.getConnection();
-			
+
 			st=povezava.prepareStatement("select * from gradivo where ID_gradiva=?");
 			st.setInt(1, idGradiva);
 			
 			rs=st.executeQuery();
+
 			if(!rs.next())
-					izposoja=false;
+				izposoja=false;
 			
-			if (izposoja=true)
+
+			if (izposoja==true)
 			{
 				rs.close();
 				st.close();
