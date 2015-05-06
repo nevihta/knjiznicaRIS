@@ -32,8 +32,6 @@ public class StoritevServlet extends HttpServlet {
 		
 		GradivoDAO gradivoDAO = GradivoDAO.dobiInstanco();
 		StoritevDAO storitevDAO = StoritevDAO.dobiInstanco();
-		CrnaListaDAO crnaDAO = CrnaListaDAO.dobiInstanco();
-		Storitev storitev = new Storitev();
 		
 		int idOsebe = -1;
 		String metoda="";
@@ -45,15 +43,9 @@ public class StoritevServlet extends HttpServlet {
 		
 		String stran="";
 		boolean redirect = false;
-		HttpSession seja = request.getSession();
 		request.setAttribute("meni", "izposoja");
 		
-		if (metoda.equals("pridobiIzposojeOsebe")){
-			List<StoritevZaIzpis> seznamIzposojOsebe = storitevDAO.pridobiVseAktualneIzposojeOsebe(idOsebe);
-			request.setAttribute("seznamIzposoj", seznamIzposojOsebe);
-			stran="/glavnaVsebina/IzposojeOsebe.jsp"; 
-		}
-		else if(metoda.equals("vsiClani")){
+		if(metoda.equals("vsiClani")){
 			String neObstaja = null;
 			List<Oseba> clani = osebaDAO.pridobiOsebe();
 			request.setAttribute("clani", clani);
@@ -150,6 +142,7 @@ public class StoritevServlet extends HttpServlet {
 		}//zaradi redirecta
 		else if(metoda.equals("nastaviIzposojo")){
 			String niIzbrano = null;
+			String niProsto = null;
 			List<Gradivo> seznamGradiv = gradivoDAO.pridobiGradivaGledeNaStanje("prosto");
 			request.setAttribute("prostaGradiva", seznamGradiv);
 			request.setAttribute("idOsebe", idOsebe);
@@ -157,6 +150,12 @@ public class StoritevServlet extends HttpServlet {
 			niIzbrano = request.getParameter("niIzbrano");
 			if(niIzbrano!=null)
 				request.setAttribute("niIzbrano", true);
+			//ce gradivo ni prosto
+			niProsto = request.getParameter("niProsto");
+			if(niProsto!=null){
+				request.setAttribute("niProsto", true);
+				request.setAttribute("niProstoID", request.getParameter("idGradiva"));
+			}
 			stran="/glavnaVsebina/Izposoja.jsp"; 
 				
 		}
@@ -187,7 +186,6 @@ public class StoritevServlet extends HttpServlet {
 		
 		String stran="";
 		boolean redirect = false;
-		System.out.println(metoda);
 		
 		OsebaDAO osebaDAO = OsebaDAO.dobiInstanco(); //za preverjat ce obstaja uporabnik
 		GradivoDAO gradivoDAO = GradivoDAO.dobiInstanco();
@@ -205,7 +203,7 @@ public class StoritevServlet extends HttpServlet {
 			if(idKnjiznicarja!=-1){
 				String osebaInput = request.getParameter("osebaInput");
 				if(osebaInput!=null && !osebaInput.isEmpty() && !osebaInput.trim().isEmpty()) //? prazn?
-					idOsebe = Integer.parseInt(osebaInput);
+					idOsebe = Integer.parseInt(osebaInput)-1000;
 				else if (!request.getParameter("osebaSelect").equals("nic"))
 					idOsebe = Integer.parseInt(request.getParameter("osebaSelect"));
 			
@@ -214,7 +212,7 @@ public class StoritevServlet extends HttpServlet {
 					//preveri, ce ni na crni list
 					if(crnaDAO.preveriCeJeClanNaCl(idOsebe)){
 						redirect = true;
-						stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
+						stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse&filter=akt";	
 					}
 					else{
 						List<Gradivo> seznamGradiv = gradivoDAO.pridobiGradivaGledeNaStanje("prosto");
@@ -249,7 +247,7 @@ public class StoritevServlet extends HttpServlet {
 				Date rokVrnitve = cal.getTime();
 
 				//za gradiva dve moznosti: 1-iz lista, 2-stevilka gradiva (tu treba preverit ce ni izposojeno)
-				List<Integer> idGradiv = new ArrayList<Integer>();
+				Set<Integer> idGradiv = new HashSet<Integer>();
 				String[] gradivaSelect = request.getParameterValues("gradivaSelect");
 				String[] gradivaInput = request.getParameterValues("gradivaInput");
 				
@@ -262,6 +260,8 @@ public class StoritevServlet extends HttpServlet {
 				}
 				
 				boolean inputPrviPoln = false;
+				int id = -1;
+				int niProsto = -1;
 				try{
 					String testWhiteSpace = gradivaInput[0].replaceAll("\\s+","");
 					inputPrviPoln = testWhiteSpace!= "";
@@ -270,7 +270,14 @@ public class StoritevServlet extends HttpServlet {
 						for(int i=0;i<gradivaInput.length;i++){
 							testWhiteSpace = gradivaInput[i].replaceAll("\\s+","");
 							if(testWhiteSpace!=""){
-								idGradiv.add(Integer.parseInt(gradivaInput[i]));
+								id = Integer.parseInt(gradivaInput[i])-1000;
+								if(gradivoDAO.preveriZaIzposojo(id))
+									idGradiv.add(id);
+								else{
+									System.out.println("ni prost");
+									niProsto = id; 
+									break;
+								}
 							}
 							
 						}
@@ -281,11 +288,17 @@ public class StoritevServlet extends HttpServlet {
 					redirect = true;
 					stran = "/knjiznica/StoritevServlet?metoda=nastaviIzposojo&niIzbrano=true&idOsebe="+idOsebe; //placeholder
 				}
+				else if(niProsto!=-1){
+					//opozorilo da vnesenega gradiva ni mogoce izposoditi
+					redirect = true;
+					stran = "/knjiznica/StoritevServlet?metoda=nastaviIzposojo&niProsto=true&idOsebe="+idOsebe+"&idGradiva="+(niProsto+1000); //placeholder
+				
+				}
 				else {
 
 					List<Storitev> seznamStoritev = new ArrayList<Storitev>();
-					for(int k=0;k<idGradiv.size();k++){
-						storitev = new Storitev(datumIzposoje, null, rokVrnitve, false, idOsebe, idGradiv.get(k), idKnjiznicarja);
+					for(Integer k : idGradiv){
+						storitev = new Storitev(datumIzposoje, null, rokVrnitve, false, idOsebe, k, idKnjiznicarja);
 						seznamStoritev.add(storitev);
 					}
 					storitevDAO.izposodi(seznamStoritev);

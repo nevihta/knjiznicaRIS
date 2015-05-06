@@ -33,7 +33,9 @@
 					<c:if test="${niIzbrano==true}">
 						<p>Opozorilo: izberite gradivo za izposojo!</p>
 					</c:if>	
-					
+					<c:if test="${niProsto==true}">
+						<p>Opozorilo: Gradivo <c:out value="${niProstoID}" /> ni mogoce izposoditi!</p>
+					</c:if>	
 					<div id="gradivaDIV">
 						<a href="javascript:dodajSeznam()" class="button">Dodaj prosto gradivo iz seznama</a> 
 						<a href="javascript:dodajNovo()"class="button">Vpiši številko gradiva</a>
