@@ -22,7 +22,7 @@
 
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header">Upravljanje izposoj osebe</h1>
-
+				<c:if test="${sessionScope.Prijava==true}">
 
 				<h4>
 				<c:if test="${metoda eq 'vrni' }">Vrni:</c:if>
@@ -60,7 +60,14 @@
 				</form>
 				
 				</c:if>
+			</c:if>
+			
+			<c:if test="${sessionScope.Prijava!=true}">
+				<p>Za ogled te strani morate biti prijavljeni!</p>
+				<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+			</c:if>
 			</div>
+		</div>
 		</div>
 </body>
 </html>

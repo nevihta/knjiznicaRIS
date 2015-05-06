@@ -40,6 +40,7 @@
 			</h1>
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header"></h1>
+				<c:if test="${sessionScope.Prijava==true}">
 				<br/>
 				<table >
 					<tr>
@@ -82,11 +83,17 @@
 
 							<td><p hidden="true"><c:out value="${vrsta.id }" /></p></td>
 							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
-							<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />">Izbriši</a>
+							<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />">Izbriši</a></td>
 
 						</tr>
 					</c:forEach>
 				</table>
+			</c:if>
+			
+			<c:if test="${sessionScope.Prijava!=true}">
+				<p>Za ogled te strani morate biti prijavljeni!</p>
+				<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+			</c:if>
 			</div>
 		</div>
 	</div>

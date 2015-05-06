@@ -21,7 +21,7 @@
 			</h1>
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header">Vnos na črno listo ${idOsebe}</h1>
-
+			<c:if test="${sessionScope.Prijava==true}">
 				<form
 					action="${pageContext.request.contextPath}/CrnaListaServlet?metoda=dodajOSnaCL"
 					method="post">
@@ -31,10 +31,15 @@
 					<br /> <br /> <input type="submit" value="Potrdi" class="button" />
 				</form>
 
-
-
-
-			</div>
+			</c:if>
+			
+			<c:if test="${sessionScope.Prijava!=true}">
+				<p>Za ogled te strani morate biti prijavljeni!</p>
+				<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+			</c:if>
 		</div>
+
+		</div>
+	</div>
 </body>
 </html>

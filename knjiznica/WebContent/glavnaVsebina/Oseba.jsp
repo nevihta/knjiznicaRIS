@@ -18,6 +18,7 @@
 				
 				<div class="tm-right-inner-container">
 					<h1 class="templatemo-header"><c:out value="${uporabnik.ime} " /> <c:out value="${uporabnik.priimek}" /></h1>
+					<c:if test="${sessionScope.Prijava==true}">
 					<p>
 						<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&urejanjeOs=true&idOsebe=<c:out value='${uporabnik.id}' />">Uredi </a> 
 						| 
@@ -93,7 +94,12 @@
 							<td><c:out value="${naslov.drzava}" /></td>
 						</tr>
 					</table>
-
+				</c:if>
+			
+				<c:if test="${sessionScope.Prijava!=true}">
+					<p>Za ogled te strani morate biti prijavljeni!</p>
+					<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+				</c:if>
 				</div>
 			</div>
 		</div>

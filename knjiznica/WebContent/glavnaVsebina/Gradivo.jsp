@@ -17,6 +17,7 @@
 				
 				<div class="tm-right-inner-container">
 					<h1 class="templatemo-header"><c:out value="${gradivo.naslov}" /> </h1>
+					<c:if test="${sessionScope.Prijava==true}">
 					<p>
 						<a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiGradivo&urejanjeGr=true&idGradiva=<c:out value='${gradivo.id}' />">Uredi </a> 
 						| 
@@ -86,7 +87,12 @@
 						</tr>
 
 					</table>
-
+				</c:if>
+			
+				<c:if test="${sessionScope.Prijava!=true}">
+					<p>Za ogled te strani morate biti prijavljeni!</p>
+					<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+				</c:if>
 				</div>
 			</div>
 		</div>

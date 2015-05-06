@@ -21,8 +21,7 @@
 			</h1>
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header">Črna lista</h1>
-
-
+			<c:if test="${sessionScope.Prijava==true}">
 
 				<table>
 				<tr>
@@ -39,14 +38,18 @@
 							<td><c:out value="${zapis.datumZapisa}" /></td>
 							<td><c:out value="${zapis.razlog}" /></td>
 							<td><a class="paddingLevoMoreBit"
-								href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=odstrani&idZapisa=<c:out value='${zapis.id}' />">Izbriši</a>
+								href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=odstrani&idZapisa=<c:out value='${zapis.id}' />">Izbriši</a></td>
 						</tr>
 					</c:forEach>
 				</table>
-
-
-
-
+			</c:if>
+			
+			<c:if test="${sessionScope.Prijava!=true}">
+				<p>Za ogled te strani morate biti prijavljeni!</p>
+				<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+			</c:if>
+			</div>
+	
 			</div>
 		</div>
 </body>

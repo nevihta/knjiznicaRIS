@@ -43,6 +43,7 @@
 			<div class="tm-right-inner-container">
 				<h1 class="templatemo-header"></h1>
 				<br/>
+			<c:if test="${sessionScope.Prijava==true}">
 				<table >
 					<tr>
 						<td><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiVse">Gradiva</a> | </td>
@@ -85,11 +86,16 @@
 
 							<td><p hidden="true"><c:out value="${avtor.id }" /></p></td>
 							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
-							<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />">Izbriši</a>
+							<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />">Izbriši</a></td>
 
 						</tr>
 					</c:forEach>
 				</table>
+			</c:if>
+			<c:if test="${sessionScope.Prijava!=true}">
+				<p>Za ogled te strani morate biti prijavljeni!</p>
+				<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+			</c:if>
 			</div>
 		</div>
 	</div>

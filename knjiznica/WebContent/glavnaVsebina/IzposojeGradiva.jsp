@@ -20,7 +20,7 @@
 				
 				<div class="tm-right-inner-container">
 					<h1 class="templatemo-header">Izposoje</h1>
-					
+					<c:if test="${sessionScope.Prijava==true}">
 												
 						<h4>Vse izposoje:</h4>
 							<table>	
@@ -29,8 +29,13 @@
 								</c:forEach>	
 							</table>
 
-					
-				
+				</c:if>
+			
+				<c:if test="${sessionScope.Prijava!=true}">
+					<p>Za ogled te strani morate biti prijavljeni!</p>
+					<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+				</c:if>
+				</div>
 			</div>
 		</div>
 	</body>

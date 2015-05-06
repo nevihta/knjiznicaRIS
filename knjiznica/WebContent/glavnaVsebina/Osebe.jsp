@@ -16,7 +16,8 @@
 					<b>Knjižnica</b>
 				</h1>
 				<div class="tm-right-inner-container">
-					<h1 class="templatemo-header">Pregled oseb</h1>			
+					<h1 class="templatemo-header">Pregled oseb</h1>	
+					<c:if test="${sessionScope.Prijava==true}">		
 					<br/>				
 					<table >
 						<tr>
@@ -34,6 +35,12 @@
 						</tr>
 					</table>
 					<br>
+					<c:if test="${poslano==true}">
+						<p>Email je bil poslan!</p>
+					</c:if>	
+					<c:if test="${poslano==false}">
+						<p>Pri pošiljanju emaila je prišlo do napake!</p>
+					</c:if>	
 					<table id="izpisOseb">
 						<tr>
 							<th>Članska št.</th>
@@ -54,7 +61,12 @@
 							</tr>
 						</c:forEach>
 					</table>
-
+				</c:if>
+				
+				<c:if test="${sessionScope.Prijava!=true}">
+					<p>Za ogled te strani morate biti prijavljeni!</p>
+					<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+				</c:if>
 				</div>
 			</div>
 		</div>

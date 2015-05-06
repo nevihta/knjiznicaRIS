@@ -70,12 +70,15 @@ public class CrnaListaServlet extends HttpServlet {
 			List<StoritevZaIzpis> zamujenoGradivo = st.pridobiStoritveOsebePrekoRoka(idOsebe);
 			if(Email.posljiEmailZamudnina(o.getEmail(), zamujenoGradivo)){
 				//obvestilo, da je bil mail poslan
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=pridobiVse&filter=zamudnik&poslano=true"; 
 			}
 			else{
 				//obvestilo, da je prislo do napake
+				redirect = true;
+				stran="/knjiznica/OsebaServlet?metoda=pridobiVse&filter=zamudnik&poslano=false"; 
 			}
-			redirect = true;
-			stran="/knjiznica/OsebaServlet?metoda=pridobiVse&filter=zamudnik"; //placeholder
+			
 		}
 		else if(metoda.equals("odstrani")){
 			//ne izbrise iz baze, ampak samo iz crne liste - "odstrani"

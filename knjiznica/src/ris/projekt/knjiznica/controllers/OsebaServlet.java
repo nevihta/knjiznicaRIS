@@ -82,6 +82,7 @@ public class OsebaServlet extends HttpServlet {
 			boolean filt = false;
 			List<Oseba> list = new ArrayList<Oseba>();
 			String filter = request.getParameter("filter");
+			String poslano = null;
 			try{
 				if(filter.equals("vse"))
 					list = osebaDAO.pridobiOsebe();
@@ -98,6 +99,15 @@ public class OsebaServlet extends HttpServlet {
 				request.setAttribute("osebe", list);
 			}
 			catch(NullPointerException e){	}
+			
+			//obvestilo, ali je mail poslan/ni poslan
+			poslano = request.getParameter("poslano");
+			if(poslano!=null){
+				if(poslano.equals("true"))
+					request.setAttribute("poslano", true);
+				else if(poslano.equals("false"))
+					request.setAttribute("poslano", false);
+			}
 			
 			stran="/glavnaVsebina/Osebe.jsp"; //placeholder
 		}

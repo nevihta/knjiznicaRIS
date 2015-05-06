@@ -30,6 +30,7 @@
 				
 				<div class="tm-right-inner-container">
 					<h1 class="templatemo-header">Uporabnik</h1>
+					<c:if test="${sessionScope.Prijava==true}">
 					<form id="forma"
 						action="${pageContext.request.contextPath}/OsebaServlet?metoda=<c:out value="${metoda}" />"
 						method="post">
@@ -92,6 +93,13 @@
 						<input type="submit" value="Potrdi" name="submit" class="button" />
 
 					</form>
+					
+					</c:if>
+			
+					<c:if test="${sessionScope.Prijava!=true}">
+						<p>Za ogled te strani morate biti prijavljeni!</p>
+						<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+					</c:if>
 				</div>
 			</div>
 		</div>

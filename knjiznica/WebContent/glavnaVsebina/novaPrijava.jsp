@@ -17,6 +17,7 @@
 				</h1>
 				<div class="tm-right-inner-container">
 					<h1 class="templatemo-header">Nova prijava</h1>
+					<c:if test="${sessionScope.Prijava==true}">
 					<br />
 					
 					<form action="${pageContext.request.contextPath}/OsebaServlet?metoda=<c:out value="${metoda}" />" method="post">
@@ -48,6 +49,12 @@
 					<c:if test="${sessionScope.Sprememba==false}">
 						<c:out value="Vnesli ste napacno geslo"/>
 					</c:if>
+				</c:if>
+			
+				<c:if test="${sessionScope.Prijava!=true}">
+					<p>Za ogled te strani morate biti prijavljeni!</p>
+					<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiPrijavo">  Prijava</a>
+				</c:if>
 				</div>
 			</div>
 		</div>
