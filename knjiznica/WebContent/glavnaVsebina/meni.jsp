@@ -22,7 +22,7 @@
 					class="fa fa-shopping-cart fa-medium"></i>Gradivo</a></li>
 			<li><a href="${pageContext.request.contextPath}/StoritevServlet?metoda=pridobiVseAktualneIzposoje"  <c:if test= "${meni eq 'izposoja'}"> class="active" </c:if>><i
 					class="fa fa-shopping-cart fa-medium"></i>Izposoja</a></li>
-			<li><a href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=pridobiVse"  <c:if test= "${meni eq 'lista'}"> class="active" </c:if>><i
+			<li><a href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=pridobiVse&filter=akt"  <c:if test= "${meni eq 'lista'}"> class="active" </c:if>><i
 					class="fa fa-shopping-cart fa-medium"></i>Črna lista</a></li>
 
 		</ul>

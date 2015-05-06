@@ -29,6 +29,7 @@ public class OsebaServlet extends HttpServlet {
 		OsebaDAO osebaDAO = OsebaDAO.dobiInstanco();
 		NaslovDAO naslovDAO = NaslovDAO.dobiInstanco();
 		StoritevDAO storitevDAO=StoritevDAO.dobiInstanco();
+		CrnaListaDAO crnaListaDAO=CrnaListaDAO.dobiInstanco();
 		
 		int idOsebe = -1;
 		String metoda="";
@@ -57,6 +58,7 @@ public class OsebaServlet extends HttpServlet {
 		else if(metoda.equals("pridobiOsebo")){
 			String urejanjeOs=null;
 			String neizbrisan=null;
+			Boolean jeNaCL;
 			try{
 				uporabnik = osebaDAO.pridobiOsebo(idOsebe);
 				request.setAttribute("uporabnik", uporabnik);
@@ -64,10 +66,15 @@ public class OsebaServlet extends HttpServlet {
 				naslov = naslovDAO.pridobiNaslov(uporabnik.getTk_id_naslova());
 				request.setAttribute("naslov", naslov);
 				neizbrisan = request.getParameter("neizbrisan");
+				
 				if(neizbrisan!=null)
 					request.setAttribute("neizbrisan", true);
+				
 				urejanjeOs = request.getParameter("urejanjeOs");
 				
+				jeNaCL=crnaListaDAO.preveriCeJeClanNaCl(idOsebe);
+				
+				request.setAttribute("cl", jeNaCL);
 			}catch(NullPointerException e){e.getMessage();}
 			if(urejanjeOs!=null){
 				request.setAttribute("metoda", "urediOsebo");

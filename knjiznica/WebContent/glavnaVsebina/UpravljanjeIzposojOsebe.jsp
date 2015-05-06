@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE>
 <html>
 <head>
@@ -50,7 +52,7 @@
 							<td><input type="checkbox" name="gradivaSelect" value="<c:out value='${izposoja.storitev.id}'/><c:if test="${metoda eq 'podaljsaj'}">*<c:out value='${izposoja.storitev.rokVrnitve}'/></c:if>"></td>
 							<td><c:out value="${izposoja.gradivo.id + 1000 }"/></td>
 							<td><c:out value="${izposoja.gradivo.naslov}"/></td>
-							<td><c:out value="${izposoja.storitev.rokVrnitve}"/></td>
+							<td><fmt:formatDate pattern="dd. MM. yyyy" value="${izposoja.storitev.rokVrnitve}" /></td>
 							</tr>
 						</c:forEach>
 					</table>

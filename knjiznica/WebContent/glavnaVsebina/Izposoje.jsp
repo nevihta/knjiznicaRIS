@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE>
 <html>
 	<head>
@@ -138,7 +140,7 @@
 				<br/>
 				<br/>
 				</c:if></c:if>
-				<table>
+				<table class="razmaki">
 				<tr>
 				<th>Zap št</th>
 				<th>Gradivo</th>
@@ -154,10 +156,10 @@
 					<td><c:out value="${i.storitev.id}"/></td>
 					<td><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiGradivo&idGradiva=<c:out value="${i.gradivo.id}"/>"><c:out value="${i.gradivo.naslov}"/></a></td>
 					<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${i.oseba.id}"/>"><c:out value="${i.oseba.ime}"/> <c:out value="${i.oseba.priimek}"/></a></td>
-					<td><c:out value="${i.storitev.datumIzposoje}"/></td>
-					<td><c:out value="${i.storitev.rokVrnitve}"/></td>
+					<td><fmt:formatDate pattern="dd. MM. yyyy" value="${i.storitev.datumIzposoje}" /></td>
+					<td><fmt:formatDate pattern="dd. MM. yyyy" value="${i.storitev.rokVrnitve}" /></td>
 					<c:if test="${pretekle}">
-					<td><c:out value="${i.storitev.datumVrnitve}"/></td>
+					<td><fmt:formatDate pattern="dd. MM. yyyy" value="${i.storitev.datumVrnitve}" /></td>
 					</c:if>	
 				</tr>
 				</c:forEach>

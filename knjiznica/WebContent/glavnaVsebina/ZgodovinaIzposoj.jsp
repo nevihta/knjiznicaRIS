@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE>
 <html>
 	<head>
@@ -29,8 +31,8 @@
 						<c:forEach var="izposoja" items="${zgodovinaO}">        
 							<tr><td><c:out value="${izposoja.gradivo.id+1000}"/></td>
 							<td><a href="${pageContext.request.contextPath}/GradivoServlet?metoda=pridobiGradivo&idGradiva=<c:out value="${izposoja.gradivo.id}"/>"><c:out value="${izposoja.gradivo.naslov}"/></a></td>
-							<td><c:out value="${izposoja.storitev.datumIzposoje}"/></td>
-							<td><c:out value="${izposoja.storitev.datumVrnitve}"/></td>
+							<td><fmt:formatDate pattern="dd. MM. yyyy" value="${izposoja.storitev.datumIzposoje}" /></td>
+							<td><fmt:formatDate pattern="dd. MM. yyyy" value="${izposoja.storitev.datumVrnitve}" /></td>
 							</tr>
 						</c:forEach>
 						</table>
@@ -42,8 +44,8 @@
 						<c:forEach var="izposoja" items="${zgodovinaG}">        
 							<tr><td><c:out value="${izposoja.oseba.id+1000}"/></td>
 							<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${izposoja.oseba.id}"/>"><c:out value="${izposoja.oseba.ime}"/> <c:out value="${izposoja.oseba.priimek}"/></a></td>
-							<td><c:out value="${izposoja.storitev.datumIzposoje}"/></td>
-							<td><c:out value="${izposoja.storitev.datumVrnitve}"/></td>
+							<td><fmt:formatDate pattern="dd. MM. yyyy" value="${izposoja.storitev.datumIzposoje}" /></td>
+							<td><fmt:formatDate pattern="dd. MM. yyyy" value="${izposoja.storitev.datumVrnitve}" /></td>
 							</tr>
 						</c:forEach>
 						</table>

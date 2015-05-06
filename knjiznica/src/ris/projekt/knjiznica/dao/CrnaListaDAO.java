@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import ris.projekt.knjiznica.baza.Povezava;
 import ris.projekt.knjiznica.beans.Oseba;
@@ -114,7 +115,7 @@ public class CrnaListaDAO {
 		try{
 			povezava =  Povezava.getConnection();
 	
-			st=povezava.prepareStatement("select * from zapisNaCl where tk_id_osebe=? and datumIzbrisa=null"); 
+			st=povezava.prepareStatement("select * from zapisNaCl where tk_id_osebe=? and datumIzbrisa is null"); 
 			st.setInt(1, id);
 			rs=st.executeQuery();
 			if(rs.next()){
@@ -129,6 +130,40 @@ public class CrnaListaDAO {
 		}
 		
 		return preveri;
+		
+	}
+
+	public List<ZapisNaCl> pridobiSeznamClanovNaClPret() {
+
+		ArrayList<ZapisNaCl> zapisi=new ArrayList<ZapisNaCl>();
+		ZapisNaCl z;
+		Oseba o;
+		try{
+			povezava =  Povezava.getConnection();
+			st = povezava.prepareStatement("select * from zapisnacl z, oseba o where o.ID_osebe=z.tk_id_osebe and datumIzbrisa is not null");
+	
+			   rs = st.executeQuery();
+	           while (rs.next())
+	            {
+	            	z=new ZapisNaCl(rs.getInt("ID_Zapisa"), rs.getDate("datumZapisa"), rs.getDate("datumIzbrisa"), rs.getString("razlog"), rs.getInt("tk_id_osebe"));
+	            	o=new Oseba();
+	            	o.setId(z.getTk_id_osebe());
+	            	o.setIme(rs.getString("ime"));
+	            	o.setPriimek(rs.getString("priimek"));
+	            	z.setOseba(o);
+	            	zapisi.add(z);		
+	            }
+           
+		}
+		catch(SQLException e){e.printStackTrace();} 
+		finally{
+			try{rs.close();} catch(SQLException e){}
+			try{st.close();} catch(SQLException e){}
+			try{povezava.close();} catch(SQLException e){}
+		}
+		
+		
+		return zapisi;
 		
 	}
 	

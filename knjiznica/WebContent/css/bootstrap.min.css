@@ -227,6 +227,9 @@ div#meni_prijava{
 	text-align: right;
 }
 
+table#razmaki th,td{
+	padding-right: 100;
+}
 
 @media print {
 	* {

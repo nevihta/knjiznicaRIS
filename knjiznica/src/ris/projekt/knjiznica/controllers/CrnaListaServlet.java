@@ -59,7 +59,18 @@ public class CrnaListaServlet extends HttpServlet {
 		else if(metoda.equals("pridobiVse")){
 			//+ filter za stare zapise?
 			//rabimo osebe!
-			List<ZapisNaCl> crnaLista = crnaDAO.pridobiSeznamClanovNaCl();
+			boolean pretekle=false;
+			String filter=request.getParameter("filter");
+			List<ZapisNaCl> crnaLista;
+			if(filter.equals("pret"))
+			{
+				crnaLista = crnaDAO.pridobiSeznamClanovNaClPret();
+				pretekle=true;
+			}
+			else
+				crnaLista = crnaDAO.pridobiSeznamClanovNaCl();
+
+			request.setAttribute("pretekle", pretekle);
 			request.setAttribute("crnaLista", crnaLista);
 			stran="/glavnaVsebina/CrnaLista.jsp"; //placeholder
 		}
@@ -90,7 +101,7 @@ public class CrnaListaServlet extends HttpServlet {
 			if(idZapisa!=-1){
 				crnaDAO.izbrisiClanaZListe(idZapisa);
 				redirect = true;
-				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
+				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse&filter=akt";	
 			}
 			else {
 				redirect = true;
@@ -132,30 +143,14 @@ public class CrnaListaServlet extends HttpServlet {
 				zapis.setDatumZapisa(new Date());
 				crnaDAO.dodajClanaNaListo(zapis);
 				redirect = true;
-				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
+				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse&filter=akt";	
 			}
 			else{
 				redirect = true;
 				stran="/knjiznica/OsebaServlet?metoda=domov"; 
 			}
 		}
-		else if(metoda.equals("dodajNovoZamujanje")){
-			//direktno iz seznama zamudnin gumbek? naredimo seznam zamudnikov?
-			//kak potem, ce je ze na listi - mogoce pri seznamu zamudnikov 
-			//samo pri tistih linki, ki se niso na list?
-			if(idOsebe!=-1){
-				zapis.setTk_id_osebe(idOsebe);
-				zapis.setRazlog("Zamudnina");
-				zapis.setDatumZapisa(new Date());
-				crnaDAO.dodajClanaNaListo(zapis);
-				redirect = true;
-				stran="/knjiznica/CrnaListaServlet?metoda=pridobiVse";	
-			}
-			else{
-				redirect = true;
-				stran="/knjiznica/OsebaServlet?metoda=domov"; 
-			}
-		}
+
 		
 		RequestDispatcher disp = request.getRequestDispatcher(stran);
 		if(redirect)

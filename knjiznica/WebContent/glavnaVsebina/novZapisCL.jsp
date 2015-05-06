@@ -20,7 +20,7 @@
 				<b>Knjižnica</b>
 			</h1>
 			<div class="tm-right-inner-container">
-				<h1 class="templatemo-header">Vnos na črno listo ${idOsebe}</h1>
+				<h1 class="templatemo-header">Vnos na črno listo</h1>
 			<c:if test="${sessionScope.Prijava==true}">
 				<form
 					action="${pageContext.request.contextPath}/CrnaListaServlet?metoda=dodajOSnaCL"

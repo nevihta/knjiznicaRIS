@@ -25,8 +25,9 @@
 						<a href="${pageContext.request.contextPath}/OsebaServlet?metoda=izbrisiOsebo&idOsebe=<c:out value='${uporabnik.id}' />">Izbriši</a>
 						| <a href="${pageContext.request.contextPath}/StoritevServlet?metoda=pridobiVseAktualneIzposoje&filter=i&id=<c:out value='${uporabnik.id}' />">Poglej aktualne izposoje</a>
 						| <a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiZgO&idOsebe=<c:out value='${uporabnik.id}' />">Poglej zgodovino izposoj</a>
+						<c:if test="${!cl}">
 						| <a href="${pageContext.request.contextPath}/CrnaListaServlet?metoda=dodajOsnaCL&idOsebe=<c:out value='${uporabnik.id}' />">Dodaj na črno listo</a>
-						
+						</c:if>
 						<c:if test="${uporabnik.id == sessionScope.ID}">
 						| <a href="${pageContext.request.contextPath}/OsebaServlet?metoda=urediKnjiznicar">Uredi uporabniško ime in geslo</a>
 						

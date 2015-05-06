@@ -645,4 +645,41 @@ public class GradivoDAO {
 		return gradiva;
 
 	}
+	
+	public boolean preveriZaIzposojo(int idGradiva)
+	{
+		boolean izposoja=true;
+		
+		try{
+			povezava =  Povezava.getConnection();
+			
+			st=povezava.prepareStatement("select * from gradivo where ID_gradiva=?");
+			st.setInt(1, idGradiva);
+			
+			rs=st.executeQuery();
+			if(!rs.next())
+					izposoja=false;
+			
+			if (izposoja=true)
+			{
+				rs.close();
+				st.close();
+				
+				st=povezava.prepareStatement("select g.* from gradivo g,  storitev s where s.tk_id_gradiva=g.ID_gradiva and s.datumVracila is null and ID_gradiva=?");
+				st.setInt(1, idGradiva);
+				
+				rs=st.executeQuery();
+				if(rs.next())
+						izposoja=false;
+			}
+		}
+			catch(SQLException e){
+				e.printStackTrace();} 
+			finally{
+				try{rs.close();} catch(SQLException e){}
+				try{st.close();} catch(SQLException e){}
+				try{povezava.close();} catch(SQLException e){}
+			}
+		return izposoja;
+	}
 }
