@@ -47,7 +47,7 @@ public class Email {
 			System.out.println("\n\n 2nd ===> get Mail Session..");
 			getMailSession = Session.getDefaultInstance(mailServerProperties, null);
 			generateMailMessage = new MimeMessage(getMailSession);
-			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress("uporabnik.ris@gmail.com")); //email
+			generateMailMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(email)); //uporabnik.ris@gmail.com
 			generateMailMessage.setSubject("Zamujen rok vrnitve izposojenega gradiva", "UTF-8");
 			StringBuilder sb = new StringBuilder();
 			sb.append("Spoštovani! <br /> Obvešèamo vas, da ste zamudili rok vrnitve izposojenega gradiva."
