@@ -27,7 +27,7 @@
 					method="post">
 					<input type="hidden" value="${idOsebe}" name="idOsebe" /> Razlog: <br />
 					<br />
-					<textarea rows="4" cols="50" name="razlog"></textarea>
+					<textarea rows="4" cols="50" name="razlog" required="required"></textarea>
 					<br /> <br /> 
 					<input type="button" value="Prekliči" onClick="history.go(-1);return true;" class="button"/>
 					<input type="submit" value="Potrdi" class="button" />
