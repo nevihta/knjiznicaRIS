@@ -108,6 +108,7 @@
  			<table>
 				<tr><td>Filtriraj glede na: </td></tr>
 				<tr><td><h3></h3></td></tr>
+				<tr><td>Naslov:</td><td><input type="text" placeholder="Naslov" name="naslovFilter"/></td></tr>
 				<tr><td>Vrsto gradiva:</td>
 				<td><select name="vrstaFilter">
 					<option value="-1">----</option>

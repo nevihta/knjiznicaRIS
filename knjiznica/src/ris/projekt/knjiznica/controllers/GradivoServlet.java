@@ -104,12 +104,13 @@ public class GradivoServlet extends HttpServlet {
 				}
 				else if(filter.equals("l"))
 				{
+					String naslovFilter=request.getParameter("naslovFilter");
 					String jezikFilter=request.getParameter("jezikFilter");
 					String letoIzidaFilter=request.getParameter("letoFilter");
 					int vrstaFilter=Integer.parseInt(request.getParameter("vrstaFilter"));
 					int podrocjeFilter=Integer.parseInt(request.getParameter("podrocjeFilter"));
 					int zalozbaFilter=Integer.parseInt(request.getParameter("zalozbaFilter"));
-					list=gradivoDAO.pridobiFiltriranaGradivaL(jezikFilter, letoIzidaFilter, vrstaFilter, podrocjeFilter, zalozbaFilter);
+					list=gradivoDAO.pridobiFiltriranaGradivaL(naslovFilter, jezikFilter, letoIzidaFilter, vrstaFilter, podrocjeFilter, zalozbaFilter);
 				}
 				else if(filter.equals("s")){
 					String statusFilter=request.getParameter("statusFilter");

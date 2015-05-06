@@ -398,7 +398,7 @@ public class GradivoDAO {
 		return gradiva;
 	}
 
-	public List<GradivoZaIzpis> pridobiFiltriranaGradivaL(String jezikFilter, String letoIzidaFilter, int vrstaFilter,	int podrocjeFilter, int zalozbaFilter) {
+	public List<GradivoZaIzpis> pridobiFiltriranaGradivaL(String naslovFilter, String jezikFilter, String letoIzidaFilter, int vrstaFilter,	int podrocjeFilter, int zalozbaFilter) {
 		ArrayList<GradivoZaIzpis> gradiva=new ArrayList<GradivoZaIzpis>();
 		GradivoZaIzpis g;
 		try{
@@ -406,6 +406,9 @@ public class GradivoDAO {
 		
 			String sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste";
 			
+			if(!naslovFilter.equals("")){
+				sql+=" and g.naslov like'" + naslovFilter+ "'";
+			}
 			if(!jezikFilter.equals("brez")){
 				sql+=" and g.jezik='" + jezikFilter+ "'";
 			}
