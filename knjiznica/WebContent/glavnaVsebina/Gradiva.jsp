@@ -147,7 +147,7 @@
 		</div>	
 		
 		
-		<table id="izpisGradiva">
+		<table class="razmaki">
 			<tr>
 				<th>Št. gradiva</th>
 				<th>Naslov</th>

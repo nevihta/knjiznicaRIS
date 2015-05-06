@@ -227,10 +227,14 @@ div#meni_prijava{
 	text-align: right;
 }
 
-table#razmaki th,td{
-	padding-right: 100;
+.razmaki td,th{
+	padding-right: 20;
 }
 
+#brezPresledka
+{
+	padding-right: 0;
+}
 @media print {
 	* {
 		color: #000 !important;

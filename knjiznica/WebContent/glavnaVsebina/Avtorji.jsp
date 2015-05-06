@@ -72,7 +72,7 @@
 				<c:if test="${neizbrisan==true}">
 						<p>Opozorilo: avtorja ni mogoče izbrisat, saj je že vezan na gradivo.</p>
 					</c:if>
-				<table id="izpipsAvtorjev">
+				<table class="razmaki">
 					<tr>
 						<th>Ime</th>
 						<th>Priimek</th>
@@ -85,8 +85,8 @@
 							<td><p><c:out value="${avtor.priimek }" /></p></td>
 
 							<td><p hidden="true"><c:out value="${avtor.id }" /></p></td>
-							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
-							<td><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />">Izbriši</a></td>
+							<td id="brezPresledka"><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td ><a href="${pageContext.request.contextPath}/AvtorServlet?metoda=izbrisi&idAvtor=<c:out value='${avtor.id}' />">Izbriši</a></td>
 
 						</tr>
 					</c:forEach>

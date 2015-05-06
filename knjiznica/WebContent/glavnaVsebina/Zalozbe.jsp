@@ -80,7 +80,7 @@
 						
 							<td><p><c:out value="${zalozba.naziv}" /></p></td>							
 							<td><p hidden="true"><c:out value="${zalozba.id }" /></p></td>
-							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td><a  class="paddingLevoMoreBit" onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
 							<td><a href="${pageContext.request.contextPath}/ZalozbaServlet?metoda=izbrisi&idZalozba=<c:out value='${zalozba.id}' />">Izbriši</a></td>
 						</tr>
 					</c:forEach>

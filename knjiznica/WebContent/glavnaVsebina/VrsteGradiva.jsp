@@ -82,7 +82,7 @@
 							<td><p><c:out value="${vrsta.naziv}" /></p></td>							
 
 							<td><p hidden="true"><c:out value="${vrsta.id }" /></p></td>
-							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td><a class="paddingLevoMoreBit" onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
 							<td><a href="${pageContext.request.contextPath}/VrstaGradivaServlet?metoda=izbrisi&idVrstaGradiva=<c:out value='${vrsta.id}' />">Izbriši</a></td>
 
 						</tr>

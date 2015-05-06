@@ -58,7 +58,7 @@ CREATE TABLE `knjiznica`.`podrocje` (
 
 CREATE TABLE `knjiznica`.`gradivo` (
   `ID_gradiva` INT NOT NULL AUTO_INCREMENT,
-  `naslov` VARCHAR (50) NULL,
+  `naslov` VARCHAR (100) NULL,
   `originalNaslov` VARCHAR (50) NULL,
   `jezik` VARCHAR (20) NULL,
   `letoIzida` INT NULL,
@@ -85,3 +85,6 @@ CREATE TABLE `knjiznica`.`gradivo_avtor` (
   `tk_id_gradiva` INT NULL,
   `tk_id_avtorja` INT NULL,
   PRIMARY KEY (`ID_ga`));
+
+insert into oseba(ime, priimek, tipOsebe) values ('default', 'knjižničar', 'knjižničar');
+insert into prijava(upIme, geslo, tk_id_osebe) values ('default', '$2a$10$e/nAUGXRSUnydpdwPXCaV.wlRCVMFM1DcSzVHQCUxVycS533BKmP6', 1);

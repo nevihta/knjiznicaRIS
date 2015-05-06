@@ -62,7 +62,7 @@
 						<tr>
 
 							<td><c:out value="${zapis.id}" /></td>
-							<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${zapis.oseba.id}"/>"><c:out value="${zapis.oseba.ime}" /><c:out value="${zapis.oseba.priimek}" /></a></td>
+							<td><a href="${pageContext.request.contextPath}/OsebaServlet?metoda=pridobiOsebo&idOsebe=<c:out value="${zapis.oseba.id}"/>"><c:out value="${zapis.oseba.ime}" /> <c:out value="${zapis.oseba.priimek}" /></a></td>
 							<td><fmt:formatDate pattern="dd. MM. yyyy" value="${zapis.datumZapisa}" />
 							<c:if test="${pretekle}">
 								<td><fmt:formatDate pattern="dd. MM. yyyy" value="${zapis.datumIzbrisa}" /></td>

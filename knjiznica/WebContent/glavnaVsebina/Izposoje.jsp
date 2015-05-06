@@ -105,7 +105,7 @@
 		 			<select name="idOsebe">
 						<option value="-1"> ----- </option>
 						<c:forEach var="o" items="${osebe}" >
-								<option value='<c:out value="${o.id}" />'><c:out value="${o.ime}" /><c:out value="${o.priimek}" /></option>
+								<option value='<c:out value="${o.id}" />'><c:out value="${o.ime}" /> <c:out value="${o.priimek}" /></option>
 						</c:forEach>
 					</select>
 		 			</td></tr>
@@ -124,7 +124,7 @@
 		 			<select name="idOsebe">
 						<option value="-1"> ----- </option>
 						<c:forEach var="o" items="${osebe}" >
-								<option value='<c:out value="${o.id}" />'><c:out value="${o.ime}" /><c:out value="${o.priimek}" /></option>
+								<option value='<c:out value="${o.id}" />'><c:out value="${o.ime}" /> <c:out value="${o.priimek}" /></option>
 						</c:forEach>
 					</select>
 		 			</td></tr>

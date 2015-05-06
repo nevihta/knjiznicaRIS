@@ -81,8 +81,8 @@
 						
 							<td><p><c:out value="${podrocje.naziv}" /></p></td>							
 							<td><p hidden="true"><c:out value="${podrocje.id }" /></p></td>
-							<td><a onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
-							<td><a href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=izbrisi&idPodrocje=<c:out value='${podrocje.id}' />">Izbriši</a>
+							<td><a class="paddingLevoMoreBit" onclick="uredi(<c:out value='${loop.index}'/>)">Uredi</a> |</td>
+							<td><a  href="${pageContext.request.contextPath}/PodrocjeServlet?metoda=izbrisi&idPodrocje=<c:out value='${podrocje.id}' />">Izbriši</a>
 							
 							</td>
 						</tr>
