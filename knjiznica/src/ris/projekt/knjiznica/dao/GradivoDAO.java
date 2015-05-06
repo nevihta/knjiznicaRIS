@@ -406,8 +406,13 @@ public class GradivoDAO {
 		
 			String sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste";
 			
+			String naslovFiltertest=naslovFilter + "q";
+			if(naslovFiltertest.trim().equals("q"))
+				naslovFilter="";
+			
+			
 			if(!naslovFilter.equals("")){
-				sql+=" and g.naslov like'" + naslovFilter+ "'";
+				sql+=" and g.naslov like'" + naslovFilter.trim()+ "'";
 			}
 			if(!jezikFilter.equals("brez")){
 				sql+=" and g.jezik='" + jezikFilter+ "'";
@@ -483,21 +488,36 @@ public class GradivoDAO {
 	public List<GradivoZaIzpis> pridobiFiltriranaGradivaA(String avtorImeFilter, String avtorPriimekFilter) {
 		ArrayList<GradivoZaIzpis> gradiva=new ArrayList<GradivoZaIzpis>();
 		GradivoZaIzpis g;
+		
 		try{
 			povezava =  Povezava.getConnection();
 			String sql;
-			if((avtorImeFilter!="")||(avtorPriimekFilter!=""))
+			
+			String avtorImeFiltertest=avtorImeFilter+"q";
+			String avtorPriimekFiltertest=avtorPriimekFilter +"q";
+			if(avtorImeFiltertest.trim().equals("q"))
 			{
+				avtorImeFilter="";
+			}
+			if(avtorPriimekFiltertest.trim().equals("q"))
+			{
+				avtorPriimekFilter="";
+			}
+			
+		
+			if((avtorImeFilter!="")||(avtorPriimekFilter!="")){
 				sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z, gradivo_avtor ga, avtor a where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste and ga.tk_id_gradiva=g.ID_gradiva and ga.tk_id_avtorja=a.ID_avtorja";
-				if(avtorImeFilter!="")
+				if(!avtorImeFilter.equals(""))
 					sql+=" and a.ime like '" + avtorImeFilter.trim() +"'";
-				if(avtorPriimekFilter!="")
+				if(!avtorPriimekFilter.equals(""))
 					sql+=" and a.priimek like '" + avtorPriimekFilter.trim() +"'";
-			}
+				}
 			else
-			{
-				sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste";
-			}
+				{
+					sql="select g.*, p.naziv as podrocje, vg.naziv as vrsta, z.naziv as zalozba from gradivo g, podrocje p, vrstagradiva vg, zalozba z where g.tk_id_podrocja=p.ID_podrocja and g.tk_id_zalozbe=z.ID_zalozbe and g.tk_id_vrste=vg.ID_vrste";
+				}
+			
+				
 			
 			System.out.println(sql);
 			st = povezava.prepareStatement(sql);
